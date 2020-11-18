@@ -1,0 +1,4 @@
+1.git bush here 
+2.输入hexo g(hexo generate) 生成静态文件
+3.输入hexo s（hexo server）启动服务器，进行本地预览
+4.输入hexo d（deploy）上传到github仓库
