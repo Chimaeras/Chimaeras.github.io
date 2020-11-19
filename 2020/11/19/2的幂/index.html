@@ -333,7 +333,7 @@
 
           
             <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
             <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
@@ -359,7 +359,7 @@
 <p>给定一个整数，编写一个函数来判断它是否是 2 的幂次方</p>
 </blockquote>
 <a id="more"></a>
-<h5 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> !(n&amp;n<span class="number">-1</span>); </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">bool</span> isPowerOfTwo(<span class="built_in">int</span> n) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> !(n&amp;n<span class="number">-1</span>); </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>解释：2的幂转换成二进制时只有一位为1，例：8=0000 1000 而7=0000 0111.二者相与得0000 0000</p>
@@ -368,11 +368,11 @@
 <h5 id="解法2："><a href="#解法2：" class="headerlink" title="解法2："></a>解法2：</h5><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">publ<span class="symbol">ic:</span></span><br><span class="line">    bool isPowerOfTwo(<span class="built_in">int</span> <span class="built_in">n</span>) </span><br><span class="line">    &#123;</span><br><span class="line">        return (<span class="built_in">n</span> &gt; <span class="number">0</span>) &amp;&amp; (<span class="built_in">n</span> &amp; -<span class="built_in">n</span>) == <span class="built_in">n</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>解释：2的幂次方在二进制下，只有1位是1，其余全是0。例如:8—00001000。负数的二进制为原码按位取反，最后再+1。然后两者进行与操作，得到的肯定是原码中最后一个二进制的1。例如8 &amp; (-8) -&gt;00001000 &amp; 11111000 得 00001000，即8。 </p>
-<h5 id="解法3："><a href="#解法3：" class="headerlink" title="解法3："></a>解法3：</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (n&gt;<span class="number">0</span>) &amp;&amp; (<span class="number">1</span>&lt;&lt;<span class="number">30</span>) % n == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="解法3："><a href="#解法3：" class="headerlink" title="解法3："></a>解法3：</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">bool</span> isPowerOfTwo(<span class="built_in">int</span> n) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> (n&gt;<span class="number">0</span>) &amp;&amp; (<span class="number">1</span>&lt;&lt;<span class="number">30</span>) % n == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>解释： 1&lt;&lt;30（二进制往左移30位）得到最大的2的整数次幂即2的31次幂2147483648，对n取模如果等于0，说明n只有因子2。</p>
 </li>
-<li><h5 id="解法4："><a href="#解法4：" class="headerlink" title="解法4："></a>解法4：</h5><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPowerOfTwo</span><span class="params">(<span class="keyword">int</span> n)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> n&gt;<span class="number">0</span> &amp;&amp; <span class="number">2147483648</span>%n==<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<li><h5 id="解法4："><a href="#解法4：" class="headerlink" title="解法4："></a>解法4：</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">bool</span> isPowerOfTwo(<span class="built_in">int</span> n) </span><br><span class="line">    &#123;</span><br><span class="line">         <span class="keyword">return</span> n&gt;<span class="number">0</span> &amp;&amp; <span class="number">2147483648</span>%n==<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>解释：一个整数如果是2的幂次方，必定可以被2的31次幂整除（类似解法3）。</p>
 </li>
@@ -606,7 +606,7 @@
     
 	<span title="Site words total count">
      字 </span>
-    <!--<span title="symbols_count_time.count_total"></span>-->
+    <!--<span title="symbols_count_time.count_total">31k</span>-->
   
 
   
@@ -619,21 +619,21 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 访问人数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>

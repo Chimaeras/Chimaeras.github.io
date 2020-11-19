@@ -333,7 +333,7 @@
 
           
             <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
             <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
@@ -361,13 +361,13 @@
 <a id="more"></a>
 <hr>
 <ul>
-<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(<span class="keyword">int</span> x)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(x&lt;<span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> b[<span class="number">10</span>],j=<span class="number">0</span>,i=<span class="number">0</span>,t;</span><br><span class="line">            <span class="keyword">while</span>(x!=<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                b[i]=x%<span class="number">10</span>;</span><br><span class="line">                x=x/<span class="number">10</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            t=i<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">for</span>(;j&lt;t;)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(b[j++]!=b[t--]) <span class="keyword">return</span> <span class="literal">false</span>;  <span class="comment">//j为数组开头，t为数组结尾</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">bool</span> isPalindrome(<span class="built_in">int</span> x) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(x&lt;<span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">int</span> b[<span class="number">10</span>],j=<span class="number">0</span>,i=<span class="number">0</span>,t;</span><br><span class="line">            <span class="keyword">while</span>(x!=<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                b[i]=x%<span class="number">10</span>;</span><br><span class="line">                x=x/<span class="number">10</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            t=i<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">for</span>(;j&lt;t;)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(b[j++]!=b[t--]) <span class="keyword">return</span> <span class="literal">false</span>;  <span class="comment">//j为数组开头，t为数组结尾</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><h5 id="分析：将x的每一位存放到数组b中，再从b的开头和b的结尾向中间逼近。若顺序和倒序相等，则为回文数。"><a href="#分析：将x的每一位存放到数组b中，再从b的开头和b的结尾向中间逼近。若顺序和倒序相等，则为回文数。" class="headerlink" title="分析：将x的每一位存放到数组b中，再从b的开头和b的结尾向中间逼近。若顺序和倒序相等，则为回文数。"></a>分析：将x的每一位存放到数组b中，再从b的开头和b的结尾向中间逼近。若顺序和倒序相等，则为回文数。</h5></li>
 </ul>
 <hr>
 <ul>
-<li><h4 id="解法2："><a href="#解法2：" class="headerlink" title="解法2："></a>解法2：</h4><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    bool isPalindrome(int x) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">0</span> || (x % <span class="number">10</span> == <span class="number">0</span> &amp;&amp; x != <span class="number">0</span>)) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;   </span><br><span class="line">        int <span class="literal">rx</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (x &gt; <span class="literal">rx</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="literal">rx</span> = <span class="literal">rx</span> * <span class="number">10</span> + x % <span class="number">10</span>;<span class="comment">//形成x的逆序数字</span></span><br><span class="line">            x /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> x == <span class="literal">rx</span> || x == <span class="literal">rx</span> / <span class="number">10</span>; <span class="comment">//判断条件式是否成立返回true或false</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<li><h4 id="解法2："><a href="#解法2：" class="headerlink" title="解法2："></a>解法2：</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">bool</span> isPalindrome(<span class="built_in">int</span> x) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (x &lt; <span class="number">0</span> || (x % <span class="number">10</span> == <span class="number">0</span> &amp;&amp; x != <span class="number">0</span>)) </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;   </span><br><span class="line">        <span class="built_in">int</span> rx = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (x &gt; rx) </span><br><span class="line">        &#123;</span><br><span class="line">            rx = rx * <span class="number">10</span> + x % <span class="number">10</span>;<span class="comment">//形成x的逆序数字</span></span><br><span class="line">            x /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> x == rx || x == rx / <span class="number">10</span>; <span class="comment">//判断条件式是否成立返回true或false</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><h5 id="分析：通过循环生成x的逆序数字，比较x和rx是否相等。-存在一种情况就是循环中x多除了一次10"><a href="#分析：通过循环生成x的逆序数字，比较x和rx是否相等。-存在一种情况就是循环中x多除了一次10" class="headerlink" title="分析：通过循环生成x的逆序数字，比较x和rx是否相等。(存在一种情况就是循环中x多除了一次10)"></a>分析：通过循环生成x的逆序数字，比较x和rx是否相等。(存在一种情况就是循环中x多除了一次10)</h5></li>
 </ul>
@@ -598,7 +598,7 @@
     
 	<span title="Site words total count">
      字 </span>
-    <!--<span title="symbols_count_time.count_total"></span>-->
+    <!--<span title="symbols_count_time.count_total">31k</span>-->
   
 
   
@@ -611,21 +611,21 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 访问人数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>

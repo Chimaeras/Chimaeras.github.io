@@ -333,7 +333,7 @@
 
           
             <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
             <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
@@ -361,7 +361,7 @@
 <a id="more"></a>
 <hr>
 <ul>
-<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isToeplitzMatrix</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; m)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> M=m.size(),N=m[<span class="number">0</span>].size(); <span class="comment">//M为行，N为列</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> a=<span class="number">0</span>;a&lt;M<span class="number">-1</span>;a++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> b=<span class="number">0</span>;b&lt;N<span class="number">-1</span>;b++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(m[a][b]!=m[a+<span class="number">1</span>][b+<span class="number">1</span>]) </span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">bool</span> isToeplitzMatrix(vector&lt;vector&lt;<span class="built_in">int</span>&gt;&gt;&amp; m) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> M=m.size(),N=m[<span class="number">0</span>].size(); <span class="comment">//M为行，N为列</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">int</span> a=<span class="number">0</span>;a&lt;M<span class="number">-1</span>;a++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="built_in">int</span> b=<span class="number">0</span>;b&lt;N<span class="number">-1</span>;b++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(m[a][b]!=m[a+<span class="number">1</span>][b+<span class="number">1</span>]) </span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><h5 id="分析：M为行，N为列，从左上角开始依次比较对角线上的元素，若不相等则返回false"><a href="#分析：M为行，N为列，从左上角开始依次比较对角线上的元素，若不相等则返回false" class="headerlink" title="分析：M为行，N为列，从左上角开始依次比较对角线上的元素，若不相等则返回false"></a>分析：M为行，N为列，从左上角开始依次比较对角线上的元素，若不相等则返回false</h5></li>
 </ul>
@@ -592,7 +592,7 @@
     
 	<span title="Site words total count">
      字 </span>
-    <!--<span title="symbols_count_time.count_total"></span>-->
+    <!--<span title="symbols_count_time.count_total">31k</span>-->
   
 
   
@@ -605,21 +605,21 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 访问人数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>

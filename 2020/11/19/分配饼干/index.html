@@ -333,7 +333,7 @@
 
           
             <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
             <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
@@ -361,7 +361,7 @@
 <a id="more"></a>
 <h2 id="分配饼干"><a href="#分配饼干" class="headerlink" title="分配饼干"></a>分配饼干</h2><hr>
 <h5 id="描述：给一个孩子的饼干应当尽量小又能满足该孩子，这样大饼干就能拿来给满足度比较大的孩子。因为最小的孩子最容易得到满足，所以先满足最小的孩子"><a href="#描述：给一个孩子的饼干应当尽量小又能满足该孩子，这样大饼干就能拿来给满足度比较大的孩子。因为最小的孩子最容易得到满足，所以先满足最小的孩子" class="headerlink" title="描述：给一个孩子的饼干应当尽量小又能满足该孩子，这样大饼干就能拿来给满足度比较大的孩子。因为最小的孩子最容易得到满足，所以先满足最小的孩子"></a>描述：给一个孩子的饼干应当尽量小又能满足该孩子，这样大饼干就能拿来给满足度比较大的孩子。因为最小的孩子最容易得到满足，所以先满足最小的孩子</h5><h5 id><a href="#" class="headerlink" title></a></h5><ul>
-<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> findContentChildren(vector&lt;<span class="keyword">int</span>&gt;&amp; g, vector&lt;<span class="keyword">int</span>&gt;&amp; s) </span><br><span class="line">    &#123;</span><br><span class="line">        sort(g.<span class="built_in">begin</span>(),g.<span class="built_in">end</span>());</span><br><span class="line">        sort(s.<span class="built_in">begin</span>(),s.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">int</span> gi=<span class="number">0</span>;<span class="keyword">int</span> si=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">while</span>(gi&lt;g.<span class="built_in">size</span>() &amp;&amp; si&lt;s.<span class="built_in">size</span>())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">if</span>(g[gi]&lt;=s[si])		<span class="comment">//当饼干大小大于孩子满足度</span></span><br><span class="line">            &#123;</span><br><span class="line">                gi++;			<span class="comment">//满足度加一</span></span><br><span class="line">            &#125;</span><br><span class="line">            si++;			</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">return</span> gi;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public:</span><br><span class="line">    <span class="built_in">int</span> find<span class="constructor">ContentChildren(<span class="params">vector</span>&lt;<span class="params">int</span>&gt;&amp; <span class="params">g</span>, <span class="params">vector</span>&lt;<span class="params">int</span>&gt;&amp; <span class="params">s</span>)</span> </span><br><span class="line">    &#123;</span><br><span class="line">        sort(g.<span class="keyword">begin</span><span class="literal">()</span>,g.<span class="keyword">end</span><span class="literal">()</span>);</span><br><span class="line">        sort(s.<span class="keyword">begin</span><span class="literal">()</span>,s.<span class="keyword">end</span><span class="literal">()</span>);</span><br><span class="line">        <span class="built_in">int</span> gi=<span class="number">0</span>;<span class="built_in">int</span> si=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(gi&lt;g.size<span class="literal">()</span><span class="operator"> &amp;&amp; </span>si&lt;s.size<span class="literal">()</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(g<span class="literal">[<span class="identifier">gi</span>]</span>&lt;=s<span class="literal">[<span class="identifier">si</span>]</span>)		<span class="comment">//当饼干大小大于孩子满足度</span></span><br><span class="line">            &#123;</span><br><span class="line">                gi++;			<span class="comment">//满足度加一</span></span><br><span class="line">            &#125;</span><br><span class="line">            si++;			</span><br><span class="line">        &#125;</span><br><span class="line">        return gi;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><h5 id="分析：证明：假设在某次选择中，贪心策略选择给当前满足度最小的孩子分配第-m-个饼干，第-m-个饼干为可以满足该孩子的最小饼干。假设存在一种最优策略，给该孩子分配第-n-个饼干，并且-m-lt-n。我们可以发现，经过这一轮分配，贪心策略分配后剩下的饼干一定有一个比最优策略来得大。因此在后续的分配中，贪心策略一定能满足更多的孩子。也就是说不存在比贪心策略更优的策略，即贪心策略就是最优策略"><a href="#分析：证明：假设在某次选择中，贪心策略选择给当前满足度最小的孩子分配第-m-个饼干，第-m-个饼干为可以满足该孩子的最小饼干。假设存在一种最优策略，给该孩子分配第-n-个饼干，并且-m-lt-n。我们可以发现，经过这一轮分配，贪心策略分配后剩下的饼干一定有一个比最优策略来得大。因此在后续的分配中，贪心策略一定能满足更多的孩子。也就是说不存在比贪心策略更优的策略，即贪心策略就是最优策略" class="headerlink" title="分析：证明：假设在某次选择中，贪心策略选择给当前满足度最小的孩子分配第 m 个饼干，第 m 个饼干为可以满足该孩子的最小饼干。假设存在一种最优策略，给该孩子分配第 n 个饼干，并且 m &lt; n。我们可以发现，经过这一轮分配，贪心策略分配后剩下的饼干一定有一个比最优策略来得大。因此在后续的分配中，贪心策略一定能满足更多的孩子。也就是说不存在比贪心策略更优的策略，即贪心策略就是最优策略"></a>分析：证明：假设在某次选择中，贪心策略选择给当前满足度最小的孩子分配第 m 个饼干，第 m 个饼干为可以满足该孩子的最小饼干。假设存在一种最优策略，给该孩子分配第 n 个饼干，并且 m &lt; n。我们可以发现，经过这一轮分配，贪心策略分配后剩下的饼干一定有一个比最优策略来得大。因此在后续的分配中，贪心策略一定能满足更多的孩子。也就是说不存在比贪心策略更优的策略，即贪心策略就是最优策略</h5></li>
 </ul>
@@ -592,7 +592,7 @@
     
 	<span title="Site words total count">
      字 </span>
-    <!--<span title="symbols_count_time.count_total"></span>-->
+    <!--<span title="symbols_count_time.count_total">31k</span>-->
   
 
   
@@ -605,21 +605,21 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 访问人数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>

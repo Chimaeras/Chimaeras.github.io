@@ -333,7 +333,7 @@
 
           
             <span class="post-meta-divider">|</span>
-            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
             <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
@@ -361,13 +361,13 @@
 <a id="more"></a>
 <hr>
 <ul>
-<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> target)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len=nums.size(),a=<span class="number">-1</span>;</span><br><span class="line">       <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">       &#123;</span><br><span class="line">          <span class="keyword">if</span>(nums[i]==target) a=i;  </span><br><span class="line">       &#125;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<li><h4 id="解法1："><a href="#解法1：" class="headerlink" title="解法1："></a>解法1：</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">int</span> search(vector&lt;<span class="built_in">int</span>&gt;&amp; nums, <span class="built_in">int</span> target) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> len=nums.size(),a=<span class="number">-1</span>;</span><br><span class="line">       <span class="keyword">for</span>(<span class="built_in">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">       &#123;</span><br><span class="line">          <span class="keyword">if</span>(nums[i]==target) a=i;  </span><br><span class="line">       &#125;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><h5 id="分析：普通的遍历查找"><a href="#分析：普通的遍历查找" class="headerlink" title="分析：普通的遍历查找"></a>分析：普通的遍历查找</h5></li>
 </ul>
 <hr>
 <ul>
-<li><h4 id="解法2："><a href="#解法2：" class="headerlink" title="解法2："></a>解法2：</h4><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">publ<span class="symbol">ic:</span></span><br><span class="line">    <span class="built_in">int</span> <span class="built_in">search</span>(vector&lt;<span class="built_in">int</span>&gt;&amp; nums, <span class="built_in">int</span> target) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> <span class="built_in">left</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> <span class="built_in">right</span> = nums.size()-<span class="number">1</span>;</span><br><span class="line">        <span class="built_in">int</span> <span class="built_in">mid</span>;</span><br><span class="line">        while(<span class="built_in">left</span>&lt;=<span class="built_in">right</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">mid</span> =(<span class="built_in">left</span>+<span class="built_in">right</span>)/<span class="number">2</span>;        //设定中间量</span><br><span class="line">            <span class="built_in">if</span>(nums[<span class="built_in">mid</span>]&lt;target)        //中间值小于目标 将中间值赋给最左值</span><br><span class="line">                <span class="built_in">left</span> = <span class="built_in">mid</span>+<span class="number">1</span>;</span><br><span class="line">            <span class="built_in">if</span>(nums[<span class="built_in">mid</span>]&gt;target)        //同上类似</span><br><span class="line">                <span class="built_in">right</span> = <span class="built_in">mid</span>-<span class="number">1</span>;</span><br><span class="line">            <span class="built_in">if</span>(nums[<span class="built_in">mid</span>]==target)       //逼近目标值</span><br><span class="line">                return <span class="built_in">mid</span>;</span><br><span class="line">        &#125; </span><br><span class="line">        return -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<li><h4 id="解法2："><a href="#解法2：" class="headerlink" title="解法2："></a>解法2：</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">int</span> search(vector&lt;<span class="built_in">int</span>&gt;&amp; nums, <span class="built_in">int</span> target) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">int</span> right = nums.size()<span class="number">-1</span>;</span><br><span class="line">        <span class="built_in">int</span> mid;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;=right)</span><br><span class="line">        &#123;</span><br><span class="line">            mid =(left+right)/<span class="number">2</span>;        <span class="comment">//设定中间量</span></span><br><span class="line">            <span class="keyword">if</span>(nums[mid]&lt;target)        <span class="comment">//中间值小于目标 将中间值赋给最左值</span></span><br><span class="line">                left = mid+<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid]&gt;target)        <span class="comment">//同上类似</span></span><br><span class="line">                right = mid<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[mid]==target)       <span class="comment">//逼近目标值</span></span><br><span class="line">                <span class="keyword">return</span> mid;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><h5 id="分析：见注释"><a href="#分析：见注释" class="headerlink" title="分析：见注释"></a>分析：见注释</h5></li>
 </ul>
@@ -598,7 +598,7 @@
     
 	<span title="Site words total count">
      字 </span>
-    <!--<span title="symbols_count_time.count_total"></span>-->
+    <!--<span title="symbols_count_time.count_total">31k</span>-->
   
 
   
@@ -611,21 +611,21 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="site-uv">
-      <i class="fa fa-user"></i>
+      <i class="fa fa-user"></i> 访问人数
       <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+      人
     </span>
   
 
   
     <span class="site-pv">
-      <i class="fa fa-eye"></i>
+      <i class="fa fa-eye"></i> 总访问量
       <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+      次
     </span>
   
 </div>
