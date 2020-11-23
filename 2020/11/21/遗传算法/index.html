@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Algorithm,人工智能,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="题目描述 假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。">
+<meta name="keywords" content="Algorithm,人工智能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="遗传算法">
+<meta property="og:url" content="https://chimaeras.ltd/2020/11/21/遗传算法/index.html">
+<meta property="og:site_name" content="Joker&#39;s Blog">
+<meta property="og:description" content="题目描述 假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E5%9D%90%E6%A0%87%E6%95%A3%E7%82%B9%E5%9B%BE.png">
+<meta property="og:image" content="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95-%E6%A0%87%E5%87%86%E5%8F%82%E6%95%B0-%E8%BF%AD%E4%BB%A3%E5%9B%BE.png">
+<meta property="og:image" content="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E6%A0%87%E5%87%86%E5%8F%82%E6%95%B0%E8%B7%AF%E7%BA%BF%E5%9B%BE.png">
+<meta property="og:image" content="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E5%8F%98%E5%BC%82%E6%A6%82%E7%8E%87%E8%BF%87%E5%A4%A7%E8%BF%AD%E4%BB%A3%E5%9B%BE.png">
+<meta property="og:image" content="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E6%9C%80%E4%BC%98%E8%A7%A3%E8%BF%AD%E4%BB%A3%E5%9B%BE.png">
+<meta property="og:image" content="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E6%9C%80%E4%BC%98%E8%A7%A3%E8%B7%AF%E7%BA%BF%E5%9B%BE.png">
+<meta property="og:updated_time" content="2020-11-23T12:16:39.262Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="遗传算法">
+<meta name="twitter:description" content="题目描述 假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。">
+<meta name="twitter:image" content="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E5%9D%90%E6%A0%87%E6%95%A3%E7%82%B9%E5%9B%BE.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://chimaeras.ltd/2020/11/21/遗传算法/">
+
+
+
+
+
+  <title>遗传算法 | Joker's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/Chimaeras"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Joker's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">思我所思 爱我所爱</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-thinking">
+          <a href="/thinking/" rel="section">
+            
+            随笔
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://chimaeras.ltd/2020/11/21/遗传算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="吴富乐">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Joker's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">遗传算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-21T00:00:00+08:00">
+                2020-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-comment-o"></i>
+              </span>
+              
+                <a href="/2020/11/21/遗传算法/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2020/11/21/遗传算法/" itemprop="commentsCount"></span>
+                </a>
+              
+            
+          
+
+          
+          
+             <span id="/2020/11/21/遗传算法/" class="leancloud_visitors" data-flag-title="遗传算法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5.7k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  24
+                </span>
+              
+            </div>
+          
+
+          
+
+        </span></div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><blockquote>
+<p>假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="提示-（源代码在文章末尾）"><a href="#提示-（源代码在文章末尾）" class="headerlink" title="提示 （源代码在文章末尾）"></a>提示 （源代码在文章末尾）</h3><p>以N个节点的tsp问题为例，应用遗传算法解决问题，并求出问题的最优解。</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ul>
+<li><p>随机生成N个二维坐标节点</p>
+</li>
+<li><p>应用遗传算法解决问题</p>
+</li>
+<li><p>选择适当的可视化方式展示结果</p>
+</li>
+<li><p>分析适应度函数对启发式算法的影响</p>
+</li>
+<li><p>考虑不同数值N对结果和求解性能的影响，对于比较大的N，是否有更加快速的近似方法代替原有算法</p>
+</li>
+</ul>
+<h3 id="分析说明"><a href="#分析说明" class="headerlink" title="分析说明"></a>分析说明</h3><h4 id="1-本实验中城市坐标可以自行随机生成，也可以运用网上设定的数据集。本实验使用的是att48数据集，主要原因为该数据集的使用度较为广，且存在已知最优解，可以根据已知最优解来对实验进行结果偏差检验。"><a href="#1-本实验中城市坐标可以自行随机生成，也可以运用网上设定的数据集。本实验使用的是att48数据集，主要原因为该数据集的使用度较为广，且存在已知最优解，可以根据已知最优解来对实验进行结果偏差检验。" class="headerlink" title="1.本实验中城市坐标可以自行随机生成，也可以运用网上设定的数据集。本实验使用的是att48数据集，主要原因为该数据集的使用度较为广，且存在已知最优解，可以根据已知最优解来对实验进行结果偏差检验。"></a>1.本实验中城市坐标可以自行随机生成，也可以运用网上设定的数据集。本实验使用的是att48数据集，主要原因为该数据集的使用度较为广，且存在已知最优解，可以根据已知最优解来对实验进行结果偏差检验。</h4><p><img src="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E5%9D%90%E6%A0%87%E6%95%A3%E7%82%B9%E5%9B%BE.png" alt="image-20201121170407728"></p>
+<h4 id="2-该实验总共有5个核心参数，分别为：最大迭代次数、交叉概率、变异概率、城市数量、初始种群数量。其中城市数量为确定值（48）。除此之外，为其余几个参数设定标准值，以此探究参数变化时，迭代图的变化。"><a href="#2-该实验总共有5个核心参数，分别为：最大迭代次数、交叉概率、变异概率、城市数量、初始种群数量。其中城市数量为确定值（48）。除此之外，为其余几个参数设定标准值，以此探究参数变化时，迭代图的变化。" class="headerlink" title="2.该实验总共有5个核心参数，分别为：最大迭代次数、交叉概率、变异概率、城市数量、初始种群数量。其中城市数量为确定值（48）。除此之外，为其余几个参数设定标准值，以此探究参数变化时，迭代图的变化。"></a>2.该实验总共有5个核心参数，分别为：最大迭代次数、交叉概率、变异概率、城市数量、初始种群数量。其中城市数量为确定值（48）。除此之外，为其余几个参数设定标准值，以此探究参数变化时，迭代图的变化。</h4><ul>
+<li>最大迭代次数标准值：200</li>
+<li>变异概率标准值：0.003</li>
+<li>交叉概率标准值：0.8</li>
+<li>初始种群数量标准值：200</li>
+</ul>
+<h3 id="3-本实验主要运用了三种交叉方法和两种变异方法，分别为部分交叉，位置交叉，顺序交叉。下面来介绍每种交叉方式和变异方式："><a href="#3-本实验主要运用了三种交叉方法和两种变异方法，分别为部分交叉，位置交叉，顺序交叉。下面来介绍每种交叉方式和变异方式：" class="headerlink" title="3.本实验主要运用了三种交叉方法和两种变异方法，分别为部分交叉，位置交叉，顺序交叉。下面来介绍每种交叉方式和变异方式："></a>3.本实验主要运用了三种交叉方法和两种变异方法，分别为部分交叉，位置交叉，顺序交叉。下面来介绍每种交叉方式和变异方式：</h3><ul>
+<li>部分交叉：随机生成左右两个下标索引A，B(A&lt;B)，交换父代1和父代2中A和B之间的部分，同时建立冲突映射表，然后根据冲突映射表消除子代1和子代2的冲突部分，从而形成子代1和子代2.。</li>
+<li>顺序交叉：随机生成左右两个下标索引A，B(A&lt;B)，子代1和子代2直接继承父代2和父代1（子代1继承父代2，子代2继承父代1）中下标索引为A-B之间的部分，然后将父代1中尚未在子代1中出现的个体基因插进子代1，父代2中尚未在子代2中出现的个体基因插进子代2.</li>
+<li>位置交叉：随机生成n个（n&lt;城市数量）保留位点。随机选取n个点，子代1中该点的数值直接继承于父代2，然后将父代1中未在子代1出现过的元素依次插入子代1中。子代2同理。</li>
+<li>变异方法1：随机交换当前个体的两个元素。</li>
+<li>变异方法2：随机反顺当前个体的中间部分，中间部分的范围随机生成。</li>
+</ul>
+<p>总结：主要使用部分交叉，原因在于部分交叉更加接近现实中基因交换的方式，且部分交叉方式运行起来更加快速，但实验中同时也实现了另外两种交叉方法，提供不同的思路和参考。变异方法全程穿插在产生子代群体的过程中。</p>
+<h3 id="结果展示："><a href="#结果展示：" class="headerlink" title="结果展示："></a>结果展示：</h3><h4 id="标准指数下结果展示："><a href="#标准指数下结果展示：" class="headerlink" title="标准指数下结果展示："></a>标准指数下结果展示：</h4><p>最短距离：19898.7202</p>
+<p>最短路径：[45 32 5 0 11 10 22 2 8 7 17 36 42 29 26 18 16 19 21 15 40 1 4 25</p>
+<p> 34 44 3 9 23 28 41 38 33 13 12 47 46 24 20 31 39 14 37 35 6 27 30 43]  </p>
+<p>迭代关系图：</p>
+<p><img src="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95-%E6%A0%87%E5%87%86%E5%8F%82%E6%95%B0-%E8%BF%AD%E4%BB%A3%E5%9B%BE.png" alt="image-20201121170808685"></p>
+<p>最短路线图：</p>
+<p><img src="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E6%A0%87%E5%87%86%E5%8F%82%E6%95%B0%E8%B7%AF%E7%BA%BF%E5%9B%BE.png" alt="image-20201121170834129"></p>
+<ul>
+<li>种群数量对迭代的影响：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>种群数量</th>
+<th>50</th>
+<th>100</th>
+<th>200</th>
+<th>500</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>迭代时间（s）（200代）</td>
+<td>5</td>
+<td>14</td>
+<td>67</td>
+<td>902</td>
+</tr>
+<tr>
+<td>迭代时间（s）（500代）</td>
+<td>15</td>
+<td>40</td>
+<td>183</td>
+<td>2765</td>
+</tr>
+</tbody></table>
+<p>总结：</p>
+<h5 id="种群数量相同情况下，迭代次数越多，最短距离越小；"><a href="#种群数量相同情况下，迭代次数越多，最短距离越小；" class="headerlink" title="种群数量相同情况下，迭代次数越多，最短距离越小；"></a>种群数量相同情况下，迭代次数越多，最短距离越小；</h5><h5 id="迭代次数相同情况下，种群数量越多，最短距离越小，花费时间越多；"><a href="#迭代次数相同情况下，种群数量越多，最短距离越小，花费时间越多；" class="headerlink" title="迭代次数相同情况下，种群数量越多，最短距离越小，花费时间越多；"></a>迭代次数相同情况下，种群数量越多，最短距离越小，花费时间越多；</h5><ul>
+<li><p>交叉概率对迭代的影响：</p>
+<table>
+<thead>
+<tr>
+<th>交叉概率</th>
+<th>0.1</th>
+<th>0.3</th>
+<th>0.5</th>
+<th>0.8</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>最短距离（200代）</td>
+<td>27294</td>
+<td>23075</td>
+<td>23835</td>
+<td>22339</td>
+<td>23678</td>
+</tr>
+<tr>
+<td>最短距离（500代）</td>
+<td>21173</td>
+<td>19966</td>
+<td>17927</td>
+<td>17102</td>
+<td>16626</td>
+</tr>
+<tr>
+<td>最短距离（1000代）</td>
+<td>15286</td>
+<td>14339</td>
+<td>15797</td>
+<td>13578</td>
+<td>13380</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>总结：</p>
+<h5 id="迭代次数相同情况下，交叉概率越高，最短距离越小；"><a href="#迭代次数相同情况下，交叉概率越高，最短距离越小；" class="headerlink" title="迭代次数相同情况下，交叉概率越高，最短距离越小；"></a>迭代次数相同情况下，交叉概率越高，最短距离越小；</h5><h5 id="交叉概率相同情况下，迭代次数越大，最短距离越短；"><a href="#交叉概率相同情况下，迭代次数越大，最短距离越短；" class="headerlink" title="交叉概率相同情况下，迭代次数越大，最短距离越短；"></a>交叉概率相同情况下，迭代次数越大，最短距离越短；</h5><ul>
+<li><p>变异概率对迭代的影响：</p>
+<table>
+<thead>
+<tr>
+<th>变异概率</th>
+<th>0.003</th>
+<th>0.03</th>
+<th>0.3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>最短距离（200代）</td>
+<td>19974</td>
+<td>18773</td>
+<td>22050</td>
+</tr>
+<tr>
+<td>最短距离（500代）</td>
+<td>18029</td>
+<td>12331</td>
+<td>16766</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>总结;</p>
+<h5 id="迭代次数相同情况下，变异概率越大，后代最短距离越不稳定，即可能出现群体劣化情况。"><a href="#迭代次数相同情况下，变异概率越大，后代最短距离越不稳定，即可能出现群体劣化情况。" class="headerlink" title="迭代次数相同情况下，变异概率越大，后代最短距离越不稳定，即可能出现群体劣化情况。"></a>迭代次数相同情况下，变异概率越大，后代最短距离越不稳定，即可能出现群体劣化情况。</h5><h5 id="变异概率相同情况下，迭代次数越大，最短距离越小，但是该结论只适用于变异概率较小的情况（-lt-0-03），变异概率过大时，后代群体反复横跳，优劣无常。"><a href="#变异概率相同情况下，迭代次数越大，最短距离越小，但是该结论只适用于变异概率较小的情况（-lt-0-03），变异概率过大时，后代群体反复横跳，优劣无常。" class="headerlink" title="变异概率相同情况下，迭代次数越大，最短距离越小，但是该结论只适用于变异概率较小的情况（&lt;0.03），变异概率过大时，后代群体反复横跳，优劣无常。"></a>变异概率相同情况下，迭代次数越大，最短距离越小，但是该结论只适用于变异概率较小的情况（&lt;0.03），变异概率过大时，后代群体反复横跳，优劣无常。</h5><p>下图为变异概率过大时，迭代曲线的变化图：</p>
+<p><img src="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E5%8F%98%E5%BC%82%E6%A6%82%E7%8E%87%E8%BF%87%E5%A4%A7%E8%BF%AD%E4%BB%A3%E5%9B%BE.png" alt="image-20201121171508947"></p>
+<ul>
+<li><p>城市数量对迭代的影响：</p>
+<h5 id="为了探究某一固定实验集的最短距离，所以本试验选用的是att48数据集，城市数量为固定值48。但本实验在开头也提供了随机生成n个城市坐标点的函数，在个人私下测试中得到：城市数量越大，花费时间越长，因为数据规模随着城市数量的变大而变大。同时最短距离随着随机生成的城市坐标点的不同而不同。"><a href="#为了探究某一固定实验集的最短距离，所以本试验选用的是att48数据集，城市数量为固定值48。但本实验在开头也提供了随机生成n个城市坐标点的函数，在个人私下测试中得到：城市数量越大，花费时间越长，因为数据规模随着城市数量的变大而变大。同时最短距离随着随机生成的城市坐标点的不同而不同。" class="headerlink" title="为了探究某一固定实验集的最短距离，所以本试验选用的是att48数据集，城市数量为固定值48。但本实验在开头也提供了随机生成n个城市坐标点的函数，在个人私下测试中得到：城市数量越大，花费时间越长，因为数据规模随着城市数量的变大而变大。同时最短距离随着随机生成的城市坐标点的不同而不同。"></a>为了探究某一固定实验集的最短距离，所以本试验选用的是att48数据集，城市数量为固定值48。但本实验在开头也提供了随机生成n个城市坐标点的函数，在个人私下测试中得到：城市数量越大，花费时间越长，因为数据规模随着城市数量的变大而变大。同时最短距离随着随机生成的城市坐标点的不同而不同。</h5></li>
+<li><p>最大迭代次数对迭代的影响：</p>
+<h5 id="一般而言，迭代次数越多，越能够找到最短距离，因为在不断迭代的过程中，不断有更加优秀的个体出现，导致最短距离不断更新。"><a href="#一般而言，迭代次数越多，越能够找到最短距离，因为在不断迭代的过程中，不断有更加优秀的个体出现，导致最短距离不断更新。" class="headerlink" title="一般而言，迭代次数越多，越能够找到最短距离，因为在不断迭代的过程中，不断有更加优秀的个体出现，导致最短距离不断更新。"></a>一般而言，迭代次数越多，越能够找到最短距离，因为在不断迭代的过程中，不断有更加优秀的个体出现，导致最短距离不断更新。</h5></li>
+<li><p>总结个参数对结果的影响：</p>
+<h5 id="迭代次数越多，最短距离越小；"><a href="#迭代次数越多，最短距离越小；" class="headerlink" title="迭代次数越多，最短距离越小；"></a>迭代次数越多，最短距离越小；</h5></li>
+</ul>
+<h5 id="种群数量越大，最短距离越小，花费时间越多；"><a href="#种群数量越大，最短距离越小，花费时间越多；" class="headerlink" title="种群数量越大，最短距离越小，花费时间越多；"></a>种群数量越大，最短距离越小，花费时间越多；</h5><h5 id="交叉概率越大，最短距离越小，花费时间越多；"><a href="#交叉概率越大，最短距离越小，花费时间越多；" class="headerlink" title="交叉概率越大，最短距离越小，花费时间越多；"></a>交叉概率越大，最短距离越小，花费时间越多；</h5><h5 id="变异概率越大，最短距离先变大后减小，花费时间无明显变化；"><a href="#变异概率越大，最短距离先变大后减小，花费时间无明显变化；" class="headerlink" title="变异概率越大，最短距离先变大后减小，花费时间无明显变化；"></a>变异概率越大，最短距离先变大后减小，花费时间无明显变化；</h5><h5 id="城市数量越大，花费时间越多；"><a href="#城市数量越大，花费时间越多；" class="headerlink" title="城市数量越大，花费时间越多；"></a>城市数量越大，花费时间越多；</h5><h3 id="思考与分析："><a href="#思考与分析：" class="headerlink" title="思考与分析："></a>思考与分析：</h3><h5 id="经过上述分析和探究，结合各参数对迭代曲线的影响，我们可以试图找到att48数据集的最优解。"><a href="#经过上述分析和探究，结合各参数对迭代曲线的影响，我们可以试图找到att48数据集的最优解。" class="headerlink" title="经过上述分析和探究，结合各参数对迭代曲线的影响，我们可以试图找到att48数据集的最优解。"></a>经过上述分析和探究，结合各参数对迭代曲线的影响，我们可以试图找到att48数据集的最优解。</h5><p>图组1：</p>
+<p>最短距离：11112</p>
+<p>最短序列：[47 4 28 1 41 25 3 34 44 9 23 31 20 46 12 22 10 39 8 14 11 19 32 45</p>
+<p> 35 29 42 16 26 18 36 5 27 6 17 43 30 37 7 0 15 21 2 40 33 13 24 38]</p>
+<p><img src="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E6%9C%80%E4%BC%98%E8%A7%A3%E8%BF%AD%E4%BB%A3%E5%9B%BE.png" alt="image-20201121171833332"></p>
+<p><img src="https://github.com/Chimaeras/Chimaeras.github.io/blob/master/images/%E6%9C%80%E4%BC%98%E8%A7%A3%E8%B7%AF%E7%BA%BF%E5%9B%BE.png" alt="image-20201121171843381"></p>
+<h5 id="对于att48数据集而言，目前网上已知最优解为10628，但从三组实验得出的路线来看，可以看出该实验的结果均是不规则的封闭曲线过每一个点，而该三种情况下的最短距离为均不相同，分别为11111、10834、10833。于是可以猜测得，虽然三种情况都是不规则封闭曲线过每一个点，但由于过点顺序不一样，导致距离也不相同。同时可以发现，在代数超过2000以后，种群的最短距离已经不变，这是由于种群中的最短路径序列已经是最优解，无法在交叉和变异的基础下迭代出更加优良的距离序列。"><a href="#对于att48数据集而言，目前网上已知最优解为10628，但从三组实验得出的路线来看，可以看出该实验的结果均是不规则的封闭曲线过每一个点，而该三种情况下的最短距离为均不相同，分别为11111、10834、10833。于是可以猜测得，虽然三种情况都是不规则封闭曲线过每一个点，但由于过点顺序不一样，导致距离也不相同。同时可以发现，在代数超过2000以后，种群的最短距离已经不变，这是由于种群中的最短路径序列已经是最优解，无法在交叉和变异的基础下迭代出更加优良的距离序列。" class="headerlink" title="对于att48数据集而言，目前网上已知最优解为10628，但从三组实验得出的路线来看，可以看出该实验的结果均是不规则的封闭曲线过每一个点，而该三种情况下的最短距离为均不相同，分别为11111、10834、10833。于是可以猜测得，虽然三种情况都是不规则封闭曲线过每一个点，但由于过点顺序不一样，导致距离也不相同。同时可以发现，在代数超过2000以后，种群的最短距离已经不变，这是由于种群中的最短路径序列已经是最优解，无法在交叉和变异的基础下迭代出更加优良的距离序列。"></a>对于att48数据集而言，目前网上已知最优解为10628，但从三组实验得出的路线来看，可以看出该实验的结果均是不规则的封闭曲线过每一个点，而该三种情况下的最短距离为均不相同，分别为11111、10834、10833。于是可以猜测得，虽然三种情况都是不规则封闭曲线过每一个点，但由于过点顺序不一样，导致距离也不相同。同时可以发现，在代数超过2000以后，种群的最短距离已经不变，这是由于种群中的最短路径序列已经是最优解，无法在交叉和变异的基础下迭代出更加优良的距离序列。</h5><h3 id="总结心得"><a href="#总结心得" class="headerlink" title="总结心得"></a>总结心得</h3><p>本实验的特点：</p>
+<ul>
+<li>实验在开头提供了生成城市坐标的函数，可以自行控制城市的数量n，而后生成n个城市的坐标点列表，可以根据此函数灵活探究城市数量对于迭代函数和种群的影响。</li>
+<li>实验开始时，随机生成m个路线序列，使得初始种群的序列具有随机性和任意性。</li>
+<li>使用已知att48数据集，根据控制变量法，探究不同参数对应迭代距离的影响，同时可以找到本实验的最优解，将本实验的最优解和网上已知最优解进行比较，可以得知算法的误差以及优劣。</li>
+<li>提供了三种不同的交叉方式和两种不同的变异方法，几种方法的不同在开头已经讲述，就不再赘述，依据三种不同的交叉方法，可以探究不同交叉方法对于迭代时间的影响和迭代优劣性的影响。其中测试中发现：Time（部分交叉）&gt; Time（顺序交叉）&gt;Time（位置交叉）。</li>
+<li>实验中对适应度函数进行优化，即对不同个体的概率进行适当方法，避免因为计算机浮点数的特性影响到个体被选中的概率。</li>
+<li>本实验使用轮盘赌法，将每一个个体的概率转换成累计概率，使得概率小的个体有有机会被遗传到下一代，确保的实验的正确性和合理性。</li>
+<li>本实验使用matplotlib库来对实验结果进行可视化展示，绘制出了迭代次数和最短距离的关系曲线图、最短距离下城市坐标的路线图。使得结果清晰明了，同时也方便查看得到的最短路线。</li>
+</ul>
+<p>总结：</p>
+<p>?    该问题是第一次接触，之前接触的最优路线问题均是城市数量较小且数据规模较小的问题，所以采用的是贪心算法或者动态规划算法。但是该问题的城市数量以及数据规模都比较大，如果使用有向图的数据结构来解决的话，每增加一个城市节点，那么数据规模便增加一个量级。这时遗传算法就显得十分优秀。遗传算法不是寻找特定解的算法，他是通过不断生成后代以及不断对后代进行优劣的筛选，从而使得后代不断变得优秀，直到找出最优解位置。</p>
+<p>?    实验过程中遇到了一些困难，例如对不同交叉方法的实现、对于不同数据结构的使用、对结果可视化的展示等等问题。但在钻研的过程中都被一一解决，也成功地实现并找到了最短距离。该实验的问题新颖且实用，从算法的设计到算法的实现，都存在可以讨论和探究的东西，而能够完成该实验对我来说，是一次收获非常大的经历。</p>
+<h4 id="附上源代码："><a href="#附上源代码：" class="headerlink" title="附上源代码："></a>附上源代码：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Time    : 2020/10/13 10:50</span></span><br><span class="line"><span class="comment"># @Author  : Joker</span></span><br><span class="line"><span class="comment"># @Site    :</span></span><br><span class="line"><span class="comment"># @File    : experiment_2.py</span></span><br><span class="line"><span class="comment"># @Software: PyCharm</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pylab <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">mpl.rcParams[<span class="string">'font.sans-serif'</span>] = [<span class="string">'SimHei'</span>]</span><br><span class="line"></span><br><span class="line">M = <span class="number">200</span>  <span class="comment"># 初始种群数量</span></span><br><span class="line">n_city = <span class="number">48</span>  <span class="comment"># 城市数量</span></span><br><span class="line">cross_rate = <span class="number">0.8</span>  <span class="comment"># 交叉概率</span></span><br><span class="line">mutate_rate = <span class="number">0.03</span>  <span class="comment"># 变异概率</span></span><br><span class="line">max_generation = <span class="number">2000</span>  <span class="comment"># 最大迭代次数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成城市坐标列表，参数为城市数量</span></span><br><span class="line"><span class="comment"># def create_city_map(sum_city):</span></span><br><span class="line"><span class="comment">#     city_map = np.random.randint(0, 100, (sum_city, 2))  # 城市坐标列表</span></span><br><span class="line"><span class="comment">#     city_map = [48][2]</span></span><br><span class="line"><span class="comment">#     for i in range(sum_city):  # 随机生成x和y坐标</span></span><br><span class="line"><span class="comment">#         city_x = random.randint(0, 50)</span></span><br><span class="line"><span class="comment">#         city_y = random.randint(0, 50)</span></span><br><span class="line"><span class="comment">#         city_map[i] = [city_x, city_y]</span></span><br><span class="line"><span class="comment">#     return city_map</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化m个初始元素，即随机生成m个路线序列</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_first_m</span><span class="params">(sum_m)</span>:</span></span><br><span class="line">    <span class="comment"># 生成[sum_m][n_city]形式的数组</span></span><br><span class="line">    first_m = np.random.randint(<span class="number">0</span>, n_city, (sum_m, n_city))</span><br><span class="line">    <span class="comment"># 先赋值为0-47，然后打乱，确保每个数字不重复</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(sum_m):</span><br><span class="line">        <span class="comment"># 范围在0-48之间</span></span><br><span class="line">        first_m[i] = np.arange(<span class="number">0</span>, n_city, dtype=int)</span><br><span class="line">        <span class="comment"># 打乱序列</span></span><br><span class="line">        np.random.shuffle(first_m[i])</span><br><span class="line">    <span class="keyword">return</span> first_m</span><br><span class="line"></span><br><span class="line"><span class="comment"># arr为路线序列，city_map为地图坐标</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">distance</span><span class="params">(arr, city_map)</span>:</span></span><br><span class="line">    d = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 从0-47，依次计算i-1到i的距离</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city - <span class="number">1</span>):</span><br><span class="line">        <span class="comment"># 坐标点的x轴相减</span></span><br><span class="line">        x = abs(city_map[arr[i]][<span class="number">0</span>] - city_map[arr[i + <span class="number">1</span>]][<span class="number">0</span>])</span><br><span class="line">        <span class="comment"># 坐标点的y轴相减</span></span><br><span class="line">        y = abs(city_map[arr[i]][<span class="number">1</span>] - city_map[arr[i + <span class="number">1</span>]][<span class="number">1</span>])</span><br><span class="line">        d += math.sqrt((pow(x, <span class="number">2</span>) + pow(y, <span class="number">2</span>)) / <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算最后一个点到第一个点的距离</span></span><br><span class="line">    x = abs(city_map[arr[n_city - <span class="number">1</span>]][<span class="number">0</span>] - city_map[arr[<span class="number">0</span>]][<span class="number">0</span>])</span><br><span class="line">    y = abs(city_map[arr[n_city - <span class="number">1</span>]][<span class="number">1</span>] - city_map[arr[<span class="number">0</span>]][<span class="number">1</span>])</span><br><span class="line">    d += math.sqrt((pow(x, <span class="number">2</span>) + pow(y, <span class="number">2</span>)) / <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 部分交叉函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partial_cross</span><span class="params">(arr1, arr2)</span>:</span></span><br><span class="line">    <span class="comment"># 随机生成左边界和右边界</span></span><br><span class="line">    left = random.randint(<span class="number">0</span>, n_city)</span><br><span class="line">    right = random.randint(<span class="number">0</span>, n_city)</span><br><span class="line">    <span class="comment"># 确保left小于right</span></span><br><span class="line">    <span class="keyword">if</span> left &gt; right:</span><br><span class="line">        left, right = right, left</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成两个子序列，存储生成的子代</span></span><br><span class="line">    child_1 = arr1.copy()</span><br><span class="line">    child_2 = arr2.copy()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 建立冲突映射表</span></span><br><span class="line">    conflict_list_1 = []</span><br><span class="line">    conflict_list_2 = []</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 依次交换arr1和arr2的值</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> range(right - left):  <span class="comment"># 存储冲突映射</span></span><br><span class="line">        conflict_list_1.append(child_1[t + left])</span><br><span class="line">        conflict_list_2.append(child_2[t + left])</span><br><span class="line">        <span class="comment"># 进行部分交叉</span></span><br><span class="line">        child_1[t + left], child_2[t +</span><br><span class="line">                                   left] = child_2[t + left], child_1[t + left]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 简化冲突映射表</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(right - left):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(right - left):</span><br><span class="line">            <span class="keyword">if</span> conflict_list_1[i] == conflict_list_2[j] <span class="keyword">and</span> conflict_list_2[i] != conflict_list_1[j]:</span><br><span class="line">                conflict_list_1[i] = conflict_list_1[j]</span><br><span class="line">                conflict_list_2[j] = conflict_list_2[i]</span><br><span class="line">                <span class="keyword">if</span> i &lt; j:</span><br><span class="line">                    conflict_list_1[i] = <span class="number">-1</span></span><br><span class="line">                    conflict_list_2[i] = <span class="number">-1</span></span><br><span class="line">                <span class="keyword">elif</span> j &lt; i:</span><br><span class="line">                    conflict_list_1[j] = <span class="number">-1</span></span><br><span class="line">                    conflict_list_2[j] = <span class="number">-1</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 消解左边冲突</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(left):</span><br><span class="line">        <span class="comment"># 遍历一遍冲突映射表</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(conflict_list_1)):</span><br><span class="line">            <span class="comment"># 如果arr1的值和c_2相等，将arr1当前值替换成c_1对应的值</span></span><br><span class="line">            <span class="keyword">if</span> child_1[i] == conflict_list_2[j]:</span><br><span class="line">                child_1[i] = conflict_list_1[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(left):</span><br><span class="line">        <span class="comment"># 遍历一遍冲突映射表</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(conflict_list_1)):</span><br><span class="line">            <span class="comment"># 如果arr2的值和c_1相等，将arr1当前值替换成c_2对应的值</span></span><br><span class="line">            <span class="keyword">if</span> child_2[i] == conflict_list_1[j]:</span><br><span class="line">                child_2[i] = conflict_list_2[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 消解右边冲突</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city - right):</span><br><span class="line">        <span class="comment"># 遍历一遍冲突映射表</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(conflict_list_2)):</span><br><span class="line">            <span class="comment"># 如果arr1的值和c_2相等，将arr1当前值替换成c_1对应的值</span></span><br><span class="line">            <span class="keyword">if</span> child_1[i + right] == conflict_list_2[j]:</span><br><span class="line">                child_1[i + right] = conflict_list_1[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city - right):</span><br><span class="line">        <span class="comment"># 遍历一遍冲突映射表</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(conflict_list_2)):</span><br><span class="line">            <span class="comment"># 如果arr2的值和c_1相等，将arr1当前值替换成c_2对应的值</span></span><br><span class="line">            <span class="keyword">if</span> child_2[i + right] == conflict_list_1[j]:</span><br><span class="line">                child_2[i + right] = conflict_list_2[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> child_1, child_2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 顺序交叉。</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">order_cross</span><span class="params">(father_1, father_2)</span>:</span></span><br><span class="line">    <span class="comment"># 随机生成左边界和右边界</span></span><br><span class="line">    left = random.randint(<span class="number">0</span>, n_city)</span><br><span class="line">    right = random.randint(<span class="number">0</span>, n_city)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成两个全1的子序列，存储生成的子代</span></span><br><span class="line">    child_1 = np.ones(n_city, dtype=int)</span><br><span class="line">    child_2 = np.ones(n_city, dtype=int)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 确保left小于right</span></span><br><span class="line">    <span class="keyword">if</span> left &gt; right:</span><br><span class="line">        left, right = right, left</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 临时变量q存储left</span></span><br><span class="line">    q = left</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(right - left):</span><br><span class="line">        <span class="comment"># 子个体的中间部分直接继承父代</span></span><br><span class="line">        child_1[q] = father_2[q]</span><br><span class="line">        child_2[q] = father_1[q]</span><br><span class="line">        q = q + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 处理子代1的左边</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(left):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(father_1)):</span><br><span class="line">            <span class="keyword">if</span> father_1[j] <span class="keyword">not</span> <span class="keyword">in</span> child_1 <span class="keyword">and</span> child_1[i] == <span class="number">1</span>:</span><br><span class="line">                child_1[i] = father_1[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 处理子代1的右边</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city - right):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(father_1)):</span><br><span class="line">            <span class="keyword">if</span> father_1[j] <span class="keyword">not</span> <span class="keyword">in</span> child_1 <span class="keyword">and</span> child_1[i + right] == <span class="number">1</span>:</span><br><span class="line">                child_1[i + right] = father_1[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 处理子代2的左边</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(left):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(father_2)):</span><br><span class="line">            <span class="keyword">if</span> father_2[j] <span class="keyword">not</span> <span class="keyword">in</span> child_2 <span class="keyword">and</span> child_2[i] == <span class="number">1</span>:</span><br><span class="line">                child_2[i] = father_2[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 处理子代2的右边</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city - right):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(father_2)):</span><br><span class="line">            <span class="keyword">if</span> father_2[j] <span class="keyword">not</span> <span class="keyword">in</span> child_2 <span class="keyword">and</span> child_2[i + right] == <span class="number">1</span>:</span><br><span class="line">                child_2[i + right] = father_2[j]</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> child_1, child_2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 位置交叉</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">position_cross</span><span class="params">(father_1, father_2)</span>:</span></span><br><span class="line">    child_1 = np.ones(n_city, dtype=int)</span><br><span class="line">    child_2 = np.ones(n_city, dtype=int)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成子代1</span></span><br><span class="line">    <span class="comment"># 随机生成save个保留点</span></span><br><span class="line">    save_1 = random.randint(<span class="number">0</span>, n_city - <span class="number">1</span>)</span><br><span class="line">    z_1 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> z_1 &lt; save_1:</span><br><span class="line">        <span class="comment"># 随机选择保留哪个位置上的点</span></span><br><span class="line">        x = random.randint(<span class="number">0</span>, n_city - <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 该点没被选择过</span></span><br><span class="line">        <span class="keyword">if</span> child_1[x] == <span class="number">1</span>:</span><br><span class="line">            <span class="comment"># 该点的数值等于父代该点的值</span></span><br><span class="line">            child_1[x] = father_2[x]</span><br><span class="line">            z_1 = z_1 + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 剩下的点依次放入子代中</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(father_1)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(father_1)):</span><br><span class="line">            <span class="keyword">if</span> father_1[j] <span class="keyword">not</span> <span class="keyword">in</span> child_1 <span class="keyword">and</span> child_1[i] == <span class="number">1</span>:</span><br><span class="line">                child_1[i] = father_1[j]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成子代2</span></span><br><span class="line">    <span class="comment"># 随机生成n个保留点</span></span><br><span class="line">    save_2 = random.randint(<span class="number">0</span>, n_city - <span class="number">1</span>)</span><br><span class="line">    z_2 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> z_2 &lt; save_2:</span><br><span class="line">        <span class="comment"># 随机选择保留哪个位置上的点</span></span><br><span class="line">        y = random.randint(<span class="number">0</span>, n_city - <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 该点没被选择过</span></span><br><span class="line">        <span class="keyword">if</span> child_2[y] == <span class="number">1</span>:</span><br><span class="line">            <span class="comment"># 该点的数值等于父代该点的值</span></span><br><span class="line">            child_2[y] = father_1[y]</span><br><span class="line">            z_2 = z_2 + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 剩下的点依次放入子代中</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(father_2)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(father_2)):</span><br><span class="line">            <span class="keyword">if</span> father_2[j] <span class="keyword">not</span> <span class="keyword">in</span> child_2 <span class="keyword">and</span> child_2[i] == <span class="number">1</span>:</span><br><span class="line">                child_2[i] = father_2[j]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> child_1, child_2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 变异函数_1</span></span><br><span class="line"><span class="comment"># 随机找到一个元素，交换一个路径序列中的随机两项</span></span><br><span class="line"><span class="comment"># arr为传入的路径序列数组 n为城市数量</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mutate_1</span><span class="params">(arr, n)</span>:</span></span><br><span class="line">    <span class="comment"># 生成任意两个随机数</span></span><br><span class="line">    x = random.randint(<span class="number">0</span>, n - <span class="number">1</span>)</span><br><span class="line">    y = random.randint(<span class="number">0</span>, n - <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 交换基因序列</span></span><br><span class="line">    arr[x], arr[y] = arr[y], arr[x]</span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 变异函数_2</span></span><br><span class="line"><span class="comment"># 随机反顺中间部分</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mutate_2</span><span class="params">(arr, n)</span>:</span></span><br><span class="line">    left = random.randint(<span class="number">0</span>, n - <span class="number">1</span>)</span><br><span class="line">    right = random.randint(<span class="number">0</span>, n - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> left &gt; right:</span><br><span class="line">        left, right = right, left</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> left &lt;= right:</span><br><span class="line">        arr[left], arr[right] = arr[right], arr[left]</span><br><span class="line">        left += <span class="number">1</span></span><br><span class="line">        right -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 记录开始时间</span></span><br><span class="line">    start_time = datetime.datetime.now()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建城市坐标列表</span></span><br><span class="line">    <span class="comment"># 坐标范围为0-100</span></span><br><span class="line">    <span class="comment"># [城市数量][2]</span></span><br><span class="line">    <span class="comment"># city = np.random.randint(0, 50, (n_city, 2))</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 生成M个初始路线序列，作为初始种群</span></span><br><span class="line">    <span class="comment"># [种群数量][城市数量]=[100][48]</span></span><br><span class="line">    m = create_first_m(M)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># att48数据集</span></span><br><span class="line">    city = [[<span class="number">6734</span>, <span class="number">1453</span>],</span><br><span class="line">            [<span class="number">2233</span>, <span class="number">10</span>],</span><br><span class="line">            [<span class="number">5530</span>, <span class="number">1424</span>],</span><br><span class="line">            [<span class="number">401</span>, <span class="number">841</span>],</span><br><span class="line">            [<span class="number">3082</span>, <span class="number">1644</span>],</span><br><span class="line">            [<span class="number">7608</span>, <span class="number">4458</span>],</span><br><span class="line">            [<span class="number">7573</span>, <span class="number">3716</span>],</span><br><span class="line">            [<span class="number">7265</span>, <span class="number">1268</span>],</span><br><span class="line">            [<span class="number">6898</span>, <span class="number">1885</span>],</span><br><span class="line">            [<span class="number">1112</span>, <span class="number">2049</span>],</span><br><span class="line">            [<span class="number">5468</span>, <span class="number">2606</span>],</span><br><span class="line">            [<span class="number">5989</span>, <span class="number">2873</span>],</span><br><span class="line">            [<span class="number">4706</span>, <span class="number">2674</span>],</span><br><span class="line">            [<span class="number">4612</span>, <span class="number">2035</span>],</span><br><span class="line">            [<span class="number">6347</span>, <span class="number">2683</span>],</span><br><span class="line">            [<span class="number">6107</span>, <span class="number">669</span>],</span><br><span class="line">            [<span class="number">7611</span>, <span class="number">5184</span>],</span><br><span class="line">            [<span class="number">7462</span>, <span class="number">3590</span>],</span><br><span class="line">            [<span class="number">7732</span>, <span class="number">4723</span>],</span><br><span class="line">            [<span class="number">5900</span>, <span class="number">3561</span>],</span><br><span class="line">            [<span class="number">4483</span>, <span class="number">3369</span>],</span><br><span class="line">            [<span class="number">6101</span>, <span class="number">1110</span>],</span><br><span class="line">            [<span class="number">5199</span>, <span class="number">2182</span>],</span><br><span class="line">            [<span class="number">1633</span>, <span class="number">2809</span>],</span><br><span class="line">            [<span class="number">4307</span>, <span class="number">2322</span>],</span><br><span class="line">            [<span class="number">675</span>, <span class="number">1006</span>],</span><br><span class="line">            [<span class="number">7555</span>, <span class="number">4819</span>],</span><br><span class="line">            [<span class="number">7541</span>, <span class="number">3981</span>],</span><br><span class="line">            [<span class="number">3177</span>, <span class="number">756</span>],</span><br><span class="line">            [<span class="number">7352</span>, <span class="number">4506</span>],</span><br><span class="line">            [<span class="number">7545</span>, <span class="number">2801</span>],</span><br><span class="line">            [<span class="number">3245</span>, <span class="number">3305</span>],</span><br><span class="line">            [<span class="number">6426</span>, <span class="number">3173</span>],</span><br><span class="line">            [<span class="number">4608</span>, <span class="number">1198</span>],</span><br><span class="line">            [<span class="number">23</span>, <span class="number">2216</span>],</span><br><span class="line">            [<span class="number">7248</span>, <span class="number">3779</span>],</span><br><span class="line">            [<span class="number">7762</span>, <span class="number">4595</span>],</span><br><span class="line">            [<span class="number">7392</span>, <span class="number">2244</span>],</span><br><span class="line">            [<span class="number">3484</span>, <span class="number">2829</span>],</span><br><span class="line">            [<span class="number">6271</span>, <span class="number">2135</span>],</span><br><span class="line">            [<span class="number">4985</span>, <span class="number">140</span>],</span><br><span class="line">            [<span class="number">1916</span>, <span class="number">1569</span>],</span><br><span class="line">            [<span class="number">7280</span>, <span class="number">4899</span>],</span><br><span class="line">            [<span class="number">7509</span>, <span class="number">3239</span>],</span><br><span class="line">            [<span class="number">10</span>, <span class="number">2676</span>],</span><br><span class="line">            [<span class="number">6807</span>, <span class="number">2993</span>],</span><br><span class="line">            [<span class="number">5185</span>, <span class="number">3258</span>],</span><br><span class="line">            [<span class="number">3023</span>, <span class="number">1942</span>]]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 全局定义一个最小距离，其初始值为int类型最大值</span></span><br><span class="line">    Min = sys.maxsize</span><br><span class="line">    <span class="comment"># 全局定义最大距离</span></span><br><span class="line">    Max_distance = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 全局定义的最小路线</span></span><br><span class="line">    Min_route = m[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 存储每一代的最短距离，用来绘制表格</span></span><br><span class="line">    P_distance = []</span><br><span class="line">    <span class="comment"># 全局定义代数</span></span><br><span class="line">    generation = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始迭代</span></span><br><span class="line">    <span class="keyword">while</span> generation &lt;= max_generation:</span><br><span class="line">        print(<span class="string">"代数："</span>, generation)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 定义当前代数中的最小距离</span></span><br><span class="line">        <span class="comment"># 先定义成float类型的最大值</span></span><br><span class="line">        min_distance = sys.maxsize</span><br><span class="line">        <span class="comment"># 存储这一代中的最短路线</span></span><br><span class="line">        min_route = []</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 对当前代数的所有种群进行迭代检查</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(M):</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 1.部分交叉</span></span><br><span class="line">            <span class="comment"># 生成随机概率</span></span><br><span class="line">            rate = random.random()</span><br><span class="line">            <span class="comment"># 如果概率小于交叉概率，则发生交叉</span></span><br><span class="line">            <span class="keyword">if</span> rate &lt;= cross_rate:</span><br><span class="line">                <span class="comment"># 随机选择另外一个父代元素</span></span><br><span class="line">                x = random.randint(<span class="number">0</span>, len(m) - <span class="number">1</span>)</span><br><span class="line">                <span class="comment"># 进行交叉产生两个子后代</span></span><br><span class="line">                new1, new2 = partial_cross(m[i], m[x])</span><br><span class="line">                <span class="comment"># 将子后代添加到种群中</span></span><br><span class="line">                m = np.append(m, new1)</span><br><span class="line">                m = np.append(m, new2)</span><br><span class="line">            <span class="comment"># 重新变成[当前长度][48]的格式</span></span><br><span class="line">            m = np.reshape(m, (<span class="number">-1</span>, n_city))</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 如果要快速得到结果，可不使用另外两种交叉方法</span></span><br><span class="line">            <span class="comment"># # 2.顺序交叉</span></span><br><span class="line">            <span class="comment"># # 生成随机概率</span></span><br><span class="line">            <span class="comment"># rate = random.random()</span></span><br><span class="line">            <span class="comment"># # 如果概率小于交叉概率，则发生交叉</span></span><br><span class="line">            <span class="comment"># if rate &lt;= cross_rate:</span></span><br><span class="line">            <span class="comment">#     # 随机选择另外一个父代元素</span></span><br><span class="line">            <span class="comment">#     x = random.randint(0, len(m) - 1)</span></span><br><span class="line">            <span class="comment">#     # 进行交叉产生两个子后代</span></span><br><span class="line">            <span class="comment">#     new1, new2 = order_cross(m[i], m[x])</span></span><br><span class="line">            <span class="comment">#     # 将子后代添加到种群中</span></span><br><span class="line">            <span class="comment">#     m = np.append(m, new1)</span></span><br><span class="line">            <span class="comment">#     m = np.append(m, new2)</span></span><br><span class="line">            <span class="comment"># m = np.reshape(m, (-1, n_city))</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># # 3.位置交叉</span></span><br><span class="line">            <span class="comment"># # 生成随机概率</span></span><br><span class="line">            <span class="comment"># rate = random.random()</span></span><br><span class="line">            <span class="comment"># # 如果概率小于交叉概率，则发生交叉</span></span><br><span class="line">            <span class="comment"># if rate &lt;= cross_rate:</span></span><br><span class="line">            <span class="comment">#     # 随机选择另外一个父代元素</span></span><br><span class="line">            <span class="comment">#     x = random.randint(0, M - 1)</span></span><br><span class="line">            <span class="comment">#</span></span><br><span class="line">            <span class="comment">#     # 进行交叉产生两个子后代</span></span><br><span class="line">            <span class="comment">#     new1, new2 = position_cross(m[i], m[x])</span></span><br><span class="line">            <span class="comment">#</span></span><br><span class="line">            <span class="comment">#     # 将子后代添加到种群中</span></span><br><span class="line">            <span class="comment">#     m = np.append(m, new1)</span></span><br><span class="line">            <span class="comment">#     m = np.append(m, new2)</span></span><br><span class="line">            <span class="comment">#     m = np.reshape(m, (-1, n_city))</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 4.子代突变_1</span></span><br><span class="line">            rate = random.random()</span><br><span class="line">            <span class="comment"># 如果概率小于变异概率，则发生突变</span></span><br><span class="line">            <span class="keyword">if</span> rate &lt;= mutate_rate:</span><br><span class="line">                <span class="comment"># 添加到种群中去</span></span><br><span class="line">                <span class="comment"># m[i] = mutate_1(m[i], n_city)</span></span><br><span class="line">                m = np.append(m, mutate_1(m[i], n_city))</span><br><span class="line">            <span class="comment"># 重新变成[当前长度][48]的格式</span></span><br><span class="line">            m = np.reshape(m, (<span class="number">-1</span>, n_city))</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 5.子代突变_2</span></span><br><span class="line">            rate = random.random()</span><br><span class="line">            <span class="comment"># 如果概率小于变异概率，则发生突变</span></span><br><span class="line">            <span class="keyword">if</span> rate &lt;= mutate_rate:</span><br><span class="line">                <span class="comment"># 添加到种群中去</span></span><br><span class="line">                <span class="comment"># m[i] = mutate_2(m[i], n_city)</span></span><br><span class="line">                m = np.append(m, mutate_2(m[i], n_city))</span><br><span class="line">            <span class="comment"># 重新变成[当前长度][48]的格式</span></span><br><span class="line">            m = np.reshape(m, (<span class="number">-1</span>, n_city))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 距离列表，记录每个路径序列的距离</span></span><br><span class="line">        distance_list = &#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(m)):</span><br><span class="line">            <span class="comment"># 计算出当前路线的距离</span></span><br><span class="line">            distance_list[i] = distance(m[i], city)</span><br><span class="line">            <span class="comment"># 如果当前路径距离小于最小值</span></span><br><span class="line">            <span class="keyword">if</span> distance_list[i] &lt; min_distance:</span><br><span class="line">                <span class="comment"># 记录最小距离</span></span><br><span class="line">                min_distance = distance(m[i], city)</span><br><span class="line">                <span class="comment"># 记录最小距离的路径序列</span></span><br><span class="line">                min_route = m[i]</span><br><span class="line">            <span class="comment"># 记录全局最大值，作为y坐标的上限</span></span><br><span class="line">            <span class="keyword">if</span> distance_list[i] &gt; Max_distance:</span><br><span class="line">                Max_distance = distance_list[i]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算每个个体在群体中遗传下去的概率 即适应度</span></span><br><span class="line">        person_rate = &#123;&#125;</span><br><span class="line">        <span class="comment"># 总的概率</span></span><br><span class="line">        sum_rate = <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(m)):</span><br><span class="line">            <span class="comment"># 适应度概率=1/距离 使得距离越长 概率越小</span></span><br><span class="line">            <span class="comment"># 将差距放大1000倍，使得优秀个体更加容易遗传</span></span><br><span class="line">            person_rate[j] = (<span class="number">1000</span> / distance_list[j])</span><br><span class="line">            <span class="comment"># 记录总概率</span></span><br><span class="line">            sum_rate += person_rate[j]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(m)):</span><br><span class="line">            <span class="comment"># 求个体概率占总概率的比例</span></span><br><span class="line">            person_rate[j] = (person_rate[j] / sum_rate)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算累计概率</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(m) - <span class="number">1</span>):</span><br><span class="line">            <span class="comment"># 当前个体的累计概率为前面所有个体概率的和</span></span><br><span class="line">            person_rate[j + <span class="number">1</span>] = person_rate[j + <span class="number">1</span>] + person_rate[j]</span><br><span class="line">        <span class="comment"># 最后一个个体的概率为总概率</span></span><br><span class="line">        person_rate[M] = sum_rate</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 生成一个[100][48]的数组</span></span><br><span class="line">        m_next = np.random.randint(<span class="number">1</span>, <span class="number">2</span>, (M, n_city))</span><br><span class="line">        m_next[<span class="number">0</span>] = min_route</span><br><span class="line">        j = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 遍历100（M）遍，选出100个个体遗传下去</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; M:</span><br><span class="line">            <span class="comment"># 生成一个选择概率</span></span><br><span class="line">            choice = random.uniform(<span class="number">0</span>, sum_rate)</span><br><span class="line">            <span class="comment"># 在父代的累计概率列表里查询</span></span><br><span class="line">            <span class="keyword">for</span> index <span class="keyword">in</span> range(M):</span><br><span class="line">                <span class="comment"># rate[i]&lt;choice&lt;=rate[i+1]</span></span><br><span class="line">                <span class="keyword">if</span> choice &lt;= person_rate[index]:</span><br><span class="line">                    m_next[j] = m[index]</span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># 让下一代的群体替代当前群体</span></span><br><span class="line">        m = m_next</span><br><span class="line">        <span class="comment"># 比较当前代数和所有代数中的最小距离</span></span><br><span class="line">        <span class="keyword">if</span> min_distance &lt; Min:</span><br><span class="line">            Min = min_distance</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 更新全局最小路径序列</span></span><br><span class="line">        <span class="keyword">if</span> distance(min_route, city) &lt; distance(Min_route, city):</span><br><span class="line">            Min_route = min_route</span><br><span class="line"></span><br><span class="line">        print(min_distance)</span><br><span class="line">        <span class="comment"># 将当前代数的最短路径序列添加到P中，供绘图使用</span></span><br><span class="line">        P_distance.append(min_distance)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 完成当前代数的繁衍、突变后 代数+1</span></span><br><span class="line">        generation += <span class="number">1</span></span><br><span class="line">    print(<span class="string">"全局最小："</span>, Min)</span><br><span class="line">    print(<span class="string">"最短路径："</span>, Min_route)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 记录结束时间</span></span><br><span class="line">    end_time = datetime.datetime.now()</span><br><span class="line">    <span class="comment"># 计算总时间</span></span><br><span class="line">    time = end_time - start_time</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 图表的横坐标为最大迭代次数+1</span></span><br><span class="line">    x = range(max_generation + <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 纵坐标为每一代中的最小距离</span></span><br><span class="line">    y = P_distance</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 记录城市坐标点</span></span><br><span class="line">    city_x = []</span><br><span class="line">    city_y = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city):</span><br><span class="line">        city_x.append(city[i][<span class="number">0</span>])</span><br><span class="line">        city_y.append(city[i][<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 记录路线坐标，绘制路线图使用</span></span><br><span class="line">    draw_x = []</span><br><span class="line">    draw_y = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city - <span class="number">1</span>):</span><br><span class="line">        draw_x.append([city[Min_route[i]][<span class="number">0</span>], city[Min_route[i + <span class="number">1</span>]][<span class="number">0</span>]])</span><br><span class="line">        draw_y.append([city[Min_route[i]][<span class="number">1</span>], city[Min_route[i + <span class="number">1</span>]][<span class="number">1</span>]])</span><br><span class="line">    draw_x.append([city[Min_route[n_city - <span class="number">1</span>]][<span class="number">0</span>], city[Min_route[<span class="number">0</span>]][<span class="number">0</span>]])</span><br><span class="line">    draw_y.append([city[Min_route[n_city - <span class="number">1</span>]][<span class="number">1</span>], city[Min_route[<span class="number">0</span>]][<span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 绘制最短路径图</span></span><br><span class="line">    <span class="comment"># 绘制路线</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_city):</span><br><span class="line">        plt.plot(draw_x[i], draw_y[i], color=<span class="string">"red"</span>)s</span><br><span class="line">    <span class="comment"># 绘制坐标点</span></span><br><span class="line">    plt.scatter(city_x, city_y, label=<span class="string">"最短路线图"</span>, marker=<span class="string">"*"</span>, color=<span class="string">'blue'</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">'best'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 绘制遗传迭代图</span></span><br><span class="line">    plt.plot(x, y, label=<span class="string">"迭代次数-最短距离"</span>, color=<span class="string">"red"</span>, linewidth=<span class="number">1</span>)</span><br><span class="line">    plt.xlabel(<span class="string">"迭代次数"</span>)</span><br><span class="line">    plt.ylabel(<span class="string">"最短距离"</span>)</span><br><span class="line">    plt.title(<span class="string">"遗传算法"</span>)</span><br><span class="line">    plt.text(max_generation + <span class="number">20</span>, Max_distance * <span class="number">0</span>,</span><br><span class="line">             (<span class="string">"总时间(s):"</span>, time.seconds), size=<span class="number">10</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">    plt.text(max_generation + <span class="number">20</span>, Max_distance *</span><br><span class="line">             <span class="number">0.1</span>, (<span class="string">"初始种群:"</span>, M), size=<span class="number">10</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">    plt.text(max_generation + <span class="number">20</span>, Max_distance * <span class="number">0.2</span>,</span><br><span class="line">             (<span class="string">"城市数量:"</span>, n_city), size=<span class="number">10</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">    plt.text(max_generation + <span class="number">20</span>, Max_distance * <span class="number">0.3</span>,</span><br><span class="line">             (<span class="string">"交叉概率:"</span>, cross_rate), size=<span class="number">10</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">    plt.text(max_generation + <span class="number">20</span>, Max_distance * <span class="number">0.4</span>,</span><br><span class="line">             (<span class="string">"变异概率:"</span>, mutate_rate), size=<span class="number">10</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">    plt.text(max_generation + <span class="number">20</span>, Max_distance * <span class="number">0.5</span>,</span><br><span class="line">             (<span class="string">"最大迭代次数:"</span>, max_generation), size=<span class="number">10</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line">    plt.ylim(<span class="number">0</span>, Max_distance)</span><br><span class="line">    plt.xlim(<span class="number">0</span>, max_generation + <span class="number">20</span>)</span><br><span class="line">    plt.legend(loc=<span class="string">"best"</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+	
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    吴富乐
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://chimaeras.ltd/2020/11/21/遗传算法/" title="遗传算法">https://chimaeras.ltd/2020/11/21/遗传算法/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"><i class="fa fa-tag"></i> Algorithm</a>
+          
+            <a href="/tags/人工智能/" rel="tag"><i class="fa fa-tag"></i> 人工智能</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/18/分糖果/" rel="next" title="分糖果">
+                <i class="fa fa-chevron-left"></i> 分糖果
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="吴富乐">
+            
+              <p class="site-author-name" itemprop="name">吴富乐</p>
+              <p class="site-description motion-element" itemprop="description">热爱生活 从思考开始</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Chimaeras" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提示-（源代码在文章末尾）"><span class="nav-number">2.</span> <span class="nav-text">提示 （源代码在文章末尾）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤"><span class="nav-number">3.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析说明"><span class="nav-number">4.</span> <span class="nav-text">分析说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-本实验中城市坐标可以自行随机生成，也可以运用网上设定的数据集。本实验使用的是att48数据集，主要原因为该数据集的使用度较为广，且存在已知最优解，可以根据已知最优解来对实验进行结果偏差检验。"><span class="nav-number">4.1.</span> <span class="nav-text">1.本实验中城市坐标可以自行随机生成，也可以运用网上设定的数据集。本实验使用的是att48数据集，主要原因为该数据集的使用度较为广，且存在已知最优解，可以根据已知最优解来对实验进行结果偏差检验。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-该实验总共有5个核心参数，分别为：最大迭代次数、交叉概率、变异概率、城市数量、初始种群数量。其中城市数量为确定值（48）。除此之外，为其余几个参数设定标准值，以此探究参数变化时，迭代图的变化。"><span class="nav-number">4.2.</span> <span class="nav-text">2.该实验总共有5个核心参数，分别为：最大迭代次数、交叉概率、变异概率、城市数量、初始种群数量。其中城市数量为确定值（48）。除此之外，为其余几个参数设定标准值，以此探究参数变化时，迭代图的变化。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-本实验主要运用了三种交叉方法和两种变异方法，分别为部分交叉，位置交叉，顺序交叉。下面来介绍每种交叉方式和变异方式："><span class="nav-number">5.</span> <span class="nav-text">3.本实验主要运用了三种交叉方法和两种变异方法，分别为部分交叉，位置交叉，顺序交叉。下面来介绍每种交叉方式和变异方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果展示："><span class="nav-number">6.</span> <span class="nav-text">结果展示：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#标准指数下结果展示："><span class="nav-number">6.1.</span> <span class="nav-text">标准指数下结果展示：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#种群数量相同情况下，迭代次数越多，最短距离越小；"><span class="nav-number">6.1.1.</span> <span class="nav-text">种群数量相同情况下，迭代次数越多，最短距离越小；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#迭代次数相同情况下，种群数量越多，最短距离越小，花费时间越多；"><span class="nav-number">6.1.2.</span> <span class="nav-text">迭代次数相同情况下，种群数量越多，最短距离越小，花费时间越多；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#迭代次数相同情况下，交叉概率越高，最短距离越小；"><span class="nav-number">6.1.3.</span> <span class="nav-text">迭代次数相同情况下，交叉概率越高，最短距离越小；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#交叉概率相同情况下，迭代次数越大，最短距离越短；"><span class="nav-number">6.1.4.</span> <span class="nav-text">交叉概率相同情况下，迭代次数越大，最短距离越短；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#迭代次数相同情况下，变异概率越大，后代最短距离越不稳定，即可能出现群体劣化情况。"><span class="nav-number">6.1.5.</span> <span class="nav-text">迭代次数相同情况下，变异概率越大，后代最短距离越不稳定，即可能出现群体劣化情况。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变异概率相同情况下，迭代次数越大，最短距离越小，但是该结论只适用于变异概率较小的情况（-lt-0-03），变异概率过大时，后代群体反复横跳，优劣无常。"><span class="nav-number">6.1.6.</span> <span class="nav-text">变异概率相同情况下，迭代次数越大，最短距离越小，但是该结论只适用于变异概率较小的情况（&lt;0.03），变异概率过大时，后代群体反复横跳，优劣无常。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为了探究某一固定实验集的最短距离，所以本试验选用的是att48数据集，城市数量为固定值48。但本实验在开头也提供了随机生成n个城市坐标点的函数，在个人私下测试中得到：城市数量越大，花费时间越长，因为数据规模随着城市数量的变大而变大。同时最短距离随着随机生成的城市坐标点的不同而不同。"><span class="nav-number">6.1.7.</span> <span class="nav-text">为了探究某一固定实验集的最短距离，所以本试验选用的是att48数据集，城市数量为固定值48。但本实验在开头也提供了随机生成n个城市坐标点的函数，在个人私下测试中得到：城市数量越大，花费时间越长，因为数据规模随着城市数量的变大而变大。同时最短距离随着随机生成的城市坐标点的不同而不同。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一般而言，迭代次数越多，越能够找到最短距离，因为在不断迭代的过程中，不断有更加优秀的个体出现，导致最短距离不断更新。"><span class="nav-number">6.1.8.</span> <span class="nav-text">一般而言，迭代次数越多，越能够找到最短距离，因为在不断迭代的过程中，不断有更加优秀的个体出现，导致最短距离不断更新。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#迭代次数越多，最短距离越小；"><span class="nav-number">6.1.9.</span> <span class="nav-text">迭代次数越多，最短距离越小；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#种群数量越大，最短距离越小，花费时间越多；"><span class="nav-number">6.1.10.</span> <span class="nav-text">种群数量越大，最短距离越小，花费时间越多；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#交叉概率越大，最短距离越小，花费时间越多；"><span class="nav-number">6.1.11.</span> <span class="nav-text">交叉概率越大，最短距离越小，花费时间越多；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变异概率越大，最短距离先变大后减小，花费时间无明显变化；"><span class="nav-number">6.1.12.</span> <span class="nav-text">变异概率越大，最短距离先变大后减小，花费时间无明显变化；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#城市数量越大，花费时间越多；"><span class="nav-number">6.1.13.</span> <span class="nav-text">城市数量越大，花费时间越多；</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考与分析："><span class="nav-number">7.</span> <span class="nav-text">思考与分析：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#经过上述分析和探究，结合各参数对迭代曲线的影响，我们可以试图找到att48数据集的最优解。"><span class="nav-number">7.0.1.</span> <span class="nav-text">经过上述分析和探究，结合各参数对迭代曲线的影响，我们可以试图找到att48数据集的最优解。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对于att48数据集而言，目前网上已知最优解为10628，但从三组实验得出的路线来看，可以看出该实验的结果均是不规则的封闭曲线过每一个点，而该三种情况下的最短距离为均不相同，分别为11111、10834、10833。于是可以猜测得，虽然三种情况都是不规则封闭曲线过每一个点，但由于过点顺序不一样，导致距离也不相同。同时可以发现，在代数超过2000以后，种群的最短距离已经不变，这是由于种群中的最短路径序列已经是最优解，无法在交叉和变异的基础下迭代出更加优良的距离序列。"><span class="nav-number">7.0.2.</span> <span class="nav-text">对于att48数据集而言，目前网上已知最优解为10628，但从三组实验得出的路线来看，可以看出该实验的结果均是不规则的封闭曲线过每一个点，而该三种情况下的最短距离为均不相同，分别为11111、10834、10833。于是可以猜测得，虽然三种情况都是不规则封闭曲线过每一个点，但由于过点顺序不一样，导致距离也不相同。同时可以发现，在代数超过2000以后，种群的最短距离已经不变，这是由于种群中的最短路径序列已经是最优解，无法在交叉和变异的基础下迭代出更加优良的距离序列。</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#总结心得"><span class="nav-number">8.</span> <span class="nav-text">总结心得</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#附上源代码："><span class="nav-number">8.1.</span> <span class="nav-text">附上源代码：</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<div class="copyright">&copy; 2019 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">吴富乐</span>
+</div>
+
+<!--
+
+
+
+-->
+
+
+
+
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">全站共16.3k字</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+    <script type="text/javascript">
+    (function(){
+      var appid = 'cyvapBKSV';
+      var conf = 'c19b923b5ec61a0c14c00c4f47871953';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){
+        window.changyan.api.config({appid:appid,conf:conf})});
+      }
+    })();
+    </script>
+    <script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+  
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Htp3vrId3frhsu1vat2HezSf-gzGzoHsz", "DletfjoyqI6M1CASbD6b2ALH");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
