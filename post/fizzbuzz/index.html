@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>FizzBuzz | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630066149140">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="写一个程序，输出从1到n数字的字符串表示
+
+如果 n 是3的倍数，输出“Fizz”；
+如果 n 是5的倍数，输出“Buzz”；
+如果 n 同时是3和5的倍数，输出 “FizzBuzz”。
+
+
+
+
+
+方法1：遍历判断
+
+
+1、初始化一个列表存..." />
+    <meta name="keywords" content="字符串,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630066149140" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">FizzBuzz</h2>
+            <div class="post-date">2021-08-27</div>
+            
+            <div class="post-content" v-pre>
+              <p>写一个程序，输出从1到n数字的字符串表示</p>
+<ol>
+<li>如果 n 是3的倍数，输出“Fizz”；</li>
+<li>如果 n 是5的倍数，输出“Buzz”；</li>
+<li>如果 n 同时是3和5的倍数，输出 “FizzBuzz”。</li>
+</ol>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1遍历判断">方法1：遍历判断</h3>
+</li>
+</ul>
+<p>1、初始化一个列表存储结果字符串。</p>
+<p>2、遍历1到n。</p>
+<p>3、对于当前数，判断是否能被3和5整除，可以的话将&quot;FizzBuzz&quot;添加进答案。</p>
+<p>4、判断能否被3整除，可以的话将“Fizz”添加进答案。</p>
+<p>5、判断能否被5整除，可以的话将“Buzz”添加进答案。</p>
+<p>6、以上都不行的话，将当前数字添加进答案。</p>
+<pre><code class="language-java">class Solution {
+    public List&lt; String &gt; fizzBuzz ( int n ) {
+        //定义字符串List，作为结果
+        List&lt; String &gt; res = new ArrayList&lt; String &gt;();
+
+        //遍历
+        for ( int i = 1; i &lt;= n; i++ ) {
+            boolean div3 = ( i % 3 == 0 );
+            boolean div5 = ( i % 5 == 0 );
+
+            if ( div3 &amp;&amp; div5 ) {
+                res.add( &quot;FizzBuzz&quot; );
+            } else if ( div3 ) {
+                res.add( &quot;Fizz&quot; );
+            } else if ( div5 ) {
+                res.add( &quot;Buzz&quot; );
+            } else {
+                res.add( Integer.toString( i ) );
+            }
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2连接法">方法2：连接法</h3>
+</li>
+</ul>
+<p>当规则变得更加复杂的时候，方法1需要不断增加判断条件分支，故方法2采用连接法。</p>
+<p>1、 判断是否能被3整除，可以的话将Fizz连接进答案。</p>
+<p>2、判断是否能被5整除，可以的话将Buzz连接进答案。</p>
+<p>如此一来，当规则不断增加，也只需要添加相应的判断条件。</p>
+<pre><code class="language-java">class Solution {
+    public List&lt; String &gt; fizzBuzz ( int n ) {
+        //定义字符串List，作为结果
+        List&lt; String &gt; res = new ArrayList&lt; String &gt;();
+
+        //遍历
+        for ( int i = 1; i &lt;= n; i++ ) {
+            boolean div3 = ( i % 3 == 0 );
+            boolean div5 = ( i % 5 == 0 );
+
+            String ans = &quot;&quot;;
+
+            if ( div3 ) {
+                ans += &quot;Fizz&quot;;
+            }
+            if ( div5 ) {
+                ans += &quot;Buzz&quot;;
+            }
+            if ( &quot;&quot;.equals( ans ) ) {
+                ans += Integer.toString( i );
+            }
+            res.add( ans );
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法3散列表法">方法3：散列表法</h3>
+</li>
+</ul>
+<p>当我们需要变换映射的时候，再用条件去判断就显得臃肿且难以维护。所以我们可以将对应关系放入散列表中，使其一一对应，当需要修改规则的时候，只需要修改散列表即可。</p>
+<p>1、将映射关系放入散列表中。</p>
+<p>2、遍历1到n。</p>
+<p>3、对于每个数，遍历散列表中的键，检查是否能被整除。</p>
+<p>4、如果能被整除，则将映射的值添加到答案中。</p>
+<p>5、将答案添加到列表中。</p>
+<pre><code class="language-java">class Solution {
+    public List&lt; String &gt; fizzBuzz ( int n ) {
+        List&lt; String &gt; res = new ArrayList&lt; String &gt;();
+
+        HashMap&lt; Integer, String &gt; map = new HashMap&lt; Integer, String &gt;() {
+            {
+                put( 3, &quot;Fizz&quot; );
+                put( 5, &quot;Buzz&quot; );
+            }
+        };
+        for ( int i = 1; i &lt;= n; i++ ) {
+            String ans = &quot;&quot;;
+
+            // 遍历每个键，查看是否能被整除
+            for ( Integer key : map.keySet() ) {
+                if ( i % key == 0 ) {
+                    ans += map.get( key );
+                }
+            }
+
+            // 都不能被整除
+            if ( &quot;&quot;.equals( ans ) ) {
+                ans += Integer.toString( i );
+            }
+            res.add( ans );
+        }
+        return res;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Mx0ieh_sn/" class="tag">
+                    字符串
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/hello-gridea/">
+                  <h3 class="post-title">
+                    Hello Gridea
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
