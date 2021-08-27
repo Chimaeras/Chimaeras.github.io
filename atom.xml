@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-08-27T14:26:55.408Z</updated>
+    <updated>2021-08-27T14:57:42.208Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[0~n-1中缺失的数字]]></title>
+        <id>https://chimaeras.ltd/post/0~n-1-zhong-que-shi-de-shu-zi/</id>
+        <link href="https://chimaeras.ltd/post/0~n-1-zhong-que-shi-de-shu-zi/">
+        </link>
+        <updated>2021-08-27T14:55:11.000Z</updated>
+        <summary type="html"><![CDATA[<p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[三角形的最大周长]]></title>
         <id>https://chimaeras.ltd/post/san-jiao-xing-de-zui-da-zhou-chang/</id>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>三角形的最大周长 | Joker&#39;s Blog</title>
+<title>0~n-1中缺失的数字 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,16 @@
 
 
 
-    <meta name="description" content="给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。
-如果不能形成任何面积不为零的三角形，返回 0。
+    <meta name="description" content="一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
 
 
 
 
-方法1：排序+贪心
+方法1：二分法
 
 
-先将边按照从小到大的顺序排序，然后从后边开始，选择【小于c的..." />
-    <meta name="keywords" content="贪心" />
+排序数组中的搜索问题，可以尝试运用二分法来解..." />
+    <meta name="keywords" content="二分法" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,39 +102,67 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">三角形的最大周长</h2>
+            <h2 class="post-title">0~n-1中缺失的数字</h2>
             <div class="post-date">2021-08-27</div>
             
             <div class="post-content" v-pre>
-              <p>给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。</p>
-<p>如果不能形成任何面积不为零的三角形，返回 0。</p>
+              <p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="方法1排序贪心">方法1：排序+贪心</h3>
+<h3 id="方法1二分法">方法1：二分法</h3>
 </li>
 </ul>
-<p>先将边按照从小到大的顺序排序，然后从后边开始，选择【小于c的最大的两个数】作为a和b，这时可知满足周长最大。</p>
+<p>排序数组中的搜索问题，可以尝试运用二分法来解决。最后一次交换后left=右子数组的首位元素，right=左子数组的末位元素，所以返回left。</p>
 <pre><code class="language-java">class Solution {
-    public int largestPerimeter ( int[] A ) {
-        Arrays.sort( A );
-        for ( int i = A.length - 1; i &gt;= 2; --i ) {
-            if ( A[i - 2] + A[i - 1] &gt; A[i] ) {
-                return A[i - 2] + A[i - 1] + A[i];
+    public int missingNumber ( int[] nums ) {
+        int left = 0, right = nums.length - 1;
+        while ( left &lt;= right ) {
+            int m = ( left + ( right - left ) ) / 2;
+            if ( nums[m] == m ) {
+                left = m + 1;
+            } else {
+                right = m - 1;
             }
         }
-        return 0;
+        return left;
     }
 }
 </code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2抑或操作">方法2：抑或操作</h3>
+</li>
+</ul>
+<p>原理在于抑或（相同为0，不同为1）操作：a<sup>b</sup>b=a</p>
+<pre><code class="language-java">class Solution {
+    public int missingNumber ( int[] nums ) {
+        // 因为缺失一个数字，所以数组的末尾会存在x=nums.length，令其与res抑或则会抵消
+        int res = nums.length;
+        for ( int i = 0; i &lt; nums.length; i++ ) {
+            res ^= nums[i];
+            res ^= i;
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法3遍历排查">方法3：遍历+排查</h3>
+</li>
+</ul>
+<p>可以通过遍历求的数组的sum，与实际的sum相减即可得到缺失数字，略</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/weuuybOuh/" class="tag">
-                    贪心
+                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
+                    二分法
                   </a>
                 
               </div>
@@ -143,9 +170,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/fizzbuzz/">
+                <a href="https://chimaeras.ltd/post/san-jiao-xing-de-zui-da-zhou-chang/">
                   <h3 class="post-title">
-                    FizzBuzz
+                    三角形的最大周长
                   </h3>
                 </a>
               </div>
