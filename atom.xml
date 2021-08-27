@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-08-27T12:28:02.101Z</updated>
+    <updated>2021-08-27T14:24:49.165Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,19 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[三角形的最大周长]]></title>
+        <id>https://chimaeras.ltd/post/san-jiao-xing-de-zui-da-zhou-chang/</id>
+        <link href="https://chimaeras.ltd/post/san-jiao-xing-de-zui-da-zhou-chang/">
+        </link>
+        <updated>2021-08-27T12:30:53.000Z</updated>
+        <summary type="html"><![CDATA[<p>给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。</p>
+<p>如果不能形成任何面积不为零的三角形，返回 0。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。</p>
+<p>如果不能形成任何面积不为零的三角形，返回 0。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[FizzBuzz]]></title>
         <id>https://chimaeras.ltd/post/fizzbuzz/</id>

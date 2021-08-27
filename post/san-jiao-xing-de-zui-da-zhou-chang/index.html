@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>关于 | Joker&#39;s Blog</title>
+<title>三角形的最大周长 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,15 +18,17 @@
 
 
 
-    <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
+    <meta name="description" content="给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。
+如果不能形成任何面积不为零的三角形，返回 0。
 
-🏠 关于本站
-👨‍💻 博主是谁
-⛹ 兴趣爱好
-📬 联系我呀
-..." />
-    <meta name="keywords" content="" />
+
+
+
+方法1：排序+贪心
+
+
+先将边按照从小到大的顺序排序，然后从后边开始，选择【小于c的..." />
+    <meta name="keywords" content="贪心" />
   </head>
   <body>
     <div id="app" class="main">
@@ -101,20 +103,52 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">关于</h2>
-            <div class="post-date">2019-01-25</div>
+            <h2 class="post-title">三角形的最大周长</h2>
+            <div class="post-date">2021-08-27</div>
             
             <div class="post-content" v-pre>
-              <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
+              <p>给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。</p>
+<p>如果不能形成任何面积不为零的三角形，返回 0。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1排序贪心">方法1：排序+贪心</h3>
+</li>
+</ul>
+<p>先将边按照从小到大的顺序排序，然后从后边开始，选择【小于c的最大的两个数】作为a和b，这时可知满足周长最大。</p>
+<pre><code class="language-java">class Solution {
+    public int largestPerimeter ( int[] A ) {
+        Arrays.sort( A );
+        for ( int i = A.length - 1; i &gt;= 2; --i ) {
+            if ( A[i - 2] + A[i - 1] &gt; A[i] ) {
+                return A[i - 2] + A[i - 1] + A[i];
+            }
+        }
+        return 0;
+    }
+}
+</code></pre>
 
             </div>
             
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/weuuybOuh/" class="tag">
+                    贪心
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/fizzbuzz/">
+                  <h3 class="post-title">
+                    FizzBuzz
+                  </h3>
+                </a>
+              </div>
             
 
             
