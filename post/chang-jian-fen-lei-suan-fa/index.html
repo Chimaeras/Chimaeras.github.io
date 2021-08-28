@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>常见分类算法 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630161117374">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="针对常见的分类问题，实现并总结几个常用的分类算法（KNN算法、朴素贝叶斯算法）
+
+
+1、使用测试集
+
+纯数值型（Iris）
+混杂型（Bank）
+
+数据集说明
+1）iris数据集说明
+鸾尾花数据集总共有五行数据：分别为speal_length..." />
+    <meta name="keywords" content="人工智能,算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630161117374" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">常见分类算法</h2>
+            <div class="post-date">2021-08-28</div>
+            
+            <div class="post-content" v-pre>
+              <p>针对常见的分类问题，实现并总结几个常用的分类算法（KNN算法、朴素贝叶斯算法）</p>
+<!-- more -->
+<hr>
+<h3 id="1-使用测试集">1、使用测试集</h3>
+<ul>
+<li>纯数值型（Iris）</li>
+<li>混杂型（Bank）</li>
+</ul>
+<h4 id="数据集说明">数据集说明</h4>
+<h5 id="1iris数据集说明">1）iris数据集说明</h5>
+<p>鸾尾花数据集总共有五行数据：分别为speal_length（花萼长度）、sepal_width（花萼宽度）、petal_length<br>
+（花瓣长度）、petal_width（花瓣宽度）、species（种类）。</p>
+<ul>
+<li>在knn算法中，该数据集的数据并不需要过多转换，只需在预测过程中将花的种类转换为数值，预测完再后将种类转换回字符类型。</li>
+<li>完整集数据为150行数据。测试验证集为45行数据，整体大致成7、3分配（在程序中可以按照不同需求，<br>
+将数据集划分成6：4、8：2等不同比例）。测试集数据从完整集数据中随机挑选。</li>
+</ul>
+<h5 id="2bank数据集说明">2）Bank数据集说明</h5>
+<ul>
+<li>可以选择bank.csv或者bank-full.csv数据集，两者差别在于：前一个数据集的数据量为4500+，后一个数据集的数据量为45000+。</li>
+<li>在训练过程中，将训练集和测试集随机按照比例划分开，整体大致成7、3分配（在程序中可以按照不同<br>
+需求，将数据集划分成6：4、8：2等不同比例）。测试集数据从完整集数据中随机挑选。</li>
+<li>Age（年龄）、job（工作年龄）、martial（婚姻状况）、education（教育水平）、default（信用是否违<br>
+约）、balance（工资）、housing（住房贷款）、loan（个人贷款）、contact（接触方式）、month（最<br>
+后一次联系的月份）、day（最后一次联系的日期）、duration（最后接触的持续时间）、campaign（这次活动中联系次数）、pdays（上次联系到现在的天数）、previous（本次活动之前联系的次数）、<br>
+poutcome（上一次活动的结果）、y（是否会买定期存款）</li>
+<li>在 knn 算法中，需要将不同类别的数据转换为数值类型，这里采用的是将同一属性的不同种类转换成对<br>
+应的数值。同时也要考虑到不同属性列数值域上的差异（数值域上的差异是指：balance 列的值域为1000~10000+。而 education 列的种类数为个位数。），所以在数据处理的过程中要将两者的差异消除，<br>
+这里我采用的方法是对每一列数据进行 z-score 标准化，以弱化数值值域上的不同所带来的差异。</li>
+</ul>
+<hr>
+<h2 id="算法说明">算法说明</h2>
+<h3 id="算法1knn算法">算法1：KNN算法</h3>
+<h4 id="a-算法简述">a) 算法简述：</h4>
+<p>Knn算法是一种基于距离的分类算法，也称作k邻近算法。其主要思想为“近朱者赤、近墨者黑”，即你<br>
+的类别是由你的邻居推断而出。</p>
+<h4 id="b-主要步骤">b) 主要步骤：</h4>
+<ul>
+<li>1）算距离：给定测试对象，计算它与训练集中的每个对象的距离</li>
+<li>2）找邻居：圈定距离最近的k个训练对象，作为测试对象的近邻</li>
+<li>3）做分类：根据这k个近邻归属的主要类别，来对测试对象分类</li>
+</ul>
+<h4 id="c-相似度判定">c) 相似度判定：</h4>
+<p>相似度的衡量我们选取两个样本之间的欧氏距离作为度量标准。</p>
+<h4 id="d-类别判断">d) 类别判断：</h4>
+<p>类别判定采用少数服从多数，即近邻中哪个类别的点最多就分为该类。</p>
+<h4 id="e-优点">e) 优点：</h4>
+<ul>
+<li>i. 简单、易于理解和实现</li>
+<li>ii. 无需训练</li>
+</ul>
+<h4 id="f-缺点">f) 缺点：</h4>
+<ul>
+<li>i. 每次分类预测时都要重新计算，内存开销大</li>
+<li>ii. 可解释性较差</li>
+<li>iii. 对于不同的训练集，knn算法可能会表现出不同的性能和准确度</li>
+</ul>
+<h4 id="g-存在问题">g) 存在问题：</h4>
+<h5 id="i-k值应该设为多少">i. K值应该设为多少？</h5>
+<ol>
+<li>K值太小，分类结果易受噪声点影响；</li>
+<li>K值太大，近邻中可能包含太多其他类别的点；</li>
+<li>一般经验：k值一般低于训练样本数的平方根</li>
+</ol>
+<h5 id="ii-如何选择合适的距离衡量方法">ii. 如何选择合适的距离衡量方法？</h5>
+<ol>
+<li>高维度对距离衡量的影响：当变量数越多，欧式距离的区分能力就越差。</li>
+<li>变量值域对距离的影响：值域越大的变量常常会在距离计算中占据主导作用，因此应先对变量<br>
+进行标准化。</li>
+</ol>
+<h5 id="iii-训练样本是否具有同样的权重">iii. 训练样本是否具有同样的权重？</h5>
+<ol>
+<li>在训练集中，有些样本可能是更值得依赖的。如果能够判断出哪些样本更加可信，可以给不同<br>
+的样本施加不同的权重，加强依赖样本的权重，降低不可信赖样本的影响。<br>
+iv. 性能问题？</li>
+<li>构造模型很简单，但在对测试样本分类时的系统开销大，因为要扫描全部训练样本并计算距<br>
+离</li>
+</ol>
+<hr>
+<h3 id="算法2基于高斯概率分布的朴素贝叶斯算法">算法2：基于高斯概率分布的朴素贝叶斯算法</h3>
+<h4 id="a-算法简述-2">a) 算法简述：</h4>
+<p>贝叶斯分类法是统计学分类方法，它可以预测类隶属关系的概率，如一个给定元组属于一个特定类的概率。贝叶斯分类基于贝叶斯定理。朴素贝叶斯分类法假定一个属性值在给定类上的概率独立于<br>
+其他属性的值，这一假定称为类条件独立性。</p>
+<h4 id="b-朴素贝叶斯定理">b) 朴素贝叶斯定理：</h4>
+<ul>
+<li>i. 定理简述：已知某条件下的概率，我们需要得到两条件交换后的概率，也就是在已知P(A|B)的情况下<br>
+如何求得P(B|A)的概率。P(A|B)是后验概率（posterior probability），也就是我们常说的条件概率，<br>
+即在条件B下，事件A发生的概率。相反P(A)或P(B)称为先验概率（prior probability·）。贝叶斯定理之<br>
+所以有用，是因为我们在生活中经常遇到这种情况：我们可以很容易直接得出P(A|B)，P(B|A)则很难<br>
+直接得出，但我们更关心P(B|A)，贝叶斯定理就为我们打通从P(A|B)获得P(B|A)的道路。</li>
+<li>ii. 先验概率：指根据以往经验和分析得到的概率</li>
+<li>iii. 后验概率：事情已经发生，要求这件事情发生的原因是由某个因素引起的可能性的大小。<br>
+也就是说事情已经发生了，结果的发生的原因有很多，判断结果的发生是由哪个原因引起的概率</li>
+<li>iv. 条件概率：在原因B发生的条件下，结果A发生的概率:P(A|B)</li>
+<li>v. 当用实例中的特征和类别代替公式中的变量时，可以更好地理解该公式：</li>
+</ul>
+<h4 id="c-高斯概率分布">c) 高斯概率分布：</h4>
+<ul>
+<li>i. 定义：<br>
+若随机变量X服从一个位置参数为μ、尺度参数为σ的概率分布，且其概率密度函数服从高斯公<br>
+式，则这个随机变量称为正太随机变量，正太随机变量服从的分布就称为正太分布，读作X服从<br>
+正态分布。</li>
+<li>ii. 参数描述：</li>
+</ul>
+<ol>
+<li>μ是正太分布的位置参数，描述正太分布的集中趋势位置。正态分布以X=μ为对称轴，左右完全<br>
+对称。正态分布的期望、均值、中位数、众数相同，均等于μ。</li>
+<li>σ描述正态分布数据分布的离散程度，σ越大，数据分布越分散，σ越小，数据分布越集中。也称<br>
+为是正态分布的形状参数，σ越大，曲线越扁平，σ越小，曲线越瘦高。</li>
+</ol>
+<h4 id="d-朴素贝叶斯分类思想">d) 朴素贝叶斯分类思想：</h4>
+<p>对于给出的待分类项，分别计算该项出现的条件下，各个类别出现的概率。哪一类别的概率最大，<br>
+就认为当前项属于那个概率最大类别。</p>
+<h4 id="e-分类步骤">e) 分类步骤：</h4>
+<ul>
+<li>i. 假设D为训练数据组，m为D的行数，n为D的列数，c为类别数量</li>
+<li>ii. 对于传入的待预测样本，朴素贝叶斯分类将其预测为类Ci，当且仅当 P(Ci|X)&gt;P(Cj|X) 1≤i≤m, j≠i</li>
+<li>iii. 对于传入样本的属性列，计算样本属于当前类别下当前列的高斯概率，则样本属于当前类的概率为<br>
+每一属性列的概率连乘：这里需要考虑属性列是数值类型还是非数值类型：</li>
+</ul>
+<ol>
+<li>
+<p>数值类型：利用高斯分布计算其分布概率</p>
+</li>
+<li>
+<p>非数值类型：则概率P=（当前属性的个数/总个数）* P（当前属性 | 类别）<br>
+iv. 寻找预测为不同类别的概率的连乘，最大的概率即表示当前样本为最大概率的类别。<br>
+v. 计算结果中的真阳性、假阳性、真阴性、假阴性，计算马修斯相关系数以评价聚类结果的好坏</p>
+</li>
+</ol>
+<h4 id="f-优点">f) 优点：</h4>
+<ul>
+<li>i. 算法逻辑简单,易于实现</li>
+<li>ii. 分类过程中时空开销小（朴素贝叶斯假设条件间相互独立）</li>
+<li>iii. 对于二值和多值情况同样使用</li>
+<li>iv. 分类的速度较快、同时可处理数据量较大</li>
+</ul>
+<h4 id="g-缺点">g) 缺点：</h4>
+<p>i. 理论上，朴素贝叶斯模型与其他分类方法相比具有最小的误差率。但是实际上并非总是如此，这是<br>
+因为朴素贝叶斯模型假设属性之间相互独立，这个假设在实际应用中往往是不成立的，在属性个数<br>
+比较多或者属性之间相关性较大时，分类效果不好。</p>
+<h4 id="h-存在问题">h) 存在问题：</h4>
+<p>i. 该分类器是基于假设各条件间相互独立，。即不同列属性之间无影响。当该算法处理列间相关性较<br>
+高的数据时，可能效果会较差</p>
+<hr>
+<h3 id="算法实现">算法实现</h3>
+<h3 id="knn算法对iris数据集进行分类">KNN算法对iris数据集进行分类</h3>
+<pre><code class="language-python">import copy
+import math
+import sys
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# 读取数据
+def read(file_name):
+    # 读取文件
+    iris = pd.read_csv(file_name)
+    # iris.size为行数*列数，所以行数=总数/列数
+    iris_size = int(iris.size / 5)
+    # 创建list存储数据
+    data = [[] for _ in range(iris_size)]
+    # 依次存储到list中
+    for i in range(iris_size):
+        data[i].append(iris[&quot;sepal_length&quot;][i])
+        data[i].append(iris[&quot;sepal_width&quot;][i])
+        data[i].append(iris[&quot;petal_length&quot;][i])
+        data[i].append(iris[&quot;petal_width&quot;][i])
+        data[i].append(iris[&quot;species&quot;][i])
+    return data
+
+
+# 将源数据按照rate比例分为测试集和训练集
+def split(data, rate):
+    small = []  # a为测试集（小）
+    big = []  # b为训练集（大）
+    # 获取总行数
+    size = len(data)
+    for i in range(size):
+        # 随机生成一个0~1的数
+        rand = np.random.rand()
+        # 如果概率小于rate，分配到测试集
+        if rand &lt;= rate:
+            small.append(data[i])
+        # 否则分配到训练集
+        else:
+            big.append(data[i])
+    return small, big
+
+
+# 将花的种类转换成数值
+def change_species(species):
+    if species == 'Iris-setosa':
+        return 1
+    elif species == 'Iris-versicolor':
+        return 2
+    elif species == 'Iris-virginica':
+        return 3
+
+
+# 将花的数值转换回种类
+def change_back(species):
+    if species == 1:
+        return 'Iris-setosa'
+    elif species == 2:
+        return 'Iris-versicolor'
+    elif species == 3:
+        return 'Iris-virginica'
+
+
+# 计算两个list的距离a
+def distance(a, b):
+    # sum值
+    s = 0
+    # 遍历次数为标签个数，即数据长度-1（减去种类标签）
+    # 距离为欧氏距离
+    for i in range(len(data[0]) - 1):
+        s += pow((a[i] - b[i]), 2)
+    return math.sqrt(s)
+
+
+# 第一个参数为传入的数组，第二个参数为寻找前k个最小的值
+# 返回的是前k个最小值的下标索引
+def find_min(array, k):
+    # 深拷贝传入的数组
+    t = copy.deepcopy(array)
+    # 遍历训练数据
+    for i in range(len(train_data)):
+        # 因为初始中心是随机从数据集中挑选
+        # 所以可能存在中心点与某个点的距离为0（即中心点为训练点本身）
+        if t[i] == 0:
+            # 令其等于一个很大的值 相当于置最大值
+            t[i] = 100
+    # 求k个最小的数值及其索引
+    max_number = []
+    max_index = []
+    for _ in range(k):
+        # 记录最小值
+        number = min(t)
+        # 取最小值的索引
+        index = t.index(number)
+        # 置最大值
+        t[index] = sys.maxsize
+        # 加入到list中
+        max_number.append(number)
+        max_index.append(index)
+    # 返回下标索引数组
+    return max_index
+
+
+# 第一个参数为要预测的花瓣数据，第二个参数为训练数据的数组，第三个参数为中心点数量
+def knn(predict, origin, k):
+    print(&quot;待预测样本：&quot;, predict)
+    # 记录测试数据与原数组每组数据的距离
+    dis = []
+    # 计算当前样本点和训练集中所有点的距离
+    for i in range(len(origin)):
+        dis.append(distance(predict, origin[i]))
+    # 找到k个距离样本最近的数据
+    cate = find_min(dis, k)
+
+    # 记录k个数据中，每个种类出现的次数
+    count = []
+    # 初始化为0
+    # 总共有三种种类
+    for _ in range(3):
+        count.append(0)
+    # 遍历k个样本，统计各种类出现的次数
+    for i in range(k):
+        if origin[cate[i]][4] == 'Iris-setosa':
+            count[0] += 1
+        elif origin[cate[i]][4] == 'Iris-versicolor':
+            count[1] += 1
+        elif origin[cate[i]][4] == 'Iris-virginica':
+            count[2] += 1
+    # 记录种类最大值
+    max_count = 0
+    # 记录种类最大值索引
+    max_index = 0
+    # 总共有三种种类，统计每种种类的数量
+    for i in range(3):
+        # 出现最多的种类就是该样本的预测种类
+        if count[i] &gt; max_count:
+            max_count = count[i]
+            max_index = i + 1
+    predict[4] = change_back(max_index)
+    print(&quot;该样本的预测种类为&quot;, predict[4])
+    # 返回预测后的种类
+    return predict[4]
+
+
+# 计算准确率
+# 第一个参数为带有正确分类的样本数据
+# 第二个参数为带有预测分类的样本数据
+def accuracy(ori, pre):
+    ori_size = len(ori)
+    pre_size = len(pre)
+    # 预测正确就+1
+    count = 0
+    for i in range(ori_size):
+        if ori[i] == pre[i]:
+            count += 1
+    print(&quot;预测样本数：&quot;, pre_size)
+    print(&quot;正确分类数量&quot;, count)
+    print(&quot;准确率：&quot;, count / pre_size)
+
+
+# 展示混淆矩阵
+def show(data):
+    # 可以在imshow函数后面加上颜色参数
+    # 颜色库可参见http://matplotlib.org/examples/color/colormaps_reference.html
+
+    # cmap = plt.cm.get_cmap('Reds')
+    # plt.imshow(data, cmap=cmap)
+
+    plt.imshow(data)
+    # 图片名字
+    plt.title('Confusion matrix')
+    # 自动生成渐变色条
+    plt.colorbar()
+    # 生成对应长度的list
+    range = np.arange(len(data))
+    # 横轴长度以及标注
+    plt.xticks(range)
+    # 纵轴长度以及标注
+    plt.yticks(range)
+    # 纵轴
+    plt.ylabel('Predict')
+    # 横轴
+    plt.xlabel('Actual')
+    # 展示
+    plt.show()
+
+
+if __name__ == '__main__':
+    # 读取数据
+    data = read(&quot;iris.data&quot;)
+
+    # 将数据分为测试集和训练集
+    test_data, train_data = split(data, 0.3)
+
+    # sample作为待预测数据样本（深拷贝）
+    sample = copy.deepcopy(test_data)
+
+    # 将待预测的数据中种类标签清零
+    for i in range(len(test_data)):
+        sample[i][len(test_data[0]) - 1] = 0
+
+    # 预测待测试数据的种类
+    for i in range(len(test_data)):
+        sample[i][-1] = knn(sample[i], train_data, 10)
+    # 计算测试数据的准确率
+    accuracy(test_data, sample)
+
+    # 创建混淆矩阵
+    c = [[0] * 3 for _ in range(3)]
+    for i in range(len(sample)):
+        # 获取预测集和验证集对应的种类
+        c[change_species(test_data[i][4]) - 1][change_species(sample[i][4]) - 1] += 1
+    print(&quot;混淆矩阵：&quot;, c)
+    show(c)
+
+</code></pre>
+<hr>
+<h3 id="knn算法对bank数据集进行分类">KNN算法对bank数据集进行分类</h3>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+# @Time    : 2020/12/9 21:37
+# @Author  : Joker
+# @Site    : 
+# @File    : knn_bank.py
+# @Software: PyCharm
+import copy
+import math
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+
+# 转换婚姻状态
+# 未知：0
+# 离婚：1
+# 结婚：2
+# 单身：3
+def change_marital(state):
+    marital = ['unknown', 'divorced', 'married', 'single']
+    for i in range(len(marital)):
+        if state == marital[i]:
+            return i
+
+
+# 转换教育水平
+# 未知：0
+# 小学：1
+# 中学：2
+# 大学：3
+def change_education(state):
+    education = ['unknown', 'primary', 'secondary', 'tertiary']
+    for i in range(len(education)):
+        if state == education[i]:
+            return i
+
+
+# 二分类转换
+# yes：2
+# no：1
+def change_binary(state):
+    if state == &quot;no&quot;:
+        state = 1
+    elif state == &quot;yes&quot;:
+        state = 2
+    return state
+
+
+# 转换债务信息
+def change_loan(state):
+    if state == &quot;no&quot;:
+        state = 0
+    elif state == &quot;yes&quot;:
+        state = 1
+    return state
+
+
+# 转换接触方式
+# 未知(unknown):0
+# 网络(cellular)：1
+# 电话(telephone)：2
+def change_contact(state):
+    contact = ['unknown', 'cellular', 'telephone']
+    for i in range(len(contact)):
+        if state == contact[i]:
+            return i
+
+
+# 转换月份
+def change_month(state):
+    month = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+    for i in range(12):
+        if state == month[i]:
+            return i + 1
+
+
+# 转换poutcome（上次成功与否）
+# failure:1
+# success:2
+# other:3
+# unknown:0
+def change_poutcome(state):
+    poutcome = ['unknown', 'failure', 'other', 'success']
+    for i in range(len(poutcome)):
+        if state == poutcome[i]:
+            return i
+
+
+# None:0
+# admin:1
+# blue-collar:2
+# entrepreneur:3
+# housemaid:4
+# management:5
+# retired:6
+# self-employed:7
+# services:8
+# student:9
+# technician:10
+# unemployed:11
+# unknown::12
+def change_job(state):
+    if state is None:
+        state = 'None'
+    job = ['None', 'admin.', 'blue-collar', 'entrepreneur', 'housemaid', 'management', 'retired', 'self-employed',
+           'services',
+           'student', 'technician', 'unemployed', 'unknown', ]
+    for i in range(len(job)):
+        if state == job[i]:
+            return i
+
+
+# 将y从数值转回yes或no
+def change_back_y(state):
+    if state == 1:
+        state = 'no'
+    elif state == 2:
+        state = 'yes'
+    return state
+
+
+# 计算两个list的距离
+def distance(a, b):
+    s = 0
+    # 遍历次数为标签个数，即数据长度-1（减去种类标签）
+    # 距离为欧氏距离
+    for i in range(len(a) - 1):
+        s += pow((a[i] - b[i]), 2)
+    return math.sqrt(s)
+
+
+# 读取数据
+def read(file_name):
+    # 读取文件数据
+    bank = pd.read_csv(file_name, sep=';')
+    # 创建list存储数据
+    data = [[] for i in range(len(bank))]
+    # 依次存储到list中
+    for i in range(len(data)):
+        data[i].append(bank['age'][i])
+        data[i].append(change_job(bank[&quot;job&quot;][i]))
+        data[i].append(change_marital(bank[&quot;marital&quot;][i]))
+        data[i].append(change_education(bank[&quot;education&quot;][i]))
+        data[i].append(change_binary(bank[&quot;default&quot;][i]))
+        data[i].append(bank[&quot;balance&quot;][i])
+        data[i].append(change_binary(bank[&quot;housing&quot;][i]))
+        data[i].append(change_loan(bank[&quot;loan&quot;][i]))
+        data[i].append(change_contact(bank[&quot;contact&quot;][i]))
+        # data[i].append(bank[&quot;day&quot;][i])
+        # data[i].append(change_month(bank[&quot;month&quot;][i]))
+        data[i].append(bank[&quot;duration&quot;][i])
+        data[i].append(bank[&quot;campaign&quot;][i])
+        data[i].append(bank[&quot;pdays&quot;][i])
+        data[i].append(bank[&quot;previous&quot;][i])
+        data[i].append(change_poutcome(bank[&quot;poutcome&quot;][i]))
+        data[i].append(change_binary(bank[&quot;y&quot;][i]))
+    return data
+
+
+# 求平均值
+def average(array):
+    # 数组总和
+    s = 0
+    # 累加，求数组总和
+    for i in range(len(array)):
+        s += array[i]
+    return s / len(array)
+
+
+# 求标准差
+def standard(array):
+    s = 0
+    # 数组均值
+    ave = average(array)
+    for i in range(len(array)):
+        s += pow((array[i] - ave), 2)
+    return math.sqrt(s / (len(array) - 1))
+
+
+# z-score规范化
+def z_score(array):
+    # 结果副本
+    res = copy.deepcopy(array)
+    # 行
+    m = len(array)
+    # 列
+    n = len(array[0]) - 1
+
+    # n*m的数组
+    temp = [[0] * m for _ in range(n)]
+    for i in range(m):
+        for j in range(n):
+            temp[j][i] = array[i][j]
+    # 记录源数据每一列的均值
+    ave = []
+    for i in range(len(temp)):
+        ave.append(average(temp[i]))
+
+    # 标准差数组，记录每一列的标准差
+    stan = []
+    for i in range(len(temp)):
+        stan.append(standard(temp[i]))
+
+    # z-score规范化
+    for i in range(n):
+        for j in range(m):
+            res[j][i] = (array[j][i] - ave[i]) / stan[i]
+    # 返回规范化之后的数组
+    return res
+
+
+# 第一个参数为传入的数组，第二个参数为寻找前k个最小的值
+# 返回的是前k个最小值的下标索引
+def find_min(array, k):
+    # 深拷贝传入的数组
+    t = copy.deepcopy(array)
+    # 遍历训练数据
+    for i in range(len(train_data)):
+        # 因为初始中心是随机从数据集中挑选
+        # 所以可能存在中心点与某个点的距离为0（即中心点为训练点本身）
+        if t[i] == 0:
+            # 令其等于一个很大的值 相当于置最大值
+            t[i] = 100
+    # 求k个最小的数值及其索引
+    max_number = []
+    max_index = []
+    for _ in range(k):
+        # 记录最小值
+        number = min(t)
+        # 取最小值的索引
+        index = t.index(number)
+        # 置最大值
+        t[index] = sys.maxsize
+        # 加入到list中
+        max_number.append(number)
+        max_index.append(index)
+    # 返回下标索引数组
+    return max_index
+
+
+# 第一个参数为要预测的银行数据
+# 第二个参数表示从训练数据集中寻找最近的样本
+# 第三个参数表示寻找k个最近的样本
+def knn(predict, origin, k):
+    print(&quot;待预测样本：&quot;, predict)
+    # 记录测试数据与原数组每组数据的距离
+    dis = []
+    for i in range(len(origin)):
+        dis.append(distance(predict, origin[i]))
+    # 找到k个距离样本最近的样本索引
+    cate = find_min(dis, k)
+    dis.sort()
+    # 记录k个数据中，每个种类出现的次数
+    count_no = 0
+    count_yes = 0
+    # 遍历k个样本，统计各种类出现的次数
+    for i in range(k):
+        if origin[cate[i]][-1] == 1:
+            count_no += 1
+        elif origin[cate[i]][-1] == 2:
+            count_yes += 1
+    # 出现最多的种类就是该样本的预测种类
+    if count_no &gt; count_yes:
+        predict[-1] = 1
+    else:
+        predict[-1] = 2
+    print(&quot;该样本的预测种类为&quot;, change_back_y(predict[-1]))
+    return predict[-1]
+
+
+# 计算准确率
+# 第一个参数为带有正确分类的样本数据
+# 第二个参数为带有预测分类的样本数据
+def accuracy(ori, pre):
+    ori_size = len(ori)
+    pre_size = len(pre)
+    # 预测正确就+1
+    count = 0
+    for i in range(ori_size):
+        if ori[i] == pre[i]:
+            count += 1
+    print(&quot;预测样本数：&quot;, pre_size)
+    print(&quot;预测正确数量：&quot;, count)
+    print(&quot;准确率：&quot;, count / pre_size)
+
+
+# 将源数据按照rate比例分为测试集和训练集
+def split(data, rate):
+    small = []  # a为测试集（小）
+    big = []  # b为训练集（大）
+    # 获取总行数
+    size = len(data)
+    for i in range(size):
+        # 随机生成一个0~1的数
+        rand = np.random.rand()
+        # 如果概率小于rate，分配到测试集
+        if rand &lt;= rate:
+            small.append(data[i])
+        # 否则分配到训练集
+        else:
+            big.append(data[i])
+    return small, big
+
+
+# 展示混淆矩阵
+def show(data):
+    # 可以在imshow函数后面加上颜色参数
+    # 颜色库可参见 http://matplotlib.org/examples/color/colormaps_reference.html
+
+    cmap = plt.cm.get_cmap('Greys')
+    plt.imshow(data, cmap=cmap)
+
+    # plt.imshow(data)
+    # 图片名字
+    plt.title('Confusion matrix')
+    # 自动生成渐变色条
+    plt.colorbar()
+    # 生成对应长度的list
+    range = np.arange(len(data))
+    # 横轴长度以及标注
+    plt.xticks(range)
+    # 纵轴长度以及标注
+    plt.yticks(range)
+    # 纵轴
+    plt.ylabel('Predict')
+    # 横轴
+    plt.xlabel('Actual')
+    # 展示
+    plt.show()
+
+
+if __name__ == '__main__':
+    # 读取源文件数据
+    bank = read('bank.csv')
+    # 将bank数据的属性列进行z-score标准化
+    data = z_score(bank)
+
+    # 将数据分为测试集和训练集
+    test_data, train_data = split(data, 0.2)
+    # sample作为待预测数据样本
+    sample = copy.deepcopy(test_data)
+    # 将待预测的数据中种类标签清零
+    for i in range(len(test_data)):
+        sample[i][len(test_data[0]) - 1] = 0
+
+    # 预测待测试数据的种类
+    for i in range(len(test_data)):
+        print(&quot;次数:&quot;, i)
+        sample[i][len(sample[0]) - 1] = knn(sample[i], train_data, 20)
+
+    tp = 0  # 真实为yes 预测为yes
+    tn = 0  # 真实为no 预测为no
+    fp = 0  # 真实为no 预测为yes
+    fn = 0  # 真实为yes 预测为no
+    for i in range(len(sample)):
+        index = len(sample[0]) - 1
+        if sample[i][index] == 1 and test_data[i][index] == 1:
+            tn += 1
+        elif sample[i][index] == 1 and test_data[i][index] == 2:
+            fn += 1
+        elif sample[i][index] == 2 and test_data[i][index] == 2:
+            tp += 1
+        elif sample[i][index] == 2 and test_data[i][index] == 1:
+            fp += 1
+
+    print(&quot;tp=&quot;, tp)
+    print(&quot;tn=&quot;, tn)
+    print(&quot;fp=&quot;, fp)
+    print(&quot;fn=&quot;, fn)
+
+    # 马修斯相关系数
+    # 1表示完美预测，-1表示完全相反
+    mcc = (tp * tn - fp * fn) / (math.sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn)))
+    print(&quot;mcc=&quot;, mcc)
+
+    # 计算测试数据的准确率
+    accuracy(test_data, sample)
+
+    # 绘制混淆矩阵
+    c = [[tp, fn], [tn, fp]]
+    print(c)
+    show(c)
+
+</code></pre>
+<hr>
+<h3 id="朴素贝叶斯算法对iris数据集进行分类">朴素贝叶斯算法对iris数据集进行分类</h3>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+# @Time    : 2020/12/22 12:56
+# @Author  : Joker
+# @Site    : 
+# @File    : Bayes_iris.py
+# @Software: PyCharm
+
+import copy
+import math
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# 读取数据
+def read(file_name):
+    # 读取文件
+    iris = pd.read_csv(file_name)
+    # iris.size为行数*列数，所以行数=总数/列数
+    iris_size = int(iris.size / 5)
+    # 创建list存储数据
+    data = [[] for _ in range(iris_size)]
+    # 依次存储到list中
+    for i in range(iris_size):
+        data[i].append(iris[&quot;sepal_length&quot;][i])
+        data[i].append(iris[&quot;sepal_width&quot;][i])
+        data[i].append(iris[&quot;petal_length&quot;][i])
+        data[i].append(iris[&quot;petal_width&quot;][i])
+        data[i].append(iris[&quot;species&quot;][i])
+    return data
+
+
+# 将花的种类转换成数值
+def change_species(species):
+    if species == 'Iris-setosa':
+        return 1
+    elif species == 'Iris-versicolor':
+        return 2
+    elif species == 'Iris-virginica':
+        return 3
+
+
+# 将源数据按照rate比例分为测试集和训练集
+def split(data, rate):
+    small = []  # a为测试集（小）
+    big = []  # b为训练集（大）
+    # 获取总行数
+    size = len(data)
+    for i in range(size):
+        # 随机生成一个0~1的数
+        rand = np.random.rand()
+        # 如果概率小于rate，分配到测试集
+        if rand &lt;= rate:
+            small.append(data[i])
+        # 否则分配到训练集
+        else:
+            big.append(data[i])
+    return small, big
+
+
+# 求平均值
+def average(array):
+    # 数组总和
+    s = 0
+    # 累加，求数组总和
+    for i in range(len(array)):
+        s += array[i]
+    return s / len(array)
+
+
+# 求方差
+def variance(array):
+    s = 0
+    ave = average(array)
+    for i in range(len(array)):
+        s += pow((array[i] - ave), 2)
+    s = s / len(array)
+    return s
+
+
+# 拟合高斯曲线,返回概率
+def gauss(array, index, x):
+    # 临时数组存储index列的数据
+    # 三个类别分别存储在temp_0中
+    temp_0 = []
+    temp_1 = []
+    temp_2 = []
+    for i in range(len(array)):
+        if array[i][-1] == 'Iris-setosa':
+            temp_0.append(array[i][index])
+        elif array[i][-1] == 'Iris-versicolor':
+            temp_1.append(array[i][index])
+        elif array[i][-1] == 'Iris-virginica':
+            temp_2.append(array[i][index])
+
+    # 均值
+    ave_0 = average(temp_0)
+    ave_1 = average(temp_1)
+    ave_2 = average(temp_2)
+
+    # 方差
+    var_0 = variance(temp_0)
+    var_1 = variance(temp_1)
+    var_2 = variance(temp_2)
+
+    # 拟合高斯朴素贝叶斯
+    p_0 = (1 / (math.sqrt(2 * math.pi) * math.sqrt(var_0))) * (pow(math.e, (-(pow((x - ave_0), 2) / (2 * var_0)))))
+    p_1 = (1 / (math.sqrt(2 * math.pi) * math.sqrt(var_1))) * (pow(math.e, (-(pow((x - ave_1), 2) / (2 * var_1)))))
+    p_2 = (1 / (math.sqrt(2 * math.pi) * math.sqrt(var_2))) * (pow(math.e, (-(pow((x - ave_2), 2) / (2 * var_2)))))
+    return p_0, p_1, p_2
+
+
+# 计算连续数值列的概率积
+def continuity(data, array):
+    # 三个类别的概率
+    p_0 = 1
+    p_1 = 1
+    p_2 = 1
+    # 分别进行累乘
+    for j in range(len(data[0]) - 1):
+        temp = gauss(data, j, array[j])
+        p_0 *= temp[0]
+        p_1 *= temp[1]
+        p_2 *= temp[2]
+
+    # 返回高斯累乘概率
+    return p_0, p_1, p_2
+
+
+# 预测类别
+def Bayes_predict(array):
+    print(&quot;待预测样本：&quot;, array)
+    # part存储数值类型列的概率累乘
+    part = continuity(train_data, array)
+    # 计算类1的概率(概率累乘*后验概率)
+    p_1 = part[0] * (setosa_count / len(train_data))
+    # 计算类2的概率(概率累乘*后验概率)
+    p_2 = part[1] * (versicolor_count / len(train_data))
+    # 计算类3的概率(概率累乘*后验概率)
+    p_3 = part[2] * (virginica_count / len(train_data))
+
+    # 取三者的较大值
+    if max(p_1, p_2, p_3) == p_1:
+        array[-1] = 'Iris-setosa'
+    elif max(p_1, p_2, p_3) == p_2:
+        array[-1] = 'Iris-versicolor'
+    elif max(p_1, p_2, p_3) == p_3:
+        array[-1] = 'Iris-virginica'
+    print(&quot;该样本的预测种类为&quot;, array[-1])
+    return array
+
+
+# 计算准确率
+# 第一个参数为带有正确分类的样本数据
+# 第二个参数为带有预测分类的样本数据
+def accuracy(ori, pre):
+    ori_size = len(ori)
+    pre_size = len(pre)
+    # 预测正确就+1
+    count = 0
+    for i in range(ori_size):
+        if ori[i] == pre[i]:
+            count += 1
+    print(&quot;预测样本数：&quot;, pre_size)
+    print(&quot;预测正确数量：&quot;, count)
+    print(&quot;准确率：&quot;, count / pre_size)
+
+
+# 展示混淆矩阵
+def show(data):
+    # 可以在imshow函数后面加上颜色参数
+    # 颜色库可参见http://matplotlib.org/examples/color/colormaps_reference.html
+
+    # cmap = plt.cm.get_cmap('Reds')
+    # plt.imshow(data, cmap=cmap)
+
+    plt.imshow(data)
+    # 图片名字
+    plt.title('Confusion matrix')
+    # 自动生成渐变色条
+    plt.colorbar()
+    # 生成对应长度的list
+    print(data)
+    range = np.arange(len(data))
+    # 横轴长度以及标注
+    plt.xticks(range)
+    # 纵轴长度以及标注
+    plt.yticks(range)
+    # 纵轴
+    plt.ylabel('Predict')
+    # 横轴
+    plt.xlabel('Actual')
+    # 展示
+    plt.show()
+
+
+if __name__ == '__main__':
+    data = read(&quot;iris.data&quot;)
+
+    # 将数据分为测试集和训练集
+    test_data, train_data = split(data, 0.3)
+    # sample作为待预测数据样本
+    sample = copy.deepcopy(test_data)
+    # 将待预测的数据中种类标签清零
+    for i in range(len(test_data)):
+        sample[i][len(test_data[0]) - 1] = 0
+
+    # 统计训练集中每个种类的个数
+    setosa_count = 0
+    versicolor_count = 0
+    virginica_count = 0
+    for i in range(len(train_data)):
+        if train_data[i][-1] == 'Iris-setosa':
+            setosa_count += 1
+        elif train_data[i][-1] == 'Iris-versicolor':
+            versicolor_count += 1
+        elif train_data[i][-1] == 'Iris-virginica':
+            virginica_count += 1
+
+    for i in range(len(test_data)):
+        print(&quot;次数:&quot;, i)
+        sample[i] = Bayes_predict(sample[i])
+
+    accuracy(test_data, sample)
+
+    # 创建混淆矩阵
+    c = [[0] * 3 for _ in range(3)]
+    for i in range(len(sample)):
+        # 获取预测集和验证集对应的种类
+        c[change_species(test_data[i][4]) - 1][change_species(sample[i][4]) - 1] += 1
+    print(&quot;混淆矩阵：&quot;, c)
+    show(c)
+
+</code></pre>
+<hr>
+<h3 id="朴素贝叶斯算法对bank数据集进行分类">朴素贝叶斯算法对bank数据集进行分类</h3>
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+# @Time    : 2020/12/21 21:53
+# @Author  : Joker
+# @Site    : 
+# @File    : Bayes_bank.py
+# @Software: PyCharm
+import copy
+import math
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# 读取文件数据
+def read(file_name):
+    # 读取文件数据
+    bank = pd.read_csv(file_name, sep=';')
+    # 创建list存储数据
+    data = [[] for i in range(len(bank))]
+    # 依次存储到list中
+    for i in range(len(data)):
+        data[i].append(bank['age'][i])
+        data[i].append(bank[&quot;job&quot;][i])
+        data[i].append(bank[&quot;marital&quot;][i])
+        data[i].append(bank[&quot;education&quot;][i])
+        data[i].append(bank[&quot;default&quot;][i])
+        data[i].append(bank[&quot;balance&quot;][i])
+        data[i].append(bank[&quot;housing&quot;][i])
+        data[i].append(bank[&quot;loan&quot;][i])
+        data[i].append(bank[&quot;contact&quot;][i])
+        # data[i].append(bank[&quot;day&quot;][i])
+        # data[i].append(bank[&quot;month&quot;][i])
+        data[i].append(bank[&quot;duration&quot;][i])
+        data[i].append(bank[&quot;campaign&quot;][i])
+        data[i].append(bank[&quot;pdays&quot;][i])
+        data[i].append(bank[&quot;previous&quot;][i])
+        data[i].append(bank[&quot;poutcome&quot;][i])
+        data[i].append(bank[&quot;y&quot;][i])
+    return data
+
+
+# 将源数据按照rate比例分为测试集和训练集
+def split(data, rate):
+    small = []  # a为测试集（小）
+    big = []  # b为训练集（大）
+    # 获取总行数
+    size = len(data)
+    for i in range(size):
+        # 随机生成一个0~1的数
+        rand = np.random.rand()
+        # 如果概率小于rate，分配到测试集
+        if rand &lt;= rate:
+            small.append(data[i])
+        # 否则分配到训练集
+        else:
+            big.append(data[i])
+    return small, big
+
+
+# 相当于set功能（去重）
+def get_species(array, index):
+    # 存储种类
+    s = []
+    # 遍历源数组，寻找同一标签下的不同种类
+    for i in range(len(array)):
+        # 如果不存在于种类数组中
+        if array[i][index] not in s:
+            # 就添加到种类数组中去
+            s.append(array[i][index])
+    return s
+
+
+# 统计种类概率
+def count(array, index, state):
+    # 记录原数组的长度
+    size = len(array)
+
+    # 记录状态i下no的个数
+    count_0 = 0
+    # 记录状态i下yes的个数
+    count_1 = 0
+
+    rate = [0, 0]
+    # 遍历源数组
+    for i in range(size):
+        # P0 = (state | no)
+        if array[i][index] == state and array[i][-1] == 'no':
+            count_0 += 1
+        # P1 = (state | yes)
+        elif array[i][index] == state and array[i][-1] == 'yes':
+            count_1 += 1
+    # 将次数转换成出现的概率
+    rate[0] = count_0 / no_count
+    rate[1] = count_1 / yes_count
+    return rate
+
+
+# 求平均值
+def average(array):
+    # 数组总和
+    s = 0
+    # 累加，求数组总和
+    for i in range(len(array)):
+        s += array[i]
+    return s / len(array)
+
+
+# 求方差
+def variance(array):
+    s = 0
+    ave = average(array)
+    for i in range(len(array)):
+        s += pow((array[i] - ave), 2)
+    s = s / len(array)
+    return s
+
+
+# 拟合高斯曲线,返回概率
+def gauss(array, index, x):
+    # 临时数组存储index列的数据
+    # no存储在temp_0中
+    temp_0 = []
+    # yes存储在temp_1中
+    temp_1 = []
+    for i in range(len(array)):
+        if array[i][-1] == 'no':
+            temp_0.append(array[i][index])
+        else:
+            temp_1.append(array[i][index])
+
+    # 均值
+    ave_0 = average(temp_0)
+    ave_1 = average(temp_1)
+    # 方差
+    var_0 = variance(temp_0)
+    var_1 = variance(temp_1)
+    # 拟合高斯朴素贝叶斯
+    p_0 = (1 / (math.sqrt(2 * math.pi) * math.sqrt(var_0))) * (pow(math.e, (-(pow((x - ave_0), 2) / (2 * var_0)))))
+    p_1 = (1 / (math.sqrt(2 * math.pi) * math.sqrt(var_1))) * (pow(math.e, (-(pow((x - ave_1), 2) / (2 * var_1)))))
+
+    return p_0, p_1
+
+
+# 计算连续数值列的概率积
+def continuity(data, array):
+    # 记录数值列的索引
+    # 这几列数据为数值类型
+    t = [0, 5, 9, 10, 11, 12]
+    p_0 = 1
+    p_1 = 1
+    # 遍历这几列
+    for j in range(len(t)):
+        # 估计高斯概率
+        temp = gauss(data, t[j], array[t[j]])
+        # 属于no的概率
+        p_0 *= temp[0]
+        # 属于yes的概率
+        p_1 *= temp[1]
+    return p_0, p_1
+
+
+# 计算离散数值列的概率积
+def dispersed(data, array):
+    # 离散列的索引
+    # 这几列为非数值列
+    t = [1, 2, 3, 4, 6, 7, 8, 13]
+    p_0 = 1
+    p_1 = 1
+    # 计算累乘
+    for j in range(len(t)):
+        p_0 *= count(data, t[j], array[t[j]])[0]
+        p_1 *= count(data, t[j], array[t[j]])[1]
+    return p_0, p_1
+
+
+# 预测类别
+def predict(array):
+    print(&quot;待预测样本：&quot;, array)
+    # part_1存储数值类型列的概率累乘
+    part_1 = continuity(test_data, array)
+    # part_2存储离散类型列的概率累乘
+    part_2 = dispersed(test_data, array)
+    # 计算no的概率（高斯概率*后验概率）
+    p_no = part_1[0] * part_2[0] * (no_count / (no_count + yes_count))
+    # 计算yes的概率（高斯概率*后验概率）
+    p_yes = part_1[1] * part_2[1] * (yes_count / (no_count + yes_count))
+    # 取两者的较大值
+    if p_no &gt; p_yes:
+        array[-1] = 'no'
+    else:
+        array[-1] = 'yes'
+    print(&quot;该样本的预测种类为&quot;, array[-1])
+    return array
+
+
+# 计算准确率
+# 第一个参数为带有正确分类的样本数据
+# 第二个参数为带有预测分类的样本数据
+def accuracy(ori, pre):
+    ori_size = len(ori)
+    pre_size = len(pre)
+    # 预测正确就+1
+    count = 0
+    for i in range(ori_size):
+        if ori[i] == pre[i]:
+            count += 1
+    print(&quot;预测样本数：&quot;, pre_size)
+    print(&quot;预测正确数量：&quot;, count)
+    print(&quot;准确率：&quot;, count / pre_size)
+
+
+# 展示混淆矩阵
+def show(data):
+    # 可以在imshow函数后面加上颜色参数
+    # 颜色库可参见 http://matplotlib.org/examples/color/colormaps_reference.html
+
+    cmap = plt.cm.get_cmap('Greys')
+    plt.imshow(data, cmap=cmap)
+
+    # plt.imshow(data)
+    # 图片名字
+    plt.title('Confusion matrix')
+    # 自动生成渐变色条
+    plt.colorbar()
+    # 生成对应长度的list
+    range = np.arange(len(data))
+    print(range)
+    # 横轴长度以及标注
+    plt.xticks(range)
+    # 纵轴长度以及标注
+    plt.yticks(range)
+    # 纵轴
+    plt.ylabel('Predict')
+    # 横轴
+    plt.xlabel('Actual')
+    # 展示
+    plt.show()
+
+
+if __name__ == '__main__':
+    data = read(&quot;bank.csv&quot;)
+
+    # 将数据分为测试集和训练集
+    test_data, train_data = split(data, 0.1)
+    # sample作为待预测数据样本
+    sample = copy.deepcopy(test_data)
+    # 将待预测的数据中种类标签清零
+    for i in range(len(test_data)):
+        sample[i][len(test_data[0]) - 1] = 0
+
+    # 统计训练集中yes和no的个数
+    no_count = 0
+    yes_count = 0
+    for i in range(len(train_data)):
+        if train_data[i][-1] == 'no':
+            no_count += 1
+        else:
+            yes_count += 1
+
+    # 数值类型 ：0 5 9 10 11 12
+    # 字符类型 ：1 2 3 4 6 7 8 13
+
+    for i in range(len(test_data)):
+        print(&quot;次数:&quot;, i)
+        sample[i] = predict(sample[i])
+
+    # 计算准确率
+    accuracy(test_data, sample)
+
+    tp = 0  # 真实为yes 预测为yes
+    tn = 0  # 真实为no 预测为no
+    fp = 0  # 真实为no 预测为yes
+    fn = 0  # 真实为yes 预测为no
+    for i in range(len(sample)):
+        index = len(sample[0]) - 1
+        if sample[i][index] == 'no' and test_data[i][index] == 'no':
+            tn += 1
+        elif sample[i][index] == 'no' and test_data[i][index] == 'yes':
+            fn += 1
+        elif sample[i][index] == 'yes' and test_data[i][index] == 'yes':
+            tp += 1
+        elif sample[i][index] == 'yes' and test_data[i][index] == 'no':
+            fp += 1
+
+    print(&quot;tp=&quot;, tp)
+    print(&quot;tn=&quot;, tn)
+    print(&quot;fp=&quot;, fp)
+    print(&quot;fn=&quot;, fn)
+
+    # 马修斯相关系数
+    mcc = (tp * tn - fp * fn) / (math.sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn)))
+    print(&quot;mcc=&quot;, mcc)
+
+    # 绘制混淆矩阵
+    c = [[tp, fn], [tn, fp]]
+    print(c)
+    show(c)
+
+</code></pre>
+<hr>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/XaMIzCusq/" class="tag">
+                    人工智能
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/Ma9F6ENfl/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/gou-zao-han-shu-he-xu-gou-han-shu/">
+                  <h3 class="post-title">
+                    构造函数和虚构函数
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
