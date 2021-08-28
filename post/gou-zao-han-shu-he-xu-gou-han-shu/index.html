@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>构造函数和虚构函数 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630160917086">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="在学习重载的时候遇到了一些构造函数和析构函数的不确定问题，故记录一下
+
+
+1、关于重载
+构造函数允许重载，所以在实例化对象的时候，可以根据传入参数的不同选择不同的构造函数，但是只会执行其中的一个，具体执行哪一个，按照传入的参数。
+析构函数：..." />
+    <meta name="keywords" content="C++" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630160917086" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">构造函数和虚构函数</h2>
+            <div class="post-date">2021-08-28</div>
+            
+            <div class="post-content" v-pre>
+              <p>在学习重载的时候遇到了一些构造函数和析构函数的不确定问题，故记录一下</p>
+<!-- more -->
+<hr>
+<h3 id="1-关于重载">1、关于重载</h3>
+<p><strong>构造函数允许重载</strong>，所以在实例化对象的时候，可以根据传入参数的不同选择不同的构造函数，但是只会执行其中的一个，具体执行哪一个，按照传入的参数。<br><br>
+析构函数：类名作为函数名，在前面加上~。<strong>析构函数不允许重载，并且析构函数无参</strong></p>
+<h3 id="2-关于定义成虚函数">2、关于定义成虚函数</h3>
+<p>构造函数不能声明为虚函数，析构函数可以声明为虚函数，而且有时是必须声明为虚函数。<br>
+不建议在构造函数和析构函数里面调用虚函数。</p>
+<h4 id="构造函数不能声明为虚函数的原因是">构造函数不能声明为虚函数的原因是:</h4>
+<ul>
+<li>1 构造一个对象的时候，必须知道对象的实际类型，而虚函数行为是在运行期间确定实际类型的。而在构造一个对象时，由于对象还未构造成功。编译器无法知道对象的实际类型，是该类本身，还是该类的一个派生类，或是更深层次的派生类。无法确定</li>
+<li>2 虚函数的执行依赖于虚函数表。而虚函数表在构造函数中进行初始化工作，即初始化vptr，让他指向正确的虚函数表。而在构造对象期间，虚函数表还没有被初始化，将无法进行</li>
+</ul>
+<h4 id="3-虚函数">3、虚函数</h4>
+<p>虚函数的意思就是开启动态绑定，程序会根据对象的动态类型来选择要调用的方法。然而在构造函数运行的时候，这个对象的动态类型还不完整，没有办法确定它到底是什么类型，故构造函数不能动态绑定。（动态绑定是根据对象的动态类型而不是函数名，在调用构造函数之前，这个对象根本就不存在，它怎么动态绑定？）编译器在调用基类的构造函数的时候并不知道你要构造的是一个基类的对象还是一个派生类的对象。</p>
+<ul>
+<li>析构函数设为虚函数的作用:<br>在类的继承中，<strong>如果有基类指针指向派生类，那么用基类指针delete时，如果不定义成虚函数，派生类中派生的那部分无法析构</strong>。</li>
+</ul>
+<pre><code class="language-C++">#include &quot;stdafx.h&quot;
+#include &quot;stdio.h&quot;
+class A
+{
+  public:
+    A();
+    virtual~A();
+};
+A::A(){}
+A::~A()
+{
+  printf(&quot;Delete class APn&quot;);
+}
+class B : public A
+{
+  public:
+    B();
+    ~B();
+};
+B::B(){ }
+B::~B()
+{
+  printf(&quot;Delete class BPn&quot;);
+}
+int main(int argc, char* argv[])
+{
+  A *b=new B;
+  delete b;
+  return 0;
+}
+
+</code></pre>
+<p>输出结果为：<br><br>
+Delete class B<br><br>
+Delete class A</p>
+<ul>
+<li><strong>如果把A的virtual去掉：那就变成了Delete class A也就是说不会删除派生类里的剩余部分内容，也即不调用派生类的虚函数</strong></li>
+</ul>
+<h4 id="因此在类的继承体系中基类的析构函数不声明为虚函数容易造成内存泄漏-所以如果你设计一定类可能是基类的话必须要声明其为虚函数">因此在类的继承体系中，基类的析构函数不声明为虚函数容易造成内存泄漏。所以如果你设计一定类可能是基类的话，必须要声明其为虚函数。</h4>
+<hr>
+<h4 id="note">Note:</h4>
+<ol>
+<li>如果我们定义了一个构造函数，编译器就不会再为我们生成默认构造函数了。</li>
+<li>编译器生成的析构函数是非虚的，除非是一个子类，其父类有个虚析构，此时的函数虚特性来自父类。</li>
+<li>有虚函数的类，几乎可以确定要有个虚析构函数。</li>
+<li>如果一个类不可能是基类就不要申明析构函数为虚函数，虚函数是要耗费空间的。</li>
+<li>析构函数的异常退出会导致析构不完全，从而有内存泄露。最好是提供一个管理类，在管理类中提供一个方法来析构，调用者再根据这个方法的结果决定下一步的操作。</li>
+<li>在构造函数不要调用虚函数。在基类构造的时候，虚函数是非虚，不会走到派生类中，既是采用的静态绑定。显然的是：当我们构造一个子类的对象时，先调用基类的构造函数，构造子类中基类部分，子类还没有构造，还没有初始化，如果在基类的构造中调用虚函数，如果可以的话就是调用一个还没有被初始化的对象，那是很危险的，所以C++中是不可以在构造父类对象部分的时候调用子类的虚函数实现。但是不是说你不可以那么写程序，你这么写，编译器也不会报错。只是你如果这么写的话编译器不会给你调用子类的实现，而是还是调用基类的实现。</li>
+<li>在析构函数中也不要调用虚函数。在析构的时候会首先调用子类的析构函数，析构掉对象中的子类部分，然后在调用基类的析构函数析构基类部分，如果在基类的析构函数里面调用虚函数，会导致其调用已经析构了的子类对象里面的函数，这是非常危险的。</li>
+<li>记得在写派生类的拷贝函数时，调用基类的拷贝函数拷贝基类的部分，不能忘记了。</li>
+</ol>
+<h3 id="4-抛出异常">4、抛出异常</h3>
+<ul>
+<li>1.析构函数不应该抛出异常；</li>
+<li>2.当析构函数中会有一些可能发生异常时，那么就必须要把这种可能发生的异常完全封装在析构函数内部，决不能让它抛出函数之外；</li>
+<li>3.析构函数异常相对要复杂一些，存在一种冲突状态，程序将直接崩溃：异常的被称为“栈展开(stack unwinding)”的过程中时，从析构函数抛出异常，C++运行时系统会处于无法决断的境遇，因此C语言担保，当处于这一点时，会调用terminate()来杀死进程。因此，当处理另一个异常的过程中时，不要从析构函数抛出异常, 抛出异常时，其子对象将被逆序析构</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/dy3LN0T_2/" class="tag">
+                    C++
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/yi-chuan-suan-fa/">
+                  <h3 class="post-title">
+                    遗传算法
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
