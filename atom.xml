@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-08-28T13:58:33.829Z</updated>
+    <updated>2021-08-28T14:07:36.892Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[遗传算法]]></title>
+        <id>https://chimaeras.ltd/post/yi-chuan-suan-fa/</id>
+        <link href="https://chimaeras.ltd/post/yi-chuan-suan-fa/">
+        </link>
+        <updated>2021-08-28T13:58:39.000Z</updated>
+        <summary type="html"><![CDATA[<p>假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[爬楼梯]]></title>
         <id>https://chimaeras.ltd/post/pa-lou-ti/</id>

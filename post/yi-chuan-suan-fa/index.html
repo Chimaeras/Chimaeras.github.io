@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>遗传算法 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630159643592">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。
+
+
+以N个节点的tsp问题为例，应用遗传算法解决问题，并求出..." />
+    <meta name="keywords" content="算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630159643592" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">遗传算法</h2>
+            <div class="post-date">2021-08-28</div>
+            
+            <div class="post-content" v-pre>
+              <p>假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
+<!-- more -->
+<hr>
+<p>以N个节点的tsp问题为例，应用遗传算法解决问题，并求出问题的最优解。</p>
+<h3 id="步骤">步骤</h3>
+<ul>
+<li>
+<p>随机生成N个二维坐标节点</p>
+</li>
+<li>
+<p>应用遗传算法解决问题</p>
+</li>
+<li>
+<p>选择适当的可视化方式展示结果</p>
+</li>
+<li>
+<p>分析适应度函数对启发式算法的影响</p>
+</li>
+<li>
+<p>考虑不同数值N对结果和求解性能的影响，对于比较大的N，是否有更加快速的近似方法代替原有算法</p>
+</li>
+</ul>
+<h3 id="分析说明">分析说明</h3>
+<h4 id="1本实验中城市坐标可以自行随机生成也可以运用网上设定的数据集-本实验使用的是att48数据集主要原因为该数据集的使用度较为广且存在已知最优解可以根据已知最优解来对实验进行结果偏差检验">1.本实验中城市坐标可以自行随机生成，也可以运用网上设定的数据集。本实验使用的是att48数据集，主要原因为该数据集的使用度较为广，且存在已知最优解，可以根据已知最优解来对实验进行结果偏差检验。</h4>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1630159244481.png" alt="" loading="lazy"></figure>
+<h4 id="2该实验总共有5个核心参数分别为最大迭代次数-交叉概率-变异概率-城市数量-初始种群数量-其中城市数量为确定值48-除此之外为其余几个参数设定标准值以此探究参数变化时迭代图的变化">2.该实验总共有5个核心参数，分别为：最大迭代次数、交叉概率、变异概率、城市数量、初始种群数量。其中城市数量为确定值（48）。除此之外，为其余几个参数设定标准值，以此探究参数变化时，迭代图的变化。</h4>
+<ul>
+<li>最大迭代次数标准值：200</li>
+<li>变异概率标准值：0.003</li>
+<li>交叉概率标准值：0.8</li>
+<li>初始种群数量标准值：200</li>
+</ul>
+<h3 id="3本实验主要运用了三种交叉方法和两种变异方法分别为部分交叉位置交叉顺序交叉-下面来介绍每种交叉方式和变异方式">3.本实验主要运用了三种交叉方法和两种变异方法，分别为部分交叉，位置交叉，顺序交叉。下面来介绍每种交叉方式和变异方式：</h3>
+<ul>
+<li>部分交叉：随机生成左右两个下标索引A，B(A&lt;B)，交换父代1和父代2中A和B之间的部分，同时建立冲突映射表，然后根据冲突映射表消除子代1和子代2的冲突部分，从而形成子代1和子代2.。</li>
+<li>顺序交叉：随机生成左右两个下标索引A，B(A&lt;B)，子代1和子代2直接继承父代2和父代1（子代1继承父代2，子代2继承父代1）中下标索引为A-B之间的部分，然后将父代1中尚未在子代1中出现的个体基因插进子代1，父代2中尚未在子代2中出现的个体基因插进子代2.</li>
+<li>位置交叉：随机生成n个（n&lt;城市数量）保留位点。随机选取n个点，子代1中该点的数值直接继承于父代2，然后将父代1中未在子代1出现过的元素依次插入子代1中。子代2同理。</li>
+<li>变异方法1：随机交换当前个体的两个元素。</li>
+<li>变异方法2：随机反顺当前个体的中间部分，中间部分的范围随机生成。</li>
+</ul>
+<p>总结：主要使用部分交叉，原因在于部分交叉更加接近现实中基因交换的方式，且部分交叉方式运行起来更加快速，但实验中同时也实现了另外两种交叉方法，提供不同的思路和参考。变异方法全程穿插在产生子代群体的过程中。</p>
+<h3 id="结果展示">结果展示：</h3>
+<h4 id="标准指数下结果展示">标准指数下结果展示：</h4>
+<p>最短距离：19898.7202</p>
+<p>最短路径：[45 32 5 0 11 10 22 2 8 7 17 36 42 29 26 18 16 19 21 15 40 1 4 25</p>
+<p>34 44 3 9 23 28 41 38 33 13 12 47 46 24 20 31 39 14 37 35 6 27 30 43]</p>
+<p>迭代关系图：</p>
+<figure data-type="image" tabindex="2"><img src="https://chimaeras.ltd/post-images/1630159395049.png" alt="" loading="lazy"></figure>
+<p>最短路线图：</p>
+<figure data-type="image" tabindex="3"><img src="https://chimaeras.ltd/post-images/1630159409203.png" alt="" loading="lazy"></figure>
+<ul>
+<li>种群数量对迭代的影响：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>种群数量</th>
+<th>50</th>
+<th>100</th>
+<th>200</th>
+<th>500</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>迭代时间（s）（200代）</td>
+<td>5</td>
+<td>14</td>
+<td>67</td>
+<td>902</td>
+</tr>
+<tr>
+<td>迭代时间（s）（500代）</td>
+<td>15</td>
+<td>40</td>
+<td>183</td>
+<td>2765</td>
+</tr>
+</tbody>
+</table>
+<p>总结：</p>
+<h5 id="种群数量相同情况下迭代次数越多最短距离越小">种群数量相同情况下，迭代次数越多，最短距离越小；</h5>
+<h5 id="迭代次数相同情况下种群数量越多最短距离越小花费时间越多">迭代次数相同情况下，种群数量越多，最短距离越小，花费时间越多；</h5>
+<ul>
+<li>
+<p>交叉概率对迭代的影响：</p>
+<table>
+<thead>
+<tr>
+<th>交叉概率</th>
+<th>0.1</th>
+<th>0.3</th>
+<th>0.5</th>
+<th>0.8</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最短距离（200代）</td>
+<td>27294</td>
+<td>23075</td>
+<td>23835</td>
+<td>22339</td>
+<td>23678</td>
+</tr>
+<tr>
+<td>最短距离（500代）</td>
+<td>21173</td>
+<td>19966</td>
+<td>17927</td>
+<td>17102</td>
+<td>16626</td>
+</tr>
+<tr>
+<td>最短距离（1000代）</td>
+<td>15286</td>
+<td>14339</td>
+<td>15797</td>
+<td>13578</td>
+<td>13380</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>总结：</p>
+<h5 id="迭代次数相同情况下交叉概率越高最短距离越小">迭代次数相同情况下，交叉概率越高，最短距离越小；</h5>
+<h5 id="交叉概率相同情况下迭代次数越大最短距离越短">交叉概率相同情况下，迭代次数越大，最短距离越短；</h5>
+<ul>
+<li>
+<p>变异概率对迭代的影响：</p>
+<table>
+<thead>
+<tr>
+<th>变异概率</th>
+<th>0.003</th>
+<th>0.03</th>
+<th>0.3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最短距离（200代）</td>
+<td>19974</td>
+<td>18773</td>
+<td>22050</td>
+</tr>
+<tr>
+<td>最短距离（500代）</td>
+<td>18029</td>
+<td>12331</td>
+<td>16766</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>总结;</p>
+<h5 id="迭代次数相同情况下变异概率越大后代最短距离越不稳定即可能出现群体劣化情况">迭代次数相同情况下，变异概率越大，后代最短距离越不稳定，即可能出现群体劣化情况。</h5>
+<h5 id="变异概率相同情况下迭代次数越大最短距离越小但是该结论只适用于变异概率较小的情况003变异概率过大时后代群体反复横跳优劣无常">变异概率相同情况下，迭代次数越大，最短距离越小，但是该结论只适用于变异概率较小的情况（&lt;0.03），变异概率过大时，后代群体反复横跳，优劣无常。</h5>
+<p>下图为变异概率过大时，迭代曲线的变化图：</p>
+<figure data-type="image" tabindex="4"><img src="https://chimaeras.ltd/post-images/1630159312511.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>城市数量对迭代的影响：</p>
+<h5 id="为了探究某一固定实验集的最短距离所以本试验选用的是att48数据集城市数量为固定值48-但本实验在开头也提供了随机生成n个城市坐标点的函数在个人私下测试中得到城市数量越大花费时间越长因为数据规模随着城市数量的变大而变大-同时最短距离随着随机生成的城市坐标点的不同而不同">为了探究某一固定实验集的最短距离，所以本试验选用的是att48数据集，城市数量为固定值48。但本实验在开头也提供了随机生成n个城市坐标点的函数，在个人私下测试中得到：城市数量越大，花费时间越长，因为数据规模随着城市数量的变大而变大。同时最短距离随着随机生成的城市坐标点的不同而不同。</h5>
+</li>
+<li>
+<p>最大迭代次数对迭代的影响：</p>
+<h5 id="一般而言迭代次数越多越能够找到最短距离因为在不断迭代的过程中不断有更加优秀的个体出现导致最短距离不断更新">一般而言，迭代次数越多，越能够找到最短距离，因为在不断迭代的过程中，不断有更加优秀的个体出现，导致最短距离不断更新。</h5>
+</li>
+<li>
+<p>总结个参数对结果的影响：</p>
+<h5 id="迭代次数越多最短距离越小">迭代次数越多，最短距离越小；</h5>
+</li>
+</ul>
+<h5 id="种群数量越大最短距离越小花费时间越多">种群数量越大，最短距离越小，花费时间越多；</h5>
+<h5 id="交叉概率越大最短距离越小花费时间越多">交叉概率越大，最短距离越小，花费时间越多；</h5>
+<h5 id="变异概率越大最短距离先变大后减小花费时间无明显变化">变异概率越大，最短距离先变大后减小，花费时间无明显变化；</h5>
+<h5 id="城市数量越大花费时间越多">城市数量越大，花费时间越多；</h5>
+<h3 id="思考与分析">思考与分析：</h3>
+<h5 id="经过上述分析和探究结合各参数对迭代曲线的影响我们可以试图找到att48数据集的最优解">经过上述分析和探究，结合各参数对迭代曲线的影响，我们可以试图找到att48数据集的最优解。</h5>
+<p>图组1：</p>
+<p>最短距离：11112</p>
+<p>最短序列：[47 4 28 1 41 25 3 34 44 9 23 31 20 46 12 22 10 39 8 14 11 19 32 45</p>
+<p>35 29 42 16 26 18 36 5 27 6 17 43 30 37 7 0 15 21 2 40 33 13 24 38]</p>
+<figure data-type="image" tabindex="5"><img src="https://chimaeras.ltd/post-images/1630159423612.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="https://chimaeras.ltd/post-images/1630159429075.png" alt="" loading="lazy"></figure>
+<h5 id="对于att48数据集而言目前网上已知最优解为10628但从三组实验得出的路线来看可以看出该实验的结果均是不规则的封闭曲线过每一个点而该三种情况下的最短距离为均不相同分别为11111-10834-10833-于是可以猜测得虽然三种情况都是不规则封闭曲线过每一个点但由于过点顺序不一样导致距离也不相同-同时可以发现在代数超过2000以后种群的最短距离已经不变这是由于种群中的最短路径序列已经是最优解无法在交叉和变异的基础下迭代出更加优良的距离序列">对于att48数据集而言，目前网上已知最优解为10628，但从三组实验得出的路线来看，可以看出该实验的结果均是不规则的封闭曲线过每一个点，而该三种情况下的最短距离为均不相同，分别为11111、10834、10833。于是可以猜测得，虽然三种情况都是不规则封闭曲线过每一个点，但由于过点顺序不一样，导致距离也不相同。同时可以发现，在代数超过2000以后，种群的最短距离已经不变，这是由于种群中的最短路径序列已经是最优解，无法在交叉和变异的基础下迭代出更加优良的距离序列。</h5>
+<h3 id="总结心得">总结心得</h3>
+<p>本实验的特点：</p>
+<ul>
+<li>实验在开头提供了生成城市坐标的函数，可以自行控制城市的数量n，而后生成n个城市的坐标点列表，可以根据此函数灵活探究城市数量对于迭代函数和种群的影响。</li>
+<li>实验开始时，随机生成m个路线序列，使得初始种群的序列具有随机性和任意性。</li>
+<li>使用已知att48数据集，根据控制变量法，探究不同参数对应迭代距离的影响，同时可以找到本实验的最优解，将本实验的最优解和网上已知最优解进行比较，可以得知算法的误差以及优劣。</li>
+<li>提供了三种不同的交叉方式和两种不同的变异方法，几种方法的不同在开头已经讲述，就不再赘述，依据三种不同的交叉方法，可以探究不同交叉方法对于迭代时间的影响和迭代优劣性的影响。其中测试中发现：Time（部分交叉）&gt; Time（顺序交叉）&gt;Time（位置交叉）。</li>
+<li>实验中对适应度函数进行优化，即对不同个体的概率进行适当方法，避免因为计算机浮点数的特性影响到个体被选中的概率。</li>
+<li>本实验使用轮盘赌法，将每一个个体的概率转换成累计概率，使得概率小的个体有有机会被遗传到下一代，确保的实验的正确性和合理性。</li>
+<li>本实验使用matplotlib库来对实验结果进行可视化展示，绘制出了迭代次数和最短距离的关系曲线图、最短距离下城市坐标的路线图。使得结果清晰明了，同时也方便查看得到的最短路线。</li>
+</ul>
+<p>总结：</p>
+<h4 id="该问题是第一次接触之前接触的最优路线问题均是城市数量较小且数据规模较小的问题所以采用的是贪心算法或者动态规划算法-但是该问题的城市数量以及数据规模都比较大如果使用有向图的数据结构来解决的话每增加一个城市节点那么数据规模便增加一个量级-这时遗传算法就显得十分优秀-遗传算法不是寻找特定解的算法他是通过不断生成后代以及不断对后代进行优劣的筛选从而使得后代不断变得优秀直到找出最优解位置">该问题是第一次接触，之前接触的最优路线问题均是城市数量较小且数据规模较小的问题，所以采用的是贪心算法或者动态规划算法。但是该问题的城市数量以及数据规模都比较大，如果使用有向图的数据结构来解决的话，每增加一个城市节点，那么数据规模便增加一个量级。这时遗传算法就显得十分优秀。遗传算法不是寻找特定解的算法，他是通过不断生成后代以及不断对后代进行优劣的筛选，从而使得后代不断变得优秀，直到找出最优解位置。</h4>
+<h4 id="实验过程中遇到了一些困难例如对不同交叉方法的实现-对于不同数据结构的使用-对结果可视化的展示等等问题-但在钻研的过程中都被一一解决也成功地实现并找到了最短距离-该实验的问题新颖且实用从算法的设计到算法的实现都存在可以讨论和探究的东西而能够完成该实验对我来说是一次收获非常大的经历">实验过程中遇到了一些困难，例如对不同交叉方法的实现、对于不同数据结构的使用、对结果可视化的展示等等问题。但在钻研的过程中都被一一解决，也成功地实现并找到了最短距离。该实验的问题新颖且实用，从算法的设计到算法的实现，都存在可以讨论和探究的东西，而能够完成该实验对我来说，是一次收获非常大的经历。</h4>
+<hr>
+<p>源代码：</p>
+<pre><code class="language-python">#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2020/10/13 10:50
+# @Author  : Joker
+# @Site    :
+# @File    : experiment_2.py
+# @Software: PyCharm
+
+from pylab import *
+import sys
+import numpy as np
+import random
+import math
+import matplotlib.pyplot as plt
+
+mpl.rcParams['font.sans-serif'] = ['SimHei']
+
+M = 200  # 初始种群数量
+n_city = 48  # 城市数量
+cross_rate = 0.8  # 交叉概率
+mutate_rate = 0.03  # 变异概率
+max_generation = 2000  # 最大迭代次数
+
+# 生成城市坐标列表，参数为城市数量
+# def create_city_map(sum_city):
+#     city_map = np.random.randint(0, 100, (sum_city, 2))  # 城市坐标列表
+#     city_map = [48][2]
+#     for i in range(sum_city):  # 随机生成x和y坐标
+#         city_x = random.randint(0, 50)
+#         city_y = random.randint(0, 50)
+#         city_map[i] = [city_x, city_y]
+#     return city_map
+
+# 初始化m个初始元素，即随机生成m个路线序列
+def create_first_m(sum_m):
+    # 生成[sum_m][n_city]形式的数组
+    first_m = np.random.randint(0, n_city, (sum_m, n_city))
+    # 先赋值为0-47，然后打乱，确保每个数字不重复
+    for i in range(sum_m):
+        # 范围在0-48之间
+        first_m[i] = np.arange(0, n_city, dtype=int)
+        # 打乱序列
+        np.random.shuffle(first_m[i])
+    return first_m
+
+# arr为路线序列，city_map为地图坐标
+def distance(arr, city_map):
+    d = 0
+    # 从0-47，依次计算i-1到i的距离
+    for i in range(n_city - 1):
+        # 坐标点的x轴相减
+        x = abs(city_map[arr[i]][0] - city_map[arr[i + 1]][0])
+        # 坐标点的y轴相减
+        y = abs(city_map[arr[i]][1] - city_map[arr[i + 1]][1])
+        d += math.sqrt((pow(x, 2) + pow(y, 2)) / 10)
+
+    # 计算最后一个点到第一个点的距离
+    x = abs(city_map[arr[n_city - 1]][0] - city_map[arr[0]][0])
+    y = abs(city_map[arr[n_city - 1]][1] - city_map[arr[0]][1])
+    d += math.sqrt((pow(x, 2) + pow(y, 2)) / 10)
+
+    return d
+
+# 部分交叉函数
+def partial_cross(arr1, arr2):
+    # 随机生成左边界和右边界
+    left = random.randint(0, n_city)
+    right = random.randint(0, n_city)
+    # 确保left小于right
+    if left &gt; right:
+        left, right = right, left
+
+    # 生成两个子序列，存储生成的子代
+    child_1 = arr1.copy()
+    child_2 = arr2.copy()
+
+    # 建立冲突映射表
+    conflict_list_1 = []
+    conflict_list_2 = []
+
+    # 依次交换arr1和arr2的值
+    for t in range(right - left):  # 存储冲突映射
+        conflict_list_1.append(child_1[t + left])
+        conflict_list_2.append(child_2[t + left])
+        # 进行部分交叉
+        child_1[t + left], child_2[t +
+                                   left] = child_2[t + left], child_1[t + left]
+
+    # 简化冲突映射表
+    for i in range(right - left):
+        for j in range(right - left):
+            if conflict_list_1[i] == conflict_list_2[j] and conflict_list_2[i] != conflict_list_1[j]:
+                conflict_list_1[i] = conflict_list_1[j]
+                conflict_list_2[j] = conflict_list_2[i]
+                if i &lt; j:
+                    conflict_list_1[i] = -1
+                    conflict_list_2[i] = -1
+                elif j &lt; i:
+                    conflict_list_1[j] = -1
+                    conflict_list_2[j] = -1
+                break
+
+    # 消解左边冲突
+    for i in range(left):
+        # 遍历一遍冲突映射表
+        for j in range(len(conflict_list_1)):
+            # 如果arr1的值和c_2相等，将arr1当前值替换成c_1对应的值
+            if child_1[i] == conflict_list_2[j]:
+                child_1[i] = conflict_list_1[j]
+                break
+
+    for i in range(left):
+        # 遍历一遍冲突映射表
+        for j in range(len(conflict_list_1)):
+            # 如果arr2的值和c_1相等，将arr1当前值替换成c_2对应的值
+            if child_2[i] == conflict_list_1[j]:
+                child_2[i] = conflict_list_2[j]
+                break
+
+    # 消解右边冲突
+    for i in range(n_city - right):
+        # 遍历一遍冲突映射表
+        for j in range(len(conflict_list_2)):
+            # 如果arr1的值和c_2相等，将arr1当前值替换成c_1对应的值
+            if child_1[i + right] == conflict_list_2[j]:
+                child_1[i + right] = conflict_list_1[j]
+                break
+
+    for i in range(n_city - right):
+        # 遍历一遍冲突映射表
+        for j in range(len(conflict_list_2)):
+            # 如果arr2的值和c_1相等，将arr1当前值替换成c_2对应的值
+            if child_2[i + right] == conflict_list_1[j]:
+                child_2[i + right] = conflict_list_2[j]
+                break
+
+    return child_1, child_2
+
+# 顺序交叉。
+def order_cross(father_1, father_2):
+    # 随机生成左边界和右边界
+    left = random.randint(0, n_city)
+    right = random.randint(0, n_city)
+
+    # 生成两个全1的子序列，存储生成的子代
+    child_1 = np.ones(n_city, dtype=int)
+    child_2 = np.ones(n_city, dtype=int)
+
+    # 确保left小于right
+    if left &gt; right:
+        left, right = right, left
+
+    # 临时变量q存储left
+    q = left
+
+    for _ in range(right - left):
+        # 子个体的中间部分直接继承父代
+        child_1[q] = father_2[q]
+        child_2[q] = father_1[q]
+        q = q + 1
+
+    # 处理子代1的左边
+    for i in range(left):
+        for j in range(len(father_1)):
+            if father_1[j] not in child_1 and child_1[i] == 1:
+                child_1[i] = father_1[j]
+                break
+
+    # 处理子代1的右边
+    for i in range(n_city - right):
+        for j in range(len(father_1)):
+            if father_1[j] not in child_1 and child_1[i + right] == 1:
+                child_1[i + right] = father_1[j]
+                break
+
+    # 处理子代2的左边
+    for i in range(left):
+        for j in range(len(father_2)):
+            if father_2[j] not in child_2 and child_2[i] == 1:
+                child_2[i] = father_2[j]
+                break
+
+    # 处理子代2的右边
+    for i in range(n_city - right):
+        for j in range(len(father_2)):
+            if father_2[j] not in child_2 and child_2[i + right] == 1:
+                child_2[i + right] = father_2[j]
+                break
+
+    return child_1, child_2
+
+# 位置交叉
+def position_cross(father_1, father_2):
+    child_1 = np.ones(n_city, dtype=int)
+    child_2 = np.ones(n_city, dtype=int)
+
+    # 生成子代1
+    # 随机生成save个保留点
+    save_1 = random.randint(0, n_city - 1)
+    z_1 = 0
+    while z_1 &lt; save_1:
+        # 随机选择保留哪个位置上的点
+        x = random.randint(0, n_city - 1)
+        # 该点没被选择过
+        if child_1[x] == 1:
+            # 该点的数值等于父代该点的值
+            child_1[x] = father_2[x]
+            z_1 = z_1 + 1
+
+    # 剩下的点依次放入子代中
+    for i in range(len(father_1)):
+        for j in range(len(father_1)):
+            if father_1[j] not in child_1 and child_1[i] == 1:
+                child_1[i] = father_1[j]
+
+    # 生成子代2
+    # 随机生成n个保留点
+    save_2 = random.randint(0, n_city - 1)
+    z_2 = 0
+    while z_2 &lt; save_2:
+        # 随机选择保留哪个位置上的点
+        y = random.randint(0, n_city - 1)
+        # 该点没被选择过
+        if child_2[y] == 1:
+            # 该点的数值等于父代该点的值
+            child_2[y] = father_1[y]
+            z_2 = z_2 + 1
+
+    # 剩下的点依次放入子代中
+    for i in range(len(father_2)):
+        for j in range(len(father_2)):
+            if father_2[j] not in child_2 and child_2[i] == 1:
+                child_2[i] = father_2[j]
+
+    return child_1, child_2
+
+# 变异函数_1
+# 随机找到一个元素，交换一个路径序列中的随机两项
+# arr为传入的路径序列数组 n为城市数量
+def mutate_1(arr, n):
+    # 生成任意两个随机数
+    x = random.randint(0, n - 1)
+    y = random.randint(0, n - 1)
+    # 交换基因序列
+    arr[x], arr[y] = arr[y], arr[x]
+    return arr
+
+# 变异函数_2
+# 随机反顺中间部分
+def mutate_2(arr, n):
+    left = random.randint(0, n - 1)
+    right = random.randint(0, n - 1)
+
+    if left &gt; right:
+        left, right = right, left
+
+    while left &lt;= right:
+        arr[left], arr[right] = arr[right], arr[left]
+        left += 1
+        right -= 1
+
+    return arr
+
+if __name__ == '__main__':
+
+    # 记录开始时间
+    start_time = datetime.datetime.now()
+
+    # 创建城市坐标列表
+    # 坐标范围为0-100
+    # [城市数量][2]
+    # city = np.random.randint(0, 50, (n_city, 2))
+
+    # 生成M个初始路线序列，作为初始种群
+    # [种群数量][城市数量]=[100][48]
+    m = create_first_m(M)
+
+    # att48数据集
+    city = [[6734, 1453],
+            [2233, 10],
+            [5530, 1424],
+            [401, 841],
+            [3082, 1644],
+            [7608, 4458],
+            [7573, 3716],
+            [7265, 1268],
+            [6898, 1885],
+            [1112, 2049],
+            [5468, 2606],
+            [5989, 2873],
+            [4706, 2674],
+            [4612, 2035],
+            [6347, 2683],
+            [6107, 669],
+            [7611, 5184],
+            [7462, 3590],
+            [7732, 4723],
+            [5900, 3561],
+            [4483, 3369],
+            [6101, 1110],
+            [5199, 2182],
+            [1633, 2809],
+            [4307, 2322],
+            [675, 1006],
+            [7555, 4819],
+            [7541, 3981],
+            [3177, 756],
+            [7352, 4506],
+            [7545, 2801],
+            [3245, 3305],
+            [6426, 3173],
+            [4608, 1198],
+            [23, 2216],
+            [7248, 3779],
+            [7762, 4595],
+            [7392, 2244],
+            [3484, 2829],
+            [6271, 2135],
+            [4985, 140],
+            [1916, 1569],
+            [7280, 4899],
+            [7509, 3239],
+            [10, 2676],
+            [6807, 2993],
+            [5185, 3258],
+            [3023, 1942]]
+
+    # 全局定义一个最小距离，其初始值为int类型最大值
+    Min = sys.maxsize
+    # 全局定义最大距离
+    Max_distance = 0
+    # 全局定义的最小路线
+    Min_route = m[0]
+    # 存储每一代的最短距离，用来绘制表格
+    P_distance = []
+    # 全局定义代数
+    generation = 0
+
+    # 开始迭代
+    while generation &lt;= max_generation:
+        print(&quot;代数：&quot;, generation)
+
+        # 定义当前代数中的最小距离
+        # 先定义成float类型的最大值
+        min_distance = sys.maxsize
+        # 存储这一代中的最短路线
+        min_route = []
+
+        # 对当前代数的所有种群进行迭代检查
+        for i in range(M):
+
+            # 1.部分交叉
+            # 生成随机概率
+            rate = random.random()
+            # 如果概率小于交叉概率，则发生交叉
+            if rate &lt;= cross_rate:
+                # 随机选择另外一个父代元素
+                x = random.randint(0, len(m) - 1)
+                # 进行交叉产生两个子后代
+                new1, new2 = partial_cross(m[i], m[x])
+                # 将子后代添加到种群中
+                m = np.append(m, new1)
+                m = np.append(m, new2)
+            # 重新变成[当前长度][48]的格式
+            m = np.reshape(m, (-1, n_city))
+
+            # 如果要快速得到结果，可不使用另外两种交叉方法
+            # # 2.顺序交叉
+            # # 生成随机概率
+            # rate = random.random()
+            # # 如果概率小于交叉概率，则发生交叉
+            # if rate &lt;= cross_rate:
+            #     # 随机选择另外一个父代元素
+            #     x = random.randint(0, len(m) - 1)
+            #     # 进行交叉产生两个子后代
+            #     new1, new2 = order_cross(m[i], m[x])
+            #     # 将子后代添加到种群中
+            #     m = np.append(m, new1)
+            #     m = np.append(m, new2)
+            # m = np.reshape(m, (-1, n_city))
+
+            # # 3.位置交叉
+            # # 生成随机概率
+            # rate = random.random()
+            # # 如果概率小于交叉概率，则发生交叉
+            # if rate &lt;= cross_rate:
+            #     # 随机选择另外一个父代元素
+            #     x = random.randint(0, M - 1)
+            #
+            #     # 进行交叉产生两个子后代
+            #     new1, new2 = position_cross(m[i], m[x])
+            #
+            #     # 将子后代添加到种群中
+            #     m = np.append(m, new1)
+            #     m = np.append(m, new2)
+            #     m = np.reshape(m, (-1, n_city))
+
+            # 4.子代突变_1
+            rate = random.random()
+            # 如果概率小于变异概率，则发生突变
+            if rate &lt;= mutate_rate:
+                # 添加到种群中去
+                # m[i] = mutate_1(m[i], n_city)
+                m = np.append(m, mutate_1(m[i], n_city))
+            # 重新变成[当前长度][48]的格式
+            m = np.reshape(m, (-1, n_city))
+
+            # 5.子代突变_2
+            rate = random.random()
+            # 如果概率小于变异概率，则发生突变
+            if rate &lt;= mutate_rate:
+                # 添加到种群中去
+                # m[i] = mutate_2(m[i], n_city)
+                m = np.append(m, mutate_2(m[i], n_city))
+            # 重新变成[当前长度][48]的格式
+            m = np.reshape(m, (-1, n_city))
+
+        # 距离列表，记录每个路径序列的距离
+        distance_list = {}
+
+        for i in range(len(m)):
+            # 计算出当前路线的距离
+            distance_list[i] = distance(m[i], city)
+            # 如果当前路径距离小于最小值
+            if distance_list[i] &lt; min_distance:
+                # 记录最小距离
+                min_distance = distance(m[i], city)
+                # 记录最小距离的路径序列
+                min_route = m[i]
+            # 记录全局最大值，作为y坐标的上限
+            if distance_list[i] &gt; Max_distance:
+                Max_distance = distance_list[i]
+
+        # 计算每个个体在群体中遗传下去的概率 即适应度
+        person_rate = {}
+        # 总的概率
+        sum_rate = 0.0
+        for j in range(len(m)):
+            # 适应度概率=1/距离 使得距离越长 概率越小
+            # 将差距放大1000倍，使得优秀个体更加容易遗传
+            person_rate[j] = (1000 / distance_list[j])
+            # 记录总概率
+            sum_rate += person_rate[j]
+
+        for j in range(len(m)):
+            # 求个体概率占总概率的比例
+            person_rate[j] = (person_rate[j] / sum_rate)
+
+        # 计算累计概率
+        for j in range(len(m) - 1):
+            # 当前个体的累计概率为前面所有个体概率的和
+            person_rate[j + 1] = person_rate[j + 1] + person_rate[j]
+        # 最后一个个体的概率为总概率
+        person_rate[M] = sum_rate
+
+        # 生成一个[100][48]的数组
+        m_next = np.random.randint(1, 2, (M, n_city))
+        m_next[0] = min_route
+        j = 1
+        # 遍历100（M）遍，选出100个个体遗传下去
+        while j &lt; M:
+            # 生成一个选择概率
+            choice = random.uniform(0, sum_rate)
+            # 在父代的累计概率列表里查询
+            for index in range(M):
+                # rate[i]&lt;choice&lt;=rate[i+1]
+                if choice &lt;= person_rate[index]:
+                    m_next[j] = m[index]
+                    j += 1
+                    break
+        # 让下一代的群体替代当前群体
+        m = m_next
+        # 比较当前代数和所有代数中的最小距离
+        if min_distance &lt; Min:
+            Min = min_distance
+
+        # 更新全局最小路径序列
+        if distance(min_route, city) &lt; distance(Min_route, city):
+            Min_route = min_route
+
+        print(min_distance)
+        # 将当前代数的最短路径序列添加到P中，供绘图使用
+        P_distance.append(min_distance)
+
+        # 完成当前代数的繁衍、突变后 代数+1
+        generation += 1
+    print(&quot;全局最小：&quot;, Min)
+    print(&quot;最短路径：&quot;, Min_route)
+
+    # 记录结束时间
+    end_time = datetime.datetime.now()
+    # 计算总时间
+    time = end_time - start_time
+
+    # 图表的横坐标为最大迭代次数+1
+    x = range(max_generation + 1)
+    # 纵坐标为每一代中的最小距离
+    y = P_distance
+
+    # 记录城市坐标点
+    city_x = []
+    city_y = []
+    for i in range(n_city):
+        city_x.append(city[i][0])
+        city_y.append(city[i][1])
+
+    # 记录路线坐标，绘制路线图使用
+    draw_x = []
+    draw_y = []
+    for i in range(n_city - 1):
+        draw_x.append([city[Min_route[i]][0], city[Min_route[i + 1]][0]])
+        draw_y.append([city[Min_route[i]][1], city[Min_route[i + 1]][1]])
+    draw_x.append([city[Min_route[n_city - 1]][0], city[Min_route[0]][0]])
+    draw_y.append([city[Min_route[n_city - 1]][1], city[Min_route[0]][1]])
+
+    # 绘制最短路径图
+    # 绘制路线
+    for i in range(n_city):
+        plt.plot(draw_x[i], draw_y[i], color=&quot;red&quot;)s
+    # 绘制坐标点
+    plt.scatter(city_x, city_y, label=&quot;最短路线图&quot;, marker=&quot;*&quot;, color='blue')
+    plt.legend(loc='best')
+    plt.show()
+
+    # 绘制遗传迭代图
+    plt.plot(x, y, label=&quot;迭代次数-最短距离&quot;, color=&quot;red&quot;, linewidth=1)
+    plt.xlabel(&quot;迭代次数&quot;)
+    plt.ylabel(&quot;最短距离&quot;)
+    plt.title(&quot;遗传算法&quot;)
+    plt.text(max_generation + 20, Max_distance * 0,
+             (&quot;总时间(s):&quot;, time.seconds), size=10, alpha=0.5)
+    plt.text(max_generation + 20, Max_distance *
+             0.1, (&quot;初始种群:&quot;, M), size=10, alpha=0.5)
+    plt.text(max_generation + 20, Max_distance * 0.2,
+             (&quot;城市数量:&quot;, n_city), size=10, alpha=0.5)
+    plt.text(max_generation + 20, Max_distance * 0.3,
+             (&quot;交叉概率:&quot;, cross_rate), size=10, alpha=0.5)
+    plt.text(max_generation + 20, Max_distance * 0.4,
+             (&quot;变异概率:&quot;, mutate_rate), size=10, alpha=0.5)
+    plt.text(max_generation + 20, Max_distance * 0.5,
+             (&quot;最大迭代次数:&quot;, max_generation), size=10, alpha=0.5)
+    plt.ylim(0, Max_distance)
+    plt.xlim(0, max_generation + 20)
+    plt.legend(loc=&quot;best&quot;)
+    plt.show()
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Ma9F6ENfl/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/pa-lou-ti/">
+                  <h3 class="post-title">
+                    爬楼梯
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
