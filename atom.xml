@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-08-31T12:50:59.609Z</updated>
+    <updated>2021-08-31T15:38:10.298Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[只出现一次的数字]]></title>
+        <id>https://chimaeras.ltd/post/zhi-chu-xian-yi-ci-de-shu-zi/</id>
+        <link href="https://chimaeras.ltd/post/zhi-chu-xian-yi-ci-de-shu-zi/">
+        </link>
+        <updated>2021-08-31T12:51:39.000Z</updated>
+        <summary type="html"><![CDATA[<p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素(线性时间复杂度)(不使用额外空间)</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素(线性时间复杂度)(不使用额外空间)</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Python小坑]]></title>
         <id>https://chimaeras.ltd/post/python-xiao-keng/</id>
@@ -115,27 +126,6 @@
 ]]></summary>
         <content type="html"><![CDATA[<p>给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。</p>
 <p>如果不能形成任何面积不为零的三角形，返回 0。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[FizzBuzz]]></title>
-        <id>https://chimaeras.ltd/post/fizzbuzz/</id>
-        <link href="https://chimaeras.ltd/post/fizzbuzz/">
-        </link>
-        <updated>2021-08-27T11:04:57.000Z</updated>
-        <summary type="html"><![CDATA[<p>写一个程序，输出从1到n数字的字符串表示</p>
-<ol>
-<li>如果 n 是3的倍数，输出“Fizz”；</li>
-<li>如果 n 是5的倍数，输出“Buzz”；</li>
-<li>如果 n 同时是3和5的倍数，输出 “FizzBuzz”。</li>
-</ol>
-]]></summary>
-        <content type="html"><![CDATA[<p>写一个程序，输出从1到n数字的字符串表示</p>
-<ol>
-<li>如果 n 是3的倍数，输出“Fizz”；</li>
-<li>如果 n 是5的倍数，输出“Buzz”；</li>
-<li>如果 n 同时是3和5的倍数，输出 “FizzBuzz”。</li>
-</ol>
 ]]></content>
     </entry>
 </feed>

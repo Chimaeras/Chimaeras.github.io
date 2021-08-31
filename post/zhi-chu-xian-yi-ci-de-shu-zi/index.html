@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>只出现一次的数字 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630424261625">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素(线性时间复杂度)(不使用额外空间)
+
+
+方法1：异或操作符（异或同一个数两次，原数不变(异或：相同为0，不同为1）
+class Solut..." />
+    <meta name="keywords" content="位操作,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630424261625" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">只出现一次的数字</h2>
+            <div class="post-date">2021-08-31</div>
+            
+            <div class="post-content" v-pre>
+              <p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素(线性时间复杂度)(不使用额外空间)</p>
+<!-- more -->
+<hr>
+<h3 id="方法1异或操作符异或同一个数两次原数不变异或相同为0不同为1">方法1：异或操作符（异或同一个数两次，原数不变(异或：相同为0，不同为1）</h3>
+<pre><code class="language-java">class Solution {
+    public int singleNumber ( int[] nums ) {
+        int res = 0;
+        for ( int num : nums ) {
+            res ^= num;
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<h2 id="进阶">进阶</h2>
+<h3 id="给你一个整数数组-nums-除某个元素仅出现-一次-外其余每个元素都恰出现-三次-请你找出并返回那个只出现了一次的元素">给你一个整数数组 <code>nums</code> ，除某个元素仅出现 <strong>一次</strong> 外，其余每个元素都恰出现 **三次 。**请你找出并返回那个只出现了一次的元素。</h3>
+<h4 id="方法1使用哈希表来统计每个元素出现的次数再寻找只出现一次的元素">方法1：使用哈希表来统计每个元素出现的次数，再寻找只出现一次的元素</h4>
+<pre><code class="language-java">class Solution {
+    public int singleNumber ( int[] nums ) {
+        HashMap&lt; Integer, Integer &gt; map = new HashMap&lt; Integer, Integer &gt;();
+        for ( int num : nums ) {
+            // 如果map中含有指定的key，就返回该key对应的value，否则使用该方法的第二个参数作为默认值返回
+            map.put( num, map.getOrDefault( num, 0 ) + 1 );
+        }
+        int res = 0;
+        for ( Map.Entry&lt; Integer, Integer &gt; entry : map.entrySet() ) {
+            int num = entry.getKey(), key = entry.getValue();
+            if ( key == 1 ) {
+                res = num;
+                break;
+            }
+        }
+        return res;
+    }
+}
+</code></pre>
+<h4 id="方法2位运算">方法2：位运算</h4>
+<p>对于数组中非答案的元素来说，每一个元素都出现了3次，即第 i 位的是3个0或3个1，所以他们的和都是3的倍数。</p>
+<p>因此：<em>答案的第i个二进制位就是数组中所有元素的第 i 个二进制位之和除以3的余数</em>。答案中的第 i 位如果为1，那么当前位的总和即3n+1；如果第i位为0，那么总和就是3n+0.我们只需关注为1的位并累加起来即可。</p>
+<pre><code class="language-java">class Solution {
+    public int singleNumber ( int[] nums ) {
+        int res = 0;
+        for ( int i = 0; i &lt; 32; i++ ) {
+            int total = 0;
+            for ( int num : nums ) {
+                // 当前第i位&amp;1，如果第i位是1，则结果是1；否则是0
+                total += ( ( num &gt;&gt; i ) &amp; 1 );
+            }
+            // 所有num的当前位总和是3的倍数
+            // 如果不是3的倍数的话，表示答案的当前位是1
+            if ( total % 3 != 0 ) {
+                res |= ( 1 &lt;&lt; i );
+            }
+        }
+        return res;
+    }
+}
+</code></pre>
+<h4 id="方法3数字电路法">方法3：数字电路法</h4>
+<p>利用黑箱中的数字来存储不同位数，例如当其余元素出现3次的时候，即每位可能出现0，1，2此，可以用两个整数a，b来对元素进行存储，</p>
+<p>当元素出现次数为3次时，黑盒中存储了两个整数 a 和 b，且会有三种情况：</p>
+<ul>
+<li>a 的第 i 位为 0 且 b 的第 i 位为 0，表示 0；</li>
+<li>a 的第 i 位为 0 且 b 的第 i 位为 1，表示 1；</li>
+<li>a 的第 i 位为 1 且 b 的第 i 位为 0，表示 2。</li>
+</ul>
+<p>其余情况以此类推，我们可以得到真值表：</p>
+<table>
+<thead>
+<tr>
+<th>（ab）</th>
+<th>x</th>
+<th>新的a</th>
+<th>新的b</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>00</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>01</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>01</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>根据真值表可以设计电路：</p>
+<pre><code>a = (~a &amp; b &amp; x) | (a &amp; ~b &amp; ~x)；
+b = ~a &amp; (bˆx)
+</code></pre>
+<p>遍历完元素之后，最终当前位要么是 (00)，表示答案的第 i 位是 00；要么是 (01)，表示答案的第 i 位是 11。所以只需要取b作为答案即可。</p>
+<pre><code class="language-java">class Solution {
+    public int singleNumber ( int[] nums ) {
+        int a = 0, b = 0;
+        for ( int num : nums ) {
+            int aNext = ( ~a &amp; b &amp; num ) | ( a &amp; ~b &amp; ~num );
+            int bNext = ~a &amp; ( b ^ num );
+            a = aNext;
+            b = bNext;
+        }
+        return b;
+    }
+}
+</code></pre>
+<p>当元素出现次数为5次时，黑盒中存储了两个整数 a 、 b、c，且会有5种情况：</p>
+<ul>
+<li>a 的第 i 位为 0 且 b 的第 i 位为 0 且 c 的第 i 位为 0，表示 0；</li>
+<li>a 的第 i 位为 0 且 b 的第 i 位为 0 且 c 的第 i 位为 1，表示 1；</li>
+<li>a 的第 i 位为 1 且 b 的第 i 位为 1 且 c 的第 i 位为 0，表示 2。</li>
+<li>a 的第 i 位为 0 且 b 的第 i 位为 1 且 c 的第 i 位为 1，表示 3；</li>
+<li>a 的第 i 位为 1 且 b 的第 i 位为 0 且 c 的第 i 位为 0，表示 4；</li>
+<li>a 的第 i 位为 1 且 b 的第 i 位为 0 且 c 的第 i 位为 1，表示 5。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>（abc）</th>
+<th>x</th>
+<th>a</th>
+<th>b</th>
+<th>c</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>000</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>000</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>001</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>001</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>010</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>010</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>011</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>011</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>100</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>100</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>根据真值表可以设计电路：</p>
+<pre><code>a = a ^ (b &amp; c &amp; x）
+b = ~a &amp; ( (b &amp; ~c) | c &amp; ( b ^ x ) )
+c = ~a &amp; ( c ^ x )
+</code></pre>
+<p>遍历完元素之后，最终当前位要么是 (00)，表示答案的第 i 位是 00；要么是 (01)，表示答案的第 i 位是 11。所以只需要取b作为答案即可。</p>
+<hr>
+<h2 id="进阶2">进阶2：</h2>
+<h3 id="给定一个整数数组-nums其中恰好有两个元素只出现一次其余所有元素均出现两次-找出只出现一次的那两个元素-你可以按-任意顺序-返回答案">给定一个整数数组 <code>nums</code>，其中恰好有两个元素只出现一次，其余所有元素均出现两次。 找出只出现一次的那两个元素。你可以按 <strong>任意顺序</strong> 返回答案。</h3>
+<h4 id="方法1哈希表法">方法1:哈希表法</h4>
+<pre><code class="language-java">class Solution {
+    public int[] singleNumber ( int[] nums ) {
+        HashMap&lt; Integer, Integer &gt; map = new HashMap&lt; Integer, Integer &gt;();
+        for ( int num : nums ) {
+            // 如果map中含有指定的key，就返回该key对应的value，否则使用该方法的第二个参数作为默认值返回
+            map.put( num, map.getOrDefault( num, 0 ) + 1 );
+        }
+        int[] res = new int[2];
+        int flag = 0;
+        for ( Map.Entry&lt; Integer, Integer &gt; entry : map.entrySet() ) {
+            int num = entry.getKey(), key = entry.getValue();
+            if ( key == 1 ) {
+                res[flag] = num;
+                flag += 1;
+                if ( flag == 2 ) {
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+}
+</code></pre>
+<h4 id="方法2分组法">方法2：分组法</h4>
+<p>由上述题目我们可以知道，全员异或操作可以去除掉重复的元素。但是这里有两个元素，我们可以将元素分成两组，使其满足：</p>
+<ul>
+<li>两个只出现一次的数字在不同的组。</li>
+<li>相同的数字会被分到相同的组。</li>
+</ul>
+<p>我们假设两个不同的数字是a和b，全员异或的结果是x，那么x_i表示x为二进制时的第i位。当x_i为0时，表示a_i和b_i相等；当当x_i为1时，表示a_i和b_i不相等。那么我们只需要找到一个i位，使得x_i为1，那就表示在当前位上，a和b不相等。所以只需要根据这一位去进行小组划分即可。</p>
+<pre><code class="language-java">class Solution {
+    public int[] singleNumber ( int[] nums ) {
+        // 全员异或的结果
+        int res = 0;
+        for ( int n : nums ) {
+            res ^= n;
+        }
+
+        // 找到一个为1的位
+        int div = 1;
+        while ( ( div &amp; res ) == 0 ) {
+            div &lt;&lt;= 1;
+        }
+
+        // 根据当前位进行小组划分
+        int a = 0, b = 0;
+        for ( int n : nums ) {
+            if ( ( div &amp; n ) != 0 ) {
+                a ^= n;
+            } else {
+                b ^= n;
+            }
+        }
+        return new int[] { a, b };
+    }
+}
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Q7WsqiXr4/" class="tag">
+                    位操作
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/python-xiao-keng/">
+                  <h3 class="post-title">
+                    Python小坑
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
