@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Python小坑 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630414097312">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="记录一些Python中不易察觉的坑
+
+
+
+
+01--整数比较
+在 Python 中一切都是对象，整数也是对象，在比较两个整数时有两个运算符==和is，它们的区别是：
+
+
+is比较的是两个整数对象的id值是否相等，也就是比较两个引用是否代表了..." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630414097312" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Python小坑</h2>
+            <div class="post-date">2021-08-31</div>
+            
+            <div class="post-content" v-pre>
+              <p>记录一些Python中不易察觉的坑</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h4 id="01-整数比较">01--整数比较</h4>
+<p>在 Python 中一切都是对象，整数也是对象，在比较两个整数时有两个运算符==和is，它们的区别是：</p>
+</li>
+<li>
+<p>is比较的是两个整数对象的id值是否相等，也就是比较两个引用是否代表了内存中同一个地址</p>
+</li>
+<li>
+<p>==比较的是两个整数对象的内容是否相等，使用==时其实是调用了对象的__eq__()方法。</p>
+</li>
+</ul>
+<pre><code class="language-python">def main():
+    x = y = -1
+    while True:
+        x += 1
+        y += 1
+        if x is y:
+            print('%d is %d' % (x, y))
+        else:
+            print('Attention! %d is not %d' % (x, y))
+            break
+    x = y = 0
+    while True:
+        x -= 1
+        y -= 1
+        if x is y:
+            print('%d is %d' % (x, y))
+        else:
+            print('Attention! %d is not %d' % (x, y))
+            break
+
+if __name__ == '__main__':
+    main()
+
+</code></pre>
+<ul>
+<li>对于整数对象，Python把一些频繁使用的整数对象缓存起来，保存到一个叫small_ints的链表中，在Python的整个生命周期内，任何需要引用这些整数对象的地方，都不再重新创建新的对象，而是直接引用缓存中的对象。</li>
+<li>Python把频繁使用的整数对象的值定在[-5, 256]这个区间，如果需要这个范围的整数，就直接从small_ints中获取引用而不是临时创建新的对象。因为大于256或小于-5的整数不在该范围之内，所以就算两个整数的值是一样，但它们是不同的对象。</li>
+</ul>
+<pre><code class="language-python">253 is 253
+254 is 254
+255 is 255
+256 is 256
+Attention! 257 is not 257
+-1 is -1
+-2 is -2
+-3 is -3
+-4 is -4
+-5 is -5
+Attention! -6 is not -6
+</code></pre>
+<ul>
+<li>
+<p>凡是在一个代码块中创建的整数对象，如果值不在small_ints缓存范围之内，但在同一个代码块中已经存在一个值与其相同的整数对象了，那么就直接引用该对象，否则创建一个新的对象出来，这条规则对不在small_ints范围的负数并不适用，对负数值浮点数也不适用，但对非负浮点数和字符串都是适用的</p>
+</li>
+<li>
+<h4 id="02-嵌套列表">02--嵌套列表</h4>
+</li>
+</ul>
+<pre><code class="language-python">def main():
+    names = ['关羽', '张飞', '赵云', '马超', '黄忠']
+    subjs = ['语文', '数学', '英语']
+    scores = [[0] * 3] * 5
+    for row, name in enumerate(names):
+        print('请输入%s的成绩' % name)
+        for col, subj in enumerate(subjs):
+            scores[row][col] = float(input(subj + ': '))
+    print(scores)
+if __name__ == '__main__':
+    main()
+
+</code></pre>
+<ul>
+<li>观察上述例子，程序执行完成后我们发现，每个学生3门课程的成绩是一模一样的，而且就是最后录入的那个学生的成绩。</li>
+<li>这里要区分对象和引用对象的区别，程序中可以使用的内存从逻辑上可以为五个部分，按照地址从高到低依次是：栈（stack）、堆（heap）、数据段（data segment）、只读数据段（static area）和代码段（code segment）</li>
+<li>栈用来存储局部、临时变量，以及函数调用时保存现场和恢复现场需要用到的数据，这部分内存在代码块开始执行时自动分配，代码块执行结束时自动释放，通常由编译器自动管理</li>
+<li>堆的大小不固定，可以动态的分配和回收，因此如果程序中有大量的数据需要处理，这些数据通常都放在堆上，如果堆空间没有正确的被释放会引发内存泄露的问题，而像Python、Java等编程语言都使用了垃圾回收机制来实现自动化的内存管理（自动回收不再使用的堆空间）</li>
+</ul>
+<h4 id="这时我们可以回过头看看刚才的程序我们对列表进行0-3-5操作时仅仅是将0-0-0这个列表的地址进行了复制并没有创建新的列表对象所以容器中虽然有5个元素但是这5个元素引用了同一个列表对象">这时我们可以回过头看看刚才的程序，我们对列表进行[[0] * 3] * 5操作时，仅仅是将[0, 0, 0]这个列表的地址进行了复制，并没有创建新的列表对象，所以容器中虽然有5个元素，但是这5个元素引用了同一个列表对象</h4>
+<p>故可以做以下修改：</p>
+<pre><code class="language-python">def main():
+    names = ['关羽', '张飞', '赵云', '马超', '黄忠']
+    subjs = ['语文', '数学', '英语']
+    scores = [[]] * 5
+    for row, name in enumerate(names):
+        print('请输入%s的成绩' % name)
+        scores[row] = [0] * 3
+        for col, subj in enumerate(subjs):
+            scores[row][col] = float(input(subj + ': '))
+    print(scores)
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+<ul>
+<li>
+<h4 id="03-访问修饰符">03--访问修饰符</h4>
+<p>C/C++中都有对数据的保护机制，但python中只是从命名上对数据进行保护，如果知道命名规则照样可以对数据进行访问：</p>
+</li>
+</ul>
+<pre><code class="language-python">class Student(object):
+
+    def __init__(self, name, age):
+        self.__name = name
+        self.__age = age
+
+    def __str__(self):
+        return self.__name + ': ' + str(self.__age)
+
+def main():
+    stu = Student('骆昊', 38)
+    # 'Student' object has no attribute '__name'
+    # print(stu.__name)
+    # 用下面的方式照样可以访问类中的私有成员
+    print(stu._Student__name)
+    print(stu._Student__age)
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+<ul>
+<li>需要提醒大家注意的是，Python类中的那些魔法方法，如__str__、__repr__等，这些方法并不是私有成员哦，虽然它们以双下划线开头，但是他们也是以双下划线结尾的，这种命名并不是私有成员的命名，这一点对初学者来说真的很坑。</li>
+</ul>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/ba-shu-ma-wen-ti/">
+                  <h3 class="post-title">
+                    八数码问题
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>八数码问题 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630414097312">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="在3×3的方格棋盘上，摆放着1到8这八个数码，有1个方格是空的，其初始状态如图1所示，要求对空格执行空格左移、空格右移、空格上移和空格下移这四个操作使得棋盘从初始状态到目标状态。
+
+
+初始状态：
+
+
+
+2
+5
+4
+
+
+
+
+3
+
+7
+
+
+1
+..." />
+    <meta name="keywords" content="算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630414097312" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">八数码问题</h2>
+            <div class="post-date">2021-08-31</div>
+            
+            <div class="post-content" v-pre>
+              <p>在3×3的方格棋盘上，摆放着1到8这八个数码，有1个方格是空的，其初始状态如图1所示，要求对空格执行空格左移、空格右移、空格上移和空格下移这四个操作使得棋盘从初始状态到目标状态。</p>
+<!-- more -->
+<hr>
+<p>初始状态：</p>
+<table>
+<thead>
+<tr>
+<th>2</th>
+<th>5</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td></td>
+<td>7</td>
+</tr>
+<tr>
+<td>1</td>
+<td>8</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>目标状态：</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8</td>
+<td></td>
+<td>4</td>
+</tr>
+<tr>
+<td>7</td>
+<td>6</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="内容要求">内容要求 ：</h3>
+<ul>
+<li>生成一个八数码问题分布，设计一个可解的目标状态（棋盘每个位置不一样）</li>
+<li>使用广度优先、深度优先、启发式算法解决八数码问题</li>
+<li>分析估价函数对启发式算法的影响</li>
+<li>探讨各个算法的特点</li>
+<li>思考八数码问题要符合什么规律才可解</li>
+</ul>
+<hr>
+<pre><code class="language-python">#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# @Time    : 2020/9/16 11:33
+# @Author  : Joker
+# @Site    : 
+# @File    : experiment_1.py
+# @Software: PyCharm
+
+import random
+from functools import cmp_to_key
+import math
+import numpy as np
+
+
+# 上
+def up(arr, i):
+    t = arr.copy()
+    if i &gt;= 3:
+        t[i], t[i - 3] = t[i - 3], t[i]
+    return t
+
+
+# 下
+def down(arr, i):
+    t = arr.copy()
+    if i &lt;= 5:
+        t[i], t[i + 3] = t[i + 3], t[i]
+    return t
+
+
+# 左
+def left(arr, i):
+    t = arr.copy()
+    if i % 3 &gt;= 1:
+        t[i], t[i - 1] = t[i - 1], t[i]
+    return t
+
+
+# 右
+def right(arr, i):
+    t = arr.copy()
+    if i % 3 &lt;= 1:
+        t[i], t[i + 1] = t[i + 1], t[i]
+    return t
+
+
+# 生成目标数组函数
+def random_list():
+    arr = np.arange(0, 9)  # 生成0-9的数组
+    np.random.shuffle(arr)  # 打乱数组顺序
+
+    # 把0放到中间
+    for i in range(len(arr)):
+        if arr[i] == 0:
+            arr[i], arr[4] = arr[4], arr[i]
+            break
+    return arr
+
+
+# 生成最终状态函数
+# change目标状态是移动的步数
+# 目标状态是初始状态移动change次后得到的状态
+def final_list(arr, change):
+    pre = -1
+    move = 0
+    while move &lt;= change:
+        # 找到0的索引
+        for i in range(len(arr)):
+            if arr[i] == 0:
+                # 随机生成x，代表移动的方向
+                x = random.randint(0, 3)
+                if x == 0 and pre != 1:
+                    arr = up(arr, i)
+                    move = move + 1
+                elif x == 1 and pre != 0:
+                    arr = down(arr, i)
+                    move = move + 1
+                elif x == 2 and pre != 3:
+                    arr = left(arr, i)
+                    move = move + 1
+                elif x == 3 and pre != 2:
+                    arr = right(arr, i)
+                    move = move + 1
+                # 移动一次后就退出当前循环，进行下一次移动
+                pre = x
+                break
+    return arr
+
+
+# 展示函数
+def show(arr):
+    for i in range(3):
+        for j in range(3):
+            print(arr[i * 3 + j], end='\t')
+        print(&quot;\n&quot;)
+
+
+# 检查是否存在
+def isnotin(arr1, arr2):
+    for row in arr2:
+        if (row == arr1).all():
+            return False  # 存在返回False
+    return True  # 不存在就返回True
+
+
+# 检查相似度
+def check_s(arr1, arr2):
+    equal = 0
+    # 如果有一个块相等 权重+1
+    for i in range(len(arr1)):
+        if arr1[i] == arr2[i]:
+            equal = equal + 1
+    return equal
+
+
+# 计算欧式距离
+def check_d(arr1, arr2):
+    d = 0
+    for i in range(len(arr1)):
+        for j in range(len(arr2)):
+            if arr1[i] == arr2[j]:
+                d1_x = i % 3
+                d1_y = i / 3
+                d2_x = j % 3
+                d2_y = j / 3
+                d = d + math.sqrt(pow(abs(d1_x - d2_x), 2) + pow(abs(d1_y - d2_y), 2))
+    return d
+
+
+# 相似度比较因子
+def cmp_s(x, y):
+    if check_s(x, final, ) &lt; check_s(y, final):
+        return 1
+    elif check_s(x, final) &gt; check_s(y, final):
+        return -1
+    else:
+        return 0
+
+
+# 欧式距离比较因子
+def cmp_d(x, y):
+    if check_d(x, final) &gt; check_d(y, final):
+        return 1
+    elif check_d(x, final) &lt; check_d(y, final):
+        return -1
+    else:
+        return 0
+
+
+# 广度优先
+def bfs(bfs_maze):
+    bfs_open_list = np.zeros((1, 9), dtype=np.int)  # open表
+    bfs_close_list = np.zeros((1, 9), dtype=np.int)  # close表
+
+    bfs_open_list[0] = bfs_maze  # 初始状态添加到open表中
+    bfs_close_list[0] = bfs_maze  # 初始状态添加到open表中
+    bfs_count = 0  # 统计遍历的次数
+
+    while bfs_open_list.size != 0:  # 当open表不为空
+        bfs_count = bfs_count + 1  # 次数+1
+        for index in range(len(bfs_maze)):  # 在索引为0-8中查找
+            if bfs_open_list[0][index] == 0:  # 找到数值为0的下标
+                first = bfs_open_list[0]  # 对open表中第一个进行检查
+                t1 = up(first, index)  # 上
+                t2 = down(first, index)  # 下
+                t3 = left(first, index)  # 左
+                t4 = right(first, index)  # 右
+
+                # 检查移动后的状态是否在open表和close表中
+                # 如果都不存在，就加入
+                if isnotin(t1, bfs_open_list) and isnotin(t1, bfs_close_list):
+                    bfs_open_list = np.vstack((bfs_open_list, t1))
+
+                if isnotin(t2, bfs_open_list) and isnotin(t2, bfs_close_list):
+                    bfs_open_list = np.vstack((bfs_open_list, t2))
+
+                if isnotin(t3, bfs_open_list) and isnotin(t3, bfs_close_list):
+                    bfs_open_list = np.vstack((bfs_open_list, t3))
+
+                if isnotin(t4, bfs_open_list) and isnotin(t4, bfs_close_list):
+                    bfs_open_list = np.vstack((bfs_open_list, t4))
+
+        # 当前状态等于目标状态
+        if (bfs_open_list[0] == final).all():
+            print(&quot;第%d次时找到路径!&quot; % bfs_count)
+            # show(final)
+            break
+        else:
+            # 将open表的第一个放到close表中，代表已经检查过
+            bfs_close_list = np.vstack((bfs_close_list, bfs_open_list[0]))
+            # 删除open表中的第一个状态
+            bfs_open_list = np.delete(bfs_open_list, 0, axis=0)
+        # print(&quot;次数：&quot;, bfs_count)
+
+
+# 深度优先
+def dfs(dfs_maze, depth):
+    dfs_open_list = np.zeros((1, 9), dtype=np.int)  # open表
+    dfs_close_list = np.zeros((1, 9), dtype=np.int)  # close表
+
+    dfs_open_list[0] = dfs_maze  # 初始状态添加到open表中
+    dfs_close_list[0] = dfs_maze  # 初始状态添加到open表中
+
+    dfs_count = 0  # 统计次数
+    depth_list = [0]  # 记录各节点的深度
+
+    while dfs_open_list.size != 0:  # 当open表不为空
+        for index in range(len(dfs_maze)):  # 在索引为0-8中查找
+            if dfs_open_list[-1][index] == 0:  # 找到最后一项数值为0的下标
+                first = dfs_open_list[-1]  # 对open表中最后一个进行检查
+                father_depth = depth_list[int(dfs_open_list.size / 9) - 1]  # 记录当前父节点的深度
+                t1 = up(first, index)  # 上
+                t2 = down(first, index)  # 下
+                t3 = left(first, index)  # 左
+                t4 = right(first, index)  # 右
+
+                if depth_list[-1] &lt; depth:  # 当子节点的深度不超过最大深度
+                    if isnotin(t1, dfs_open_list) and isnotin(t1, dfs_close_list):
+                        dfs_open_list = np.vstack((dfs_open_list, t1))  # 添加到open表中
+                        depth_list.append(father_depth + 1)  # 记录当前节点的深度
+
+                    if isnotin(t2, dfs_open_list) and isnotin(t2, dfs_close_list):
+                        dfs_open_list = np.vstack((dfs_open_list, t2))
+                        depth_list.append(father_depth + 1)
+
+                    if isnotin(t3, dfs_open_list) and isnotin(t3, dfs_close_list):
+                        dfs_open_list = np.vstack((dfs_open_list, t3))
+                        depth_list.append(father_depth + 1)
+
+                    if isnotin(t4, dfs_open_list) and isnotin(t4, dfs_close_list):
+                        dfs_open_list = np.vstack((dfs_open_list, t4))
+                        depth_list.append(father_depth + 1)
+
+        # open表的最后一个节点等于目标节点
+        if (dfs_open_list[-1] == final).all():
+            print(&quot;第%d次时找到路径!&quot; % dfs_count)
+            # show(final)
+            break
+        else:
+            # 将open表的最后一个放到close表中，代表已经检查过
+            dfs_close_list = np.vstack((dfs_close_list, dfs_open_list[-1]))
+            # 删除open表中的最后一个状态
+            dfs_open_list = np.delete(dfs_open_list, -1, axis=0)
+            # 如果当前节点不符合要求，则在当前深度数组中移除当前节点的深度记录
+            depth_list.pop()
+
+        # 次数+1
+        dfs_count = dfs_count + 1
+
+    # 如果open表遍历完了还没找到，就输出信息
+    if dfs_open_list.size == 0:
+        print(&quot;遍历完毕，未找到结果&quot;)
+
+
+# 全局优先算法
+def similar(s_maze):
+    s_open_list = np.zeros((1, 9), dtype=np.int)  # open表
+    s_close_list = np.zeros((1, 9), dtype=np.int)  # close表
+
+    s_open_list[0] = s_maze  # 初始状态添加到open表中
+    s_close_list[0] = s_maze  # 初始状态添加到open表中
+    s_count = 0  # 统计次数
+
+    while s_open_list.size != 0:  # 当open表不为空
+        s_count = s_count + 1  # 统计次数+1
+
+        # 将open表按照状态的权值进行排序
+        # 将open按照错位的格子个数进行排序，错位少的放在前面
+        # 离目标状态近的先进行检查
+        s_open_list = sorted(s_open_list, key=cmp_to_key(cmp_s))
+        s_open_list = np.asarray(s_open_list)  # 将list转换成np数组
+
+        for index in range(len(s_maze)):  # 在索引为0-8中查找
+            if s_open_list[0][index] == 0:  # 找到数值为0的下标
+                first = s_open_list[0]  # 对open表中第一个进行检查
+                t1 = up(first, index)  # 上
+                t2 = down(first, index)  # 下
+                t3 = left(first, index)  # 左
+                t4 = right(first, index)  # 右
+
+                # 检查移动后的状态是否在open表和close表中
+                # 如果都不存在，就加入
+                if isnotin(t1, s_open_list) and isnotin(t1, s_close_list):
+                    s_open_list = np.vstack((s_open_list, t1))
+
+                if isnotin(t2, s_open_list) and isnotin(t2, s_close_list):
+                    s_open_list = np.vstack((s_open_list, t2))
+
+                if isnotin(t3, s_open_list) and isnotin(t3, s_close_list):
+                    s_open_list = np.vstack((s_open_list, t3))
+
+                if isnotin(t4, s_open_list) and isnotin(t4, s_close_list):
+                    s_open_list = np.vstack((s_open_list, t4))
+
+        # 如果找到目标状态
+        if (s_open_list[0] == final).all():
+            print(&quot;第%d次时找到路径!&quot; % s_count)
+            # show(final)
+            break
+        else:
+            # 将open表的第一个放到close表中，代表已经检查过
+            s_close_list = np.vstack((s_close_list, s_open_list[0]))
+            # 删除open表中的第一个状态
+            s_open_list = np.delete(s_open_list, 0, axis=0)
+        # print(&quot;第%d次&quot; % s_count)
+
+
+# 欧式距离算法
+def distance(d_maze):
+    d_open_list = np.zeros((1, 9), dtype=np.int)  # open表
+    d_close_list = np.zeros((1, 9), dtype=np.int)  # close表
+
+    d_open_list[0] = d_maze  # 初始状态添加到open表中
+    d_close_list[0] = d_maze  # 初始状态添加到open表中
+    d_count = 0  # 统计次数
+
+    while d_open_list.size != 0:  # 当open表不为空
+        d_count = d_count + 1  # 统计次数+1
+
+        # 将open表按照状态的权值进行排序
+        # 计算当前状态和目标状态的欧氏距离，小的放在前面进行检查
+        # 离目标状态近的先进行检查
+        d_open_list = sorted(d_open_list, key=cmp_to_key(cmp_d))
+        d_open_list = np.asarray(d_open_list)  # 将list转换成np数组
+
+        for index in range(len(d_maze)):  # 在索引为0-8中查找
+            if d_open_list[0][index] == 0:  # 找到数值为0的下标
+                first = d_open_list[0]  # 对open表中第一个进行检查
+                t1 = up(first, index)  # 上
+                t2 = down(first, index)  # 下
+                t3 = left(first, index)  # 左
+                t4 = right(first, index)  # 右
+
+                # 检查移动后的状态是否在open表和close表中
+                # 如果都不存在，就加入
+                if isnotin(t1, d_open_list) and isnotin(t1, d_close_list):
+                    d_open_list = np.vstack((d_open_list, t1))
+
+                if isnotin(t2, d_open_list) and isnotin(t2, d_close_list):
+                    d_open_list = np.vstack((d_open_list, t2))
+
+                if isnotin(t3, d_open_list) and isnotin(t3, d_close_list):
+                    d_open_list = np.vstack((d_open_list, t3))
+
+                if isnotin(t4, d_open_list) and isnotin(t4, d_close_list):
+                    d_open_list = np.vstack((d_open_list, t4))
+
+        # 如果找到目标状态
+        if (d_open_list[0] == final).all():
+            print(&quot;第%d次时找到路径!&quot; % d_count)
+            # show(final)
+            break
+        else:
+            # 将open表的第一个放到close表中，代表已经检查过
+            d_close_list = np.vstack((d_close_list, d_open_list[0]))
+            # 删除open表中的第一个状态
+            d_open_list = np.delete(d_open_list, 0, axis=0)
+        # print(&quot;第%d次&quot; % d_count)
+
+
+if __name__ == '__main__':
+    maze = random_list()  # 随机生成八数码分布
+    final = final_list(maze, 10)  # 随机生成目标状态，c为最大移动步数
+    final = np.asarray(final)  # 将list转换成np数组
+
+    # final = np.arange(0, 9)  # 生成0-9的数组
+    # np.random.shuffle(final)  # 打乱数组顺序
+    # final = np.asarray(final)  # 将list转换成np数组
+
+    print(&quot;初始状态:&quot;)
+    show(maze)
+    print(&quot;最终状态:&quot;)
+    show(final)
+
+    print(&quot;宽度优先：&quot;)
+    bfs(maze)  # 宽度优先
+    print(&quot;\n&quot;)
+
+    print(&quot;深度优先：&quot;)
+    dfs(maze, 7)  # 深度优先
+    print(&quot;\n&quot;)
+
+    print(&quot;全局优先算法：&quot;)
+    similar(maze)  # 全局优先算法
+    print(&quot;\n&quot;)
+
+    print(&quot;欧式距离算法：&quot;)
+    distance(maze)  # 欧式距离算法
+    print(&quot;\n&quot;)
+
+    # Q：随机生成迷宫部分 与前一步状态不相等
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Ma9F6ENfl/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/chang-jian-fen-lei-suan-fa/">
+                  <h3 class="post-title">
+                    常见分类算法
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
