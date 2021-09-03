@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-03T14:53:03.060Z</updated>
+    <updated>2021-09-03T16:14:56.744Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,54 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[回文数]]></title>
+        <id>https://chimaeras.ltd/post/hui-wen-shu/</id>
+        <link href="https://chimaeras.ltd/post/hui-wen-shu/">
+        </link>
+        <updated>2021-09-03T16:09:24.000Z</updated>
+        <summary type="html"><![CDATA[<p>给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。</p>
+<p>回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。例如，121 是回文，而 123 不是。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。</p>
+<p>回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。例如，121 是回文，而 123 不是。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[位1的个数]]></title>
+        <id>https://chimaeras.ltd/post/wei-1-de-ge-shu/</id>
+        <link href="https://chimaeras.ltd/post/wei-1-de-ge-shu/">
+        </link>
+        <updated>2021-09-03T15:58:41.000Z</updated>
+        <summary type="html"><![CDATA[<p>编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为汉明重量）。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为汉明重量）。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[托普利兹矩阵]]></title>
+        <id>https://chimaeras.ltd/post/tuo-pu-li-zi-ju-zhen/</id>
+        <link href="https://chimaeras.ltd/post/tuo-pu-li-zi-ju-zhen/">
+        </link>
+        <updated>2021-09-03T15:47:01.000Z</updated>
+        <summary type="html"><![CDATA[<p>给你一个 m x n 的矩阵 matrix 。如果这个矩阵是托普利茨矩阵，返回 true ；否则，返回 false 。</p>
+<p>如果矩阵上每一条由左上到右下的对角线上的元素都相同，那么这个矩阵是 托普利茨矩阵 。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>给你一个 m x n 的矩阵 matrix 。如果这个矩阵是托普利茨矩阵，返回 true ；否则，返回 false 。</p>
+<p>如果矩阵上每一条由左上到右下的对角线上的元素都相同，那么这个矩阵是 托普利茨矩阵 。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[合并两个有序数组]]></title>
+        <id>https://chimaeras.ltd/post/he-bing-liang-ge-you-xu-shu-zu/</id>
+        <link href="https://chimaeras.ltd/post/he-bing-liang-ge-you-xu-shu-zu/">
+        </link>
+        <updated>2021-09-03T15:26:22.000Z</updated>
+        <summary type="html"><![CDATA[<p>合并两个非递减顺序排列的整数数组</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>合并两个非递减顺序排列的整数数组</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[有序数组的平方]]></title>
         <id>https://chimaeras.ltd/post/you-xu-shu-zu-de-ping-fang/</id>
@@ -74,56 +122,6 @@
         <summary type="html"><![CDATA[<p>在学习重载的时候遇到了一些构造函数和析构函数的不确定问题，故记录一下</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>在学习重载的时候遇到了一些构造函数和析构函数的不确定问题，故记录一下</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[遗传算法]]></title>
-        <id>https://chimaeras.ltd/post/yi-chuan-suan-fa/</id>
-        <link href="https://chimaeras.ltd/post/yi-chuan-suan-fa/">
-        </link>
-        <updated>2021-08-28T13:58:39.000Z</updated>
-        <summary type="html"><![CDATA[<p>假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>假设有一个旅行商人要拜访n个城市，他必须选择所要走的路径，路径的限制是每个城市只能拜访一次，而且最后要回到原来出发的城市。路径的选择目标是要求得的路径路程为所有路径之中的最小值。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[爬楼梯]]></title>
-        <id>https://chimaeras.ltd/post/pa-lou-ti/</id>
-        <link href="https://chimaeras.ltd/post/pa-lou-ti/">
-        </link>
-        <updated>2021-08-28T02:49:56.000Z</updated>
-        <summary type="html"><![CDATA[<p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。</p>
-<p>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
-<p>注意：给定 n 是一个正整数。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>假设你正在爬楼梯。需要 n 阶你才能到达楼顶。</p>
-<p>每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
-<p>注意：给定 n 是一个正整数。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[分配饼干]]></title>
-        <id>https://chimaeras.ltd/post/fen-pei-bing-gan/</id>
-        <link href="https://chimaeras.ltd/post/fen-pei-bing-gan/">
-        </link>
-        <updated>2021-08-27T15:00:39.000Z</updated>
-        <summary type="html"><![CDATA[<p>假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。</p>
-<p>对每个孩子 i，都有一个胃口值 g[i]，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 j，都有一个尺寸 s[j] 。如果 s[j] &gt;= g[i]，我们可以将这个饼干 j 分配给孩子 i ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。</p>
-<p>对每个孩子 i，都有一个胃口值 g[i]，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 j，都有一个尺寸 s[j] 。如果 s[j] &gt;= g[i]，我们可以将这个饼干 j 分配给孩子 i ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[0~n-1中缺失的数字]]></title>
-        <id>https://chimaeras.ltd/post/0~n-1-zhong-que-shi-de-shu-zi/</id>
-        <link href="https://chimaeras.ltd/post/0~n-1-zhong-que-shi-de-shu-zi/">
-        </link>
-        <updated>2021-08-27T14:55:11.000Z</updated>
-        <summary type="html"><![CDATA[<p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
 ]]></content>
     </entry>
 </feed>

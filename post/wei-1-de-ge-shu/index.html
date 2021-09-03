@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>有序数组的平方 | Joker&#39;s Blog</title>
+<title>位1的个数 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,11 @@
 
 
 
-    <meta name="description" content="给定一个按非递减顺序排序的整数数组A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序
+    <meta name="description" content="编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为汉明重量）。
 
 
-
-
-方法1：直接排序
-
-
-class Solution {
-    public int[] sortedSquares ( int[] nu..." />
-    <meta name="keywords" content="双指针,LeetCode" />
+请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，..." />
+    <meta name="keywords" content="位操作,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,61 +97,70 @@ class Solution {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">有序数组的平方</h2>
+            <h2 class="post-title">位1的个数</h2>
             <div class="post-date">2021-09-03</div>
             
             <div class="post-content" v-pre>
-              <p>给定一个按非递减顺序排序的整数数组A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序</p>
+              <p>编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为汉明重量）。</p>
 <!-- more -->
+<ul>
+<li>请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。</li>
+</ul>
 <hr>
 <ul>
 <li>
-<h3 id="方法1直接排序">方法1：直接排序</h3>
+<h4 id="解法1与操作">解法1：与操作</h4>
 </li>
 </ul>
-<pre><code class="language-java">class Solution {
-    public int[] sortedSquares ( int[] nums ) {
-        for ( int i = 0; i &lt; nums.length; i++ ) {
-            nums[i] = nums[i] * nums[i];
+<pre><code class="language-java">public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight ( int n ) {
+        int count = 0;
+        while ( n != 0 ) {
+            n &amp;= n - 1;
+            count++;
         }
-        Arrays.sort( nums );
-        return nums;
+        return count;
     }
 }
+
 </code></pre>
+<ul>
+<li>
+<h5 id="分析nn-1表示如果最后一位是1与操作将其化为0并且计数1直到n为0">分析：n&amp;n-1表示如果最后一位是1，与操作将其化为0，并且计数+1，直到n为0</h5>
+</li>
+</ul>
 <hr>
 <ul>
 <li>
-<h3 id="方法2双指针">方法2：双指针</h3>
+<h4 id="解法2遍历所有位">解法2：遍历所有位</h4>
 </li>
 </ul>
-<p>由于源数组已经排好序了，假设mid为正负的分界线，mid之前的数会随着平方越来越小，mid之后的数会随着平方而变大。采用双指针的操作，左指针和右指针同时往中间走，判断何者更大，将更大的数字添加进答案数组。</p>
-<pre><code class="language-java">class Solution {
-    public int[] sortedSquares ( int[] nums ) {
-        int size = nums.length;
-        int[] res = new int[size];
-        int i = 0, j = size - 1, index = size - 1;
-        while ( i &lt; j ) {
-            if ( nums[i] * nums[i] &gt; nums[j] * nums[j] ) {
-                res[index] = nums[i] * nums[i];
-                i++;
-            } else {
-                res[index] = nums[j] * nums[j];
-                j--;
+<pre><code class="language-java">public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight ( int n ) {
+        int count = 0;
+        for ( int i = 0; i &lt; 32; i++ ) {
+            if ( ( n &amp; ( 1 &lt;&lt; i ) ) != 0 ) {
+                count++;
             }
-            index--;
         }
-        return res;
+        return count;
     }
 }
 </code></pre>
+<ul>
+<li>
+<h5 id="分析检查所有位如果存在1则累加">分析：检查所有位，如果存在1则累加。</h5>
+</li>
+</ul>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/slh8A8Xk4/" class="tag">
-                    双指针
+                  <a href="https://chimaeras.ltd/tag/Q7WsqiXr4/" class="tag">
+                    位操作
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -169,9 +172,9 @@ class Solution {
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/zhi-chu-xian-yi-ci-de-shu-zi/">
+                <a href="https://chimaeras.ltd/post/tuo-pu-li-zi-ju-zhen/">
                   <h3 class="post-title">
-                    只出现一次的数字
+                    托普利兹矩阵
                   </h3>
                 </a>
               </div>
