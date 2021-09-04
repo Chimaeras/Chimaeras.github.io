@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>0~n-1中缺失的数字 | Joker&#39;s Blog</title>
+<title>最长公共子序列 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,16 +18,10 @@
 
 
 
-    <meta name="description" content="一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+    <meta name="description" content="给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。
 
-
-
-
-方法1：二分法
-
-
-排序数组中的搜索问题，可以尝试运用二分法来解..." />
-    <meta name="keywords" content="二分法,LeetCode" />
+一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以..." />
+    <meta name="keywords" content="动态规划,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -102,67 +96,63 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">0~n-1中缺失的数字</h2>
-            <div class="post-date">2021-08-27</div>
+            <h2 class="post-title">最长公共子序列</h2>
+            <div class="post-date">2021-09-04</div>
             
             <div class="post-content" v-pre>
-              <p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
+              <p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
 <!-- more -->
-<hr>
-<ul>
-<li>
-<h3 id="方法1二分法">方法1：二分法</h3>
-</li>
-</ul>
-<p>排序数组中的搜索问题，可以尝试运用二分法来解决。最后一次交换后left=右子数组的首位元素，right=左子数组的末位元素，所以返回left。</p>
-<pre><code class="language-java">class Solution {
-    public int missingNumber ( int[] nums ) {
-        int left = 0, right = nums.length - 1;
-        while ( left &lt;= right ) {
-            int m = ( left + ( right - left ) ) / 2;
-            if ( nums[m] == m ) {
-                left = m + 1;
-            } else {
-                right = m - 1;
-            }
-        }
-        return left;
-    }
-}
+<p>一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。</p>
+<p>例如，&quot;ace&quot; 是 &quot;abcde&quot; 的子序列，但 &quot;aec&quot; 不是 &quot;abcde&quot; 的子序列。<br>
+两个字符串的 公共子序列 是这两个字符串所共同拥有的子序列。</p>
+<pre><code>输入：text1 = &quot;abcde&quot;, text2 = &quot;ace&quot;
+输出：3  
+解释：最长公共子序列是 &quot;ace&quot; ，它的长度为 3 。
+ 
+输入：text1 = &quot;abc&quot;, text2 = &quot;abc&quot;
+输出：3
+解释：最长公共子序列是 &quot;abc&quot; ，它的长度为 3 。​
+
+输入：text1 = &quot;abc&quot;, text2 = &quot;def&quot;
+输出：0
+解释：两个字符串没有公共子序列，返回 0 。
 </code></pre>
 <hr>
+<h3 id="方法1动态规划">方法1：动态规划</h3>
 <ul>
-<li>
-<h3 id="方法2抑或操作">方法2：抑或操作</h3>
-</li>
+<li>当c1 [ i - 1 ] == c2 [ j - 1 ]时，表示两个字符串的上一个字符相等，所以最长子序列等于dp [ i - 1 ] [ j - 1 ] + 1，即等于上一个最长子序列的长度+1和当前dp [ i ] [ j ]的最大值。</li>
+<li>当c1 [ i - 1 ] ！= c2 [ j - 1 ]时，表示两个字符串的上一个字符不相等，所以最长子序列等于max（dp [ i ] [ j  - 1], dp [ i  - 1 ] [ j ] ）。即两者之中的最大值。这样可以将之前的最大值传递下去。</li>
 </ul>
-<p>原理在于抑或（相同为0，不同为1）操作：a<sup>b</sup>b=a</p>
 <pre><code class="language-java">class Solution {
-    public int missingNumber ( int[] nums ) {
-        // 因为缺失一个数字，所以数组的末尾会存在x=nums.length，令其与res抑或则会抵消
-        int res = nums.length;
-        for ( int i = 0; i &lt; nums.length; i++ ) {
-            res ^= nums[i];
-            res ^= i;
+    public int longestCommonSubsequence ( String text1, String text2 ) {
+        int s1 = text1.length(), s2 = text2.length();
+        char[] c1 = text1.toCharArray();
+        char[] c2 = text2.toCharArray();
+
+        int res = 0;
+
+        int[][] dp = new int[s1 + 1][s2 + 1];
+        for ( int i = 1; i &lt; s1 + 1; i++ ) {
+            for ( int j = 1; j &lt; s2 + 1; j++ ) {
+                if ( c1[i - 1] == c2[j - 1] ) {
+                    dp[i][j] = Math.max( dp[i][j], dp[i - 1][j - 1] + 1 );
+                    res = Math.max( res, dp[i][j] );
+                } else {
+                    dp[i][j] = Math.max( dp[i][j - 1], dp[i - 1][j] );
+                }
+            }
         }
         return res;
     }
 }
 </code></pre>
-<hr>
-<ul>
-<li>
-<h3 id="方法3遍历排查">方法3：遍历+排查</h3>
-</li>
-</ul>
-<p>可以通过遍历求的数组的sum，与实际的sum相减即可得到缺失数字，略</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
-                    二分法
+                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
+                    动态规划
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -174,9 +164,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/san-jiao-xing-de-zui-da-zhou-chang/">
+                <a href="https://chimaeras.ltd/post/hui-wen-shu/">
                   <h3 class="post-title">
-                    三角形的最大周长
+                    回文数
                   </h3>
                 </a>
               </div>

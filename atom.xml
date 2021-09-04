@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-03T17:14:29.690Z</updated>
+    <updated>2021-09-04T04:47:22.649Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[最长公共子序列]]></title>
+        <id>https://chimaeras.ltd/post/zui-chang-gong-gong-zi-xu-lie/</id>
+        <link href="https://chimaeras.ltd/post/zui-chang-gong-gong-zi-xu-lie/">
+        </link>
+        <updated>2021-09-03T17:27:44.000Z</updated>
+        <summary type="html"><![CDATA[<p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[回文数]]></title>
         <id>https://chimaeras.ltd/post/hui-wen-shu/</id>
@@ -111,17 +122,6 @@
         <summary type="html"><![CDATA[<p>针对常见的分类问题，实现并总结几个常用的分类算法（KNN算法、朴素贝叶斯算法）</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>针对常见的分类问题，实现并总结几个常用的分类算法（KNN算法、朴素贝叶斯算法）</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[构造函数和虚构函数]]></title>
-        <id>https://chimaeras.ltd/post/gou-zao-han-shu-he-xu-gou-han-shu/</id>
-        <link href="https://chimaeras.ltd/post/gou-zao-han-shu-he-xu-gou-han-shu/">
-        </link>
-        <updated>2021-08-28T14:25:06.000Z</updated>
-        <summary type="html"><![CDATA[<p>在学习重载的时候遇到了一些构造函数和析构函数的不确定问题，故记录一下</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>在学习重载的时候遇到了一些构造函数和析构函数的不确定问题，故记录一下</p>
 ]]></content>
     </entry>
 </feed>
