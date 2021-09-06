@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>字符串 | Joker&#39;s Blog</title>
+<title>二分查找 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,7 +18,17 @@
 
 
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
+
+
+
+
+解法1：
+
+
+class Solution {
+    p..." />
+    <meta name="keywords" content="二分法,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -92,34 +102,66 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: 字符串</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://chimaeras.ltd/post/fizzbuzz/">
-                  <h2 class="post-title">FizzBuzz</h2>
-                </a>
-                <div class="post-date">
-                  2021-08-27
-                </div>
-                <div class="post-abstract">
-                  <p>写一个程序，输出从1到n数字的字符串表示</p>
-<ol>
-<li>如果 n 是3的倍数，输出“Fizz”；</li>
-<li>如果 n 是5的倍数，输出“Buzz”；</li>
-<li>如果 n 同时是3和5的倍数，输出 “FizzBuzz”。</li>
-</ol>
+          <div class="post-detail">
+            <h2 class="post-title">二分查找</h2>
+            <div class="post-date">2021-09-06</div>
+            
+            <div class="post-content" v-pre>
+              <p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h4 id="解法1">解法1：</h4>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int search ( int[] nums, int target ) {
+        int left = 0, right = nums.length - 1;
+        int mid;
+        while ( left &lt;= right ) {
+            mid = left + ( right - left ) / 2;
+            if ( nums[mid] == target ) {
+                return mid;
+            } else if ( nums[mid] &gt; target ) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+}
+</code></pre>
 
-                </div>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
+                    二分法
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
               </div>
-              
-            </article>
-          
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/shu-zi-de-bu-shu/">
+                  <h3 class="post-title">
+                    数字的补数
+                  </h3>
+                </a>
+              </div>
+            
 
-          <div class="pagination-container">
-  
-  
-</div>
+            
+
+          </div>
 
         </div>
       </div>

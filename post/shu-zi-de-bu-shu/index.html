@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>字符串 | Joker&#39;s Blog</title>
+<title>数字的补数 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,7 +18,17 @@
 
 
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="给你一个 正 整数 num ，输出它的补数。补数是对该数的二进制表示取反。
+
+
+
+
+解法1：
+
+
+每当t向左移一位，c向右移一位，得到一串11111...的数。再令c与t进行抑或运算，一样为1的取0，不同的取1，相当于取反。
+class S..." />
+    <meta name="keywords" content="位操作,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -92,34 +102,83 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: 字符串</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://chimaeras.ltd/post/fizzbuzz/">
-                  <h2 class="post-title">FizzBuzz</h2>
-                </a>
-                <div class="post-date">
-                  2021-08-27
-                </div>
-                <div class="post-abstract">
-                  <p>写一个程序，输出从1到n数字的字符串表示</p>
-<ol>
-<li>如果 n 是3的倍数，输出“Fizz”；</li>
-<li>如果 n 是5的倍数，输出“Buzz”；</li>
-<li>如果 n 同时是3和5的倍数，输出 “FizzBuzz”。</li>
-</ol>
+          <div class="post-detail">
+            <h2 class="post-title">数字的补数</h2>
+            <div class="post-date">2021-09-06</div>
+            
+            <div class="post-content" v-pre>
+              <p>给你一个 正 整数 num ，输出它的补数。补数是对该数的二进制表示取反。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h4 id="解法1">解法1：</h4>
+</li>
+</ul>
+<p>每当t向左移一位，c向右移一位，得到一串11111...的数。再令c与t进行抑或运算，一样为1的取0，不同的取1，相当于取反。</p>
+<pre><code class="language-java">class Solution {
+    public int findComplement ( int num ) {
+        int t = num, c = 0;
+        while ( t &gt; 0 ) {
+            t = t &gt;&gt; 1;
+            c = ( c &lt;&lt; 1 ) + 1;
+        }
+        return num ^ c;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h4 id="解法2">解法2：</h4>
+</li>
+</ul>
+<p>用a[i]存储二进制数组，再将二进制数组还原成十进制</p>
+<pre><code class="language-java">class Solution {
+    public int findComplement ( int num ) {
+        int[] a = new int[32];
+        int res = 0;
+        for ( int i = 0; num &gt; 0; i++ ) {
+            a[i] = ( num % 2 == 1 ) ? 0 : 1;
+            num /= 2;
+        }
+        for ( int i = 31; i &gt;= 0; i-- ) {
+            res += a[i] * Math.pow( 2, i );
+        }
+        return res;
+    }
+}
+</code></pre>
+<h4 id=""></h4>
 
-                </div>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Q7WsqiXr4/" class="tag">
+                    位操作
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
               </div>
-              
-            </article>
-          
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/fen-tang-guo/">
+                  <h3 class="post-title">
+                    分糖果
+                  </h3>
+                </a>
+              </div>
+            
 
-          <div class="pagination-container">
-  
-  
-</div>
+            
+
+          </div>
 
         </div>
       </div>

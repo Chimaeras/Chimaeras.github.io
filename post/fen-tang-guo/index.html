@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>分糖果 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1630929213542">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。
+
+
+
+
+解法1：set容器
+
+
+以此放入set容器中，取容器大小或数组长度..." />
+    <meta name="keywords" content="数学,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1630929213542" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">分糖果</h2>
+            <div class="post-date">2021-09-06</div>
+            
+            <div class="post-content" v-pre>
+              <p>给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h4 id="解法1set容器">解法1：set容器</h4>
+</li>
+</ul>
+<p>以此放入set容器中，取容器大小或数组长度的一半</p>
+<pre><code class="language-java">class Solution {
+    public int distributeCandies ( int[] candyType ) {
+        HashSet&lt; Integer &gt; set = new HashSet&lt; Integer &gt;();
+        for ( int candy : candyType ) {
+            set.add( candy );
+        }
+        return Math.min( set.size(), candyType.length / 2 );
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h4 id="方法2遍历统计种类">方法2：遍历统计种类</h4>
+</li>
+</ul>
+<p>统计总共的种类数量。要是种类数量超过了一半，那就只能分一半给妹妹，所以取min</p>
+<p>count+1是因为最后一种种类没有被计算在内。</p>
+<pre><code class="language-java">class Solution {
+    public int distributeCandies ( int[] candyType ) {
+        int count = 0;
+        Arrays.sort( candyType );
+        for ( int i = 1; i &lt; candyType.length; i++ ) {
+            if ( candyType[i] != candyType[i - 1] ) {
+                count++;
+            }
+        }
+        return Math.min( count + 1, candyType.length / 2 );
+    }
+}
+
+</code></pre>
+<hr>
+<h2 id="进阶-分糖果-2">进阶-分糖果-2</h2>
+<p>将糖果分给n个小朋友。</p>
+<p>给第一个小朋友 1 颗糖果，第二个小朋友 2 颗，依此类推，直到给最后一个小朋友 <code>n</code> 颗糖果。</p>
+<p>然后，我们再回到队伍的起点，给第一个小朋友 <code>n + 1</code> 颗糖果，第二个小朋友 <code>n + 2</code> 颗，依此类推，直到给最后一个小朋友 <code>2 * n</code> 颗糖果。</p>
+<p>重复上述过程（每次都比上一次多给出一颗糖果，当到达队伍终点后再次从队伍起点开始），直到我们分完所有的糖果。注意，就算我们手中的剩下糖果数不够（不比前一次发出的糖果多），这些糖果也会全部发给当前的小朋友</p>
+<p>返回一个长度为 <code>num_people</code>、元素之和为 <code>candies</code> 的数组，以表示糖果的最终分发情况（即 <code>ans[i]</code> 表示第 <code>i</code> 个小朋友分到的糖果数）。</p>
+<hr>
+<h3 id="方法1遍历累加">方法1：遍历累加</h3>
+<pre><code class="language-java">class Solution {
+    public int[] distributeCandies ( int candies, int numPeople ) {
+        int[] res = new int[numPeople];
+        int index = 0;
+        while ( candies != 0 ) {
+            res[index % numPeople] += Math.min( index + 1, candies );
+            candies -= Math.min( candies, index + 1 )
+            index++;
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="方法2数学归纳法">方法2：数学归纳法</h3>
+<p>分析：<br>
+<img src="https://chimaeras.ltd/post-images/1630926810146.png" alt="" loading="lazy"></p>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1630926816278.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://chimaeras.ltd/post-images/1630926822729.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://chimaeras.ltd/post-images/1630926827792.png" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Solution {
+    public int[] distributeCandies ( int candies, int numPeople ) {
+        // how many people received complete gifts
+        int p = ( int ) ( Math.sqrt( 2 * candies + 0.25 ) - 0.5 );
+        int remaining = ( int ) ( candies - ( p + 1 ) * p * 0.5 );
+        int rows = p / numPeople, cols = p % numPeople;
+
+        int[] d = new int[numPeople];
+        for ( int i = 0; i &lt; numPeople; ++i ) {
+            // complete rows
+            d[i] = ( i + 1 ) * rows + ( int ) ( rows * ( rows - 1 ) * 0.5 ) * numPeople;
+            // cols in the last row
+            if ( i &lt; cols ) {
+                d[i] += i + 1 + rows * numPeople;
+            }
+        }
+        // remaining candies        
+        d[cols] += remaining;
+        return d;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/zMIf34kkg9/" class="tag">
+                    数学
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/zui-chang-gong-gong-zi-xu-lie/">
+                  <h3 class="post-title">
+                    最长公共子序列
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
