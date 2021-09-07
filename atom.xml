@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-07T10:29:50.205Z</updated>
+    <updated>2021-09-07T11:05:37.686Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[顺时针打印矩阵]]></title>
+        <id>https://chimaeras.ltd/post/shun-shi-zhen-da-yin-ju-zhen/</id>
+        <link href="https://chimaeras.ltd/post/shun-shi-zhen-da-yin-ju-zhen/">
+        </link>
+        <updated>2021-09-07T11:04:12.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[调整数组顺序，使得奇数位于偶数前面]]></title>
         <id>https://chimaeras.ltd/post/diao-zheng-shu-zu-shun-xu-shi-de-qi-shu-wei-yu-ou-shu-qian-mian/</id>
@@ -107,17 +118,6 @@
         <summary type="html"><![CDATA[<p>给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[最长公共子序列]]></title>
-        <id>https://chimaeras.ltd/post/zui-chang-gong-gong-zi-xu-lie/</id>
-        <link href="https://chimaeras.ltd/post/zui-chang-gong-gong-zi-xu-lie/">
-        </link>
-        <updated>2021-09-03T17:27:44.000Z</updated>
-        <summary type="html"><![CDATA[<p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
 ]]></content>
     </entry>
 </feed>

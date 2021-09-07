@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>顺时针打印矩阵 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631012697660">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+
+
+
+方法1:模拟前进法
+
+
+顺着左上角，模拟顺时针前进，当遇到边界的时候，进入下一个方向。
+
+
+使用一个辅助数组来判断当前位置是否访问过
+
+
+总路径长度为数组元素的总和
+
+..." />
+    <meta name="keywords" content="LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631012697660" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">顺时针打印矩阵</h2>
+            <div class="post-date">2021-09-07</div>
+            
+            <div class="post-content" v-pre>
+              <p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1模拟前进法">方法1:模拟前进法</h3>
+</li>
+<li>
+<p>顺着左上角，模拟顺时针前进，当遇到边界的时候，进入下一个方向。</p>
+</li>
+<li>
+<p>使用一个辅助数组来判断当前位置是否访问过</p>
+</li>
+<li>
+<p>总路径长度为数组元素的总和</p>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int[] spiralOrder ( int[][] matrix ) {
+        if ( matrix == null || matrix.length == 0 || matrix[0].length == 0 ) {
+            return new int[0];
+        }
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        // 记录是否被访问过
+        boolean[][] visit = new boolean[m][n];
+
+        // 记录总路径长度
+        int total = m * n;
+
+        // 结果数组
+        int[] res = new int[total];
+
+        // 实时记录索引
+        int i = 0, j = 0;
+
+        // 定义方向 右 下 左 上
+        int[][] dir = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+        // 决定前进方向
+        int dirIndex = 0;
+
+        for ( int k = 0; k &lt; total; k++ ) {
+            res[k] = matrix[i][j];
+            // 修改标记，使其表示被访问过
+            visit[i][j] = true;
+
+            // 下一步要走的方向
+            int nextI = i + dir[dirIndex][0];
+            int nextJ = j + dir[dirIndex][1];
+
+            // 边界条件，如果超出边界了，就改变前进方向
+            if ( nextI &lt; 0 || nextI &gt;= m || nextJ &lt; 0 || nextJ &gt;= n || visit[nextI][nextJ] ) {
+                dirIndex = ( dirIndex + 1 ) % 4;
+            }
+
+            // 确保不会越界之后，再修改下一步的坐标
+            i += dir[dirIndex][0];
+            j += dir[dirIndex][1];
+        }
+        return res;
+    }
+}
+
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2分层模拟">方法2：分层模拟</h3>
+</li>
+</ul>
+<p>将整个矩阵分成一层一层来进行操作，首先打印最外层的元素，然后依次打印内层的元素。</p>
+<pre><code class="language-java">class Solution {
+    public int[] spiralOrder ( int[][] matrix ) {
+        if ( matrix == null || matrix.length == 0 || matrix[0].length == 0 ) {
+            return new int[0];
+        }
+
+        int m = matrix.length, n = matrix[0].length;
+        int[] res = new int[m * n];
+        int index = 0;
+        int left = 0, right = n - 1, top = 0, bottom = m - 1;
+
+        while ( left &lt;= right &amp;&amp; top &lt;= bottom ) {
+            // 向左移动
+            for ( int column = left; column &lt;= right; column++ ) {
+                res[index++] = matrix[top][column];
+            }
+            // 向下移动
+            for ( int row = top + 1; row &lt;= bottom; row++ ) {
+                res[index++] = matrix[row][right];
+            }
+
+            // 因为内层中可能存在某些层只有一行，所以要判断是否需要向左和向上移动
+            if ( left &lt; right &amp;&amp; top &lt; bottom ) {
+                //向左移动
+                for ( int column = right - 1; column &gt; left; column-- ) {
+                    res[index++] = matrix[bottom][column];
+                }
+                // 向上移动
+                for ( int row = bottom; row &gt; top; row-- ) {
+                    res[index++] = matrix[row][left];
+                }
+            }
+            // 修改定点，开始内层循环
+            left++;
+            right--;
+            top++;
+            bottom--;
+        }
+        return res;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/diao-zheng-shu-zu-shun-xu-shi-de-qi-shu-wei-yu-ou-shu-qian-mian/">
+                  <h3 class="post-title">
+                    调整数组顺序，使得奇数位于偶数前面
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
