@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-07T09:49:35.406Z</updated>
+    <updated>2021-09-07T10:29:50.205Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[调整数组顺序，使得奇数位于偶数前面]]></title>
+        <id>https://chimaeras.ltd/post/diao-zheng-shu-zu-shun-xu-shi-de-qi-shu-wei-yu-ou-shu-qian-mian/</id>
+        <link href="https://chimaeras.ltd/post/diao-zheng-shu-zu-shun-xu-shi-de-qi-shu-wei-yu-ou-shu-qian-mian/">
+        </link>
+        <updated>2021-09-07T10:05:31.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[旋转数组的最小数字]]></title>
         <id>https://chimaeras.ltd/post/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi/</id>
@@ -107,19 +118,6 @@
         <summary type="html"><![CDATA[<p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[回文数]]></title>
-        <id>https://chimaeras.ltd/post/hui-wen-shu/</id>
-        <link href="https://chimaeras.ltd/post/hui-wen-shu/">
-        </link>
-        <updated>2021-09-03T16:09:24.000Z</updated>
-        <summary type="html"><![CDATA[<p>给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。</p>
-<p>回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。例如，121 是回文，而 123 不是。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。</p>
-<p>回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。例如，121 是回文，而 123 不是。</p>
 ]]></content>
     </entry>
 </feed>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>字符串 | Joker&#39;s Blog</title>
+<title>调整数组顺序，使得奇数位于偶数前面 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,7 +18,17 @@
 
 
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。
+
+
+
+
+方法1：双指针
+
+
+class Solution {
+    public int[] exchange ( in..." />
+    <meta name="keywords" content="双指针,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -92,34 +102,68 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: 字符串</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://chimaeras.ltd/post/fizzbuzz/">
-                  <h2 class="post-title">FizzBuzz</h2>
-                </a>
-                <div class="post-date">
-                  2021-08-27
-                </div>
-                <div class="post-abstract">
-                  <p>写一个程序，输出从1到n数字的字符串表示</p>
-<ol>
-<li>如果 n 是3的倍数，输出“Fizz”；</li>
-<li>如果 n 是5的倍数，输出“Buzz”；</li>
-<li>如果 n 同时是3和5的倍数，输出 “FizzBuzz”。</li>
-</ol>
+          <div class="post-detail">
+            <h2 class="post-title">调整数组顺序，使得奇数位于偶数前面</h2>
+            <div class="post-date">2021-09-07</div>
+            
+            <div class="post-content" v-pre>
+              <p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1双指针">方法1：双指针</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int[] exchange ( int[] nums ) {
+        int i = 0, j = nums.length - 1, temp;
+        while ( i &lt; j ) {
+            while ( ( nums[i] &amp; 1 ) == 1 &amp;&amp; i &lt; j ) {
+                i++;
+            }
+            while ( ( nums[j] &amp; 1 ) == 0 &amp;&amp; j &gt; 0 ) {
+                j--;
+            }
+            if ( i &lt; j ) {
+                temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        return nums;
+    }
+}
+</code></pre>
 
-                </div>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/slh8A8Xk4/" class="tag">
+                    双指针
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
               </div>
-              
-            </article>
-          
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi/">
+                  <h3 class="post-title">
+                    旋转数组的最小数字
+                  </h3>
+                </a>
+              </div>
+            
 
-          <div class="pagination-container">
-  
-  
-</div>
+            
+
+          </div>
 
         </div>
       </div>
