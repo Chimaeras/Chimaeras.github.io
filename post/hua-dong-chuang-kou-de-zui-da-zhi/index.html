@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>有序数组的平方 | Joker&#39;s Blog</title>
+<title>滑动窗口的最大值 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,11 @@
 
 
 
-    <meta name="description" content="给定一个按非递减顺序排序的整数数组A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序
+    <meta name="description" content="给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）
 
-
-
-
-方法1：直接排序
-
-
-class Solution {
-    public int[] sortedSquares ( int[] nu..." />
-    <meta name="keywords" content="双指针,LeetCode" />
+输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
+输出: [3,3,..." />
+    <meta name="keywords" content="队列,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,51 +97,98 @@ class Solution {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">有序数组的平方</h2>
-            <div class="post-date">2021-09-03</div>
+            <h2 class="post-title">滑动窗口的最大值</h2>
+            <div class="post-date">2021-09-07</div>
             
             <div class="post-content" v-pre>
-              <p>给定一个按非递减顺序排序的整数数组A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序</p>
+              <p>给定一个数组 <code>nums</code> 和滑动窗口的大小 <code>k</code>，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）</p>
 <!-- more -->
+<pre><code>输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
+输出: [3,3,5,5,6,7] 
+解释: 
+
+  滑动窗口的位置                最大值
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+</code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法1直接排序">方法1：直接排序</h3>
+<h3 id="方法1暴力循环">方法1：暴力循环</h3>
 </li>
 </ul>
+<p>用一个外循环来遍历整个数组，用一个内循环来模拟滑动窗口，在内循环中找出滑动窗口中的最大值，将其添加到数组中。</p>
 <pre><code class="language-java">class Solution {
-    public int[] sortedSquares ( int[] nums ) {
-        for ( int i = 0; i &lt; nums.length; i++ ) {
-            nums[i] = nums[i] * nums[i];
+    public int[] maxSlidingWindow ( int[] nums, int k ) {
+
+        if ( nums.length == 0 ) {
+            return nums;
         }
-        Arrays.sort( nums );
-        return nums;
+
+        int size = nums.length;
+        int[] res = new int[size - k + 1];
+        int index = 0;
+
+        for ( int i = 0; i &lt;= size - k; i++ ) {
+            int m = nums[i];
+            for ( int j = i; j &lt; i + k; j++ ) {
+                m = Math.max( m, nums[j] );
+            }
+            res[index++] = m;
+        }
+        return res;
     }
 }
 </code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法2双指针">方法2：双指针</h3>
+<h3 id="方法2动态队列">方法2：动态队列</h3>
 </li>
 </ul>
-<p>由于源数组已经排好序了，假设mid为正负的分界线，mid之前的数会随着平方越来越小，mid之后的数会随着平方而变大。采用双指针的操作，左指针和右指针同时往中间走，判断何者更大，将更大的数字添加进答案数组。</p>
+<p>可以使用动态队列来处理，有几点要注意的：</p>
+<ul>
+<li>队列内只包含窗口内的元素，当窗口进行移动的时候，需要将上一个窗口的左临界值（nums [ i - 1 ] ）去除。</li>
+<li>队列内保证顺序是从大到小，每轮窗口进行滑动的时候，都会添加一个新的值（nums [ j + 1 ]），这时候我们要将所有小于当前新值的元素进行删除，确保队列内顺序。</li>
+</ul>
 <pre><code class="language-java">class Solution {
-    public int[] sortedSquares ( int[] nums ) {
-        int size = nums.length;
-        int[] res = new int[size];
-        int i = 0, j = size - 1, index = size - 1;
-        while ( i &lt; j ) {
-            if ( nums[i] * nums[i] &gt; nums[j] * nums[j] ) {
-                res[index] = nums[i] * nums[i];
-                i++;
-            } else {
-                res[index] = nums[j] * nums[j];
-                j--;
-            }
-            index--;
+    public int[] maxSlidingWindow ( int[] nums, int k ) {
+        if ( nums.length == 0 || k == 0 ) {
+            return new int[0];
         }
+
+        Deque&lt; Integer &gt; deque = new LinkedList&lt;&gt;();
+        int[] res = new int[nums.length - k + 1];
+
+        // 形成窗口前
+        for ( int i = 0; i &lt; k; i++ ) {
+            while ( !deque.isEmpty() &amp;&amp; deque.getLast() &lt; nums[i] ) {
+                deque.removeLast();
+            }
+            deque.addLast( nums[i] );
+        }
+
+        res[0] = deque.getFirst();
+
+        // 形成窗口后
+        for ( int i = k; i &lt; nums.length; i++ ) {
+            if ( deque.getFirst() == nums[i - k] ) {
+                deque.removeFirst();
+            }
+            while ( !deque.isEmpty() &amp;&amp; deque.getLast() &lt; nums[i] ) {
+                deque.removeLast();
+            }
+            deque.addLast( nums[i] );
+            res[i - k + 1] = deque.getFirst();
+        }
+
         return res;
+
     }
 }
 </code></pre>
@@ -156,8 +197,8 @@ class Solution {
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/slh8A8Xk4/" class="tag">
-                    双指针
+                  <a href="https://chimaeras.ltd/tag/mgX1AgTV2/" class="tag">
+                    队列
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -169,9 +210,9 @@ class Solution {
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/zhi-chu-xian-yi-ci-de-shu-zi/">
+                <a href="https://chimaeras.ltd/post/bu-yong-jia-jian-cheng-chu-zuo-jia-fa/">
                   <h3 class="post-title">
-                    只出现一次的数字
+                    不用加减乘除做加法
                   </h3>
                 </a>
               </div>

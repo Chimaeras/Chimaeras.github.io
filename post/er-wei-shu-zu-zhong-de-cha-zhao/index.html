@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>最长公共子序列 | Joker&#39;s Blog</title>
+<title>二维数组中的查找 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,10 +18,11 @@
 
 
 
-    <meta name="description" content="给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。
+    <meta name="description" content="在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
 
-一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以..." />
-    <meta name="keywords" content="动态规划,LeetCode" />
+[
+  [1,   4,  7, 11, 15]..." />
+    <meta name="keywords" content="LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -96,53 +97,84 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">最长公共子序列</h2>
-            <div class="post-date">2021-09-04</div>
+            <h2 class="post-title">二维数组中的查找</h2>
+            <div class="post-date">2021-09-07</div>
             
             <div class="post-content" v-pre>
-              <p>给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。</p>
+              <p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
 <!-- more -->
-<p>一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。</p>
-<p>例如，&quot;ace&quot; 是 &quot;abcde&quot; 的子序列，但 &quot;aec&quot; 不是 &quot;abcde&quot; 的子序列。<br>
-两个字符串的 公共子序列 是这两个字符串所共同拥有的子序列。</p>
-<pre><code>输入：text1 = &quot;abcde&quot;, text2 = &quot;ace&quot;
-输出：3  
-解释：最长公共子序列是 &quot;ace&quot; ，它的长度为 3 。
- 
-输入：text1 = &quot;abc&quot;, text2 = &quot;abc&quot;
-输出：3
-解释：最长公共子序列是 &quot;abc&quot; ，它的长度为 3 。​
+<pre><code>[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
 
-输入：text1 = &quot;abc&quot;, text2 = &quot;def&quot;
-输出：0
-解释：两个字符串没有公共子序列，返回 0 。
+给定 target = 5，返回 true。
+
+给定 target = 20，返回 false。
 </code></pre>
 <hr>
-<h3 id="方法1动态规划">方法1：动态规划</h3>
 <ul>
-<li>当c1 [ i - 1 ] == c2 [ j - 1 ]时，表示两个字符串的上一个字符相等，所以最长子序列等于dp [ i - 1 ] [ j - 1 ] + 1，即等于上一个最长子序列的长度+1和当前dp [ i ] [ j ]的最大值。</li>
-<li>当c1 [ i - 1 ] ！= c2 [ j - 1 ]时，表示两个字符串的上一个字符不相等，所以最长子序列等于max（dp [ i ] [ j  - 1], dp [ i  - 1 ] [ j ] ）。即两者之中的最大值。这样可以将之前的最大值传递下去。</li>
+<li>
+<h3 id="方法1">方法1：</h3>
+</li>
 </ul>
+<p>以左下角为起点，并取坐标点 [ m , 0 ] ， 如果当前点大于目标值，则向上移动，相当于排除最后一行；如果当前点小于目标值，则向左移动，相当于排除最左一列，依次逼近到目标值。</p>
 <pre><code class="language-java">class Solution {
-    public int longestCommonSubsequence ( String text1, String text2 ) {
-        int s1 = text1.length(), s2 = text2.length();
-        char[] c1 = text1.toCharArray();
-        char[] c2 = text2.toCharArray();
+    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
 
-        int res = 0;
+        if ( matrix.length == 0 || matrix[0].length == 0 ) {
+            return false;
+        }
 
-        int[][] dp = new int[s1 + 1][s2 + 1];
-        for ( int i = 1; i &lt; s1 + 1; i++ ) {
-            for ( int j = 1; j &lt; s2 + 1; j++ ) {
-                if ( c1[i - 1] == c2[j - 1] ) {
-                    dp[i][j] = Math.max( dp[i][j], dp[i - 1][j - 1] + 1 );
-                    res = Math.max( res, dp[i][j] );
-                } else {
-                    dp[i][j] = Math.max( dp[i][j - 1], dp[i - 1][j] );
-                }
+        int m = matrix.length - 1;
+        int n = matrix[0].length - 1;
+
+        int a = m, b = 0;
+
+        while ( a &gt;= 0 &amp;&amp; b &lt;= n ) {
+            if ( matrix[a][b] &gt; target ) {
+                a--;
+            } else if ( matrix[a][b] &lt; target ) {
+                b++;
+            } else {
+                return true;
             }
         }
-        return res;
+
+        return false;
+
+    }
+}
+</code></pre>
+<hr>
+<p>同理，以右上角为起点也可以，只需要将初始起点修改为 [ 0 , n ]，果当前点大于目标值，则向左移动，相当于排除最后一列；如果当前点小于目标值，则向下移动，相当于排除最上一行，依次逼近到目标值。</p>
+<pre><code class="language-java">class Solution {
+    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
+
+        if ( matrix.length == 0 || matrix[0].length == 0 ) {
+            return false;
+        }
+
+        int m = matrix.length - 1;
+        int n = matrix[0].length - 1;
+
+        int a = 0, b = n;
+
+        while ( a &lt;= m &amp;&amp; b &gt;= 0 ) {
+            if ( matrix[a][b] &gt; target ) {
+                b--;
+            } else if ( matrix[a][b] &lt; target ) {
+                a++;
+            } else {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 }
 </code></pre>
@@ -150,10 +182,6 @@
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
-                    动态规划
-                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -164,9 +192,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/hui-wen-shu/">
+                <a href="https://chimaeras.ltd/post/hua-dong-chuang-kou-de-zui-da-zhi/">
                   <h3 class="post-title">
-                    回文数
+                    滑动窗口的最大值
                   </h3>
                 </a>
               </div>
