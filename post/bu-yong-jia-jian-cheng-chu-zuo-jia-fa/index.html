@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>人工智能 | Joker&#39;s Blog</title>
+<title>不用加减乘除做加法 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,7 +18,18 @@
 
 
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。
+
+
+
+
+方法1：位运算
+
+
+两个数异或就是不进位的加法，两个数按位与是取进位
+class Solution {
+    public int..." />
+    <meta name="keywords" content="位操作,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -92,29 +103,57 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: 人工智能</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://chimaeras.ltd/post/chang-jian-fen-lei-suan-fa/">
-                  <h2 class="post-title">常见分类算法</h2>
-                </a>
-                <div class="post-date">
-                  2021-08-28
-                </div>
-                <div class="post-abstract">
-                  <p>针对常见的分类问题，实现并总结几个常用的分类算法（KNN算法、朴素贝叶斯算法）</p>
+          <div class="post-detail">
+            <h2 class="post-title">不用加减乘除做加法</h2>
+            <div class="post-date">2021-09-07</div>
+            
+            <div class="post-content" v-pre>
+              <p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1位运算">方法1：位运算</h3>
+</li>
+</ul>
+<p>两个数异或就是不进位的加法，两个数按位与是取进位</p>
+<pre><code class="language-java">class Solution {
+    public int add ( int a, int b ) {
+        int sum1 = a ^ b;
+        int sum2 = ( a &amp; b ) &lt;&lt; 1;
+        return sum1 + sum2;
+    }
+}
+</code></pre>
 
-                </div>
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Q7WsqiXr4/" class="tag">
+                    位操作
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
               </div>
-              
-            </article>
-          
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/qiu-12n/">
+                  <h3 class="post-title">
+                    求1+2+...+n
+                  </h3>
+                </a>
+              </div>
+            
 
-          <div class="pagination-container">
-  
-  
-</div>
+            
+
+          </div>
 
         </div>
       </div>
