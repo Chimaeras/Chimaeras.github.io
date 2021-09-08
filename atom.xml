@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-08T05:44:05.261Z</updated>
+    <updated>2021-09-08T08:21:29.013Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,41 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[合并两个有序链表]]></title>
+        <id>https://chimaeras.ltd/post/he-bing-liang-ge-you-xu-lian-biao/</id>
+        <link href="https://chimaeras.ltd/post/he-bing-liang-ge-you-xu-lian-biao/">
+        </link>
+        <updated>2021-09-08T07:11:41.000Z</updated>
+        <summary type="html"><![CDATA[<p>将两个升序链表合并为一个新的 <strong>升序</strong> 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>将两个升序链表合并为一个新的 <strong>升序</strong> 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[链表中倒数第k个节点]]></title>
+        <id>https://chimaeras.ltd/post/lian-biao-zhong-dao-shu-di-k-ge-jie-dian/</id>
+        <link href="https://chimaeras.ltd/post/lian-biao-zhong-dao-shu-di-k-ge-jie-dian/">
+        </link>
+        <updated>2021-09-08T06:27:39.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。</p>
+<p>例如，一个链表有 6 个节点，从头节点开始，它们的值依次是 1、2、3、4、5、6。这个链表的倒数第 3 个节点是值为 4 的节点。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。</p>
+<p>例如，一个链表有 6 个节点，从头节点开始，它们的值依次是 1、2、3、4、5、6。这个链表的倒数第 3 个节点是值为 4 的节点。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[从尾到头打印链表]]></title>
+        <id>https://chimaeras.ltd/post/cong-wei-dao-tou-da-yin-lian-biao/</id>
+        <link href="https://chimaeras.ltd/post/cong-wei-dao-tou-da-yin-lian-biao/">
+        </link>
+        <updated>2021-09-08T05:54:09.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[和为s的两个数字]]></title>
         <id>https://chimaeras.ltd/post/he-wei-s-de-liang-ge-shu-zi/</id>
@@ -87,39 +122,6 @@
         <summary type="html"><![CDATA[<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[旋转数组的最小数字]]></title>
-        <id>https://chimaeras.ltd/post/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi/</id>
-        <link href="https://chimaeras.ltd/post/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi/">
-        </link>
-        <updated>2021-09-07T09:48:47.000Z</updated>
-        <summary type="html"><![CDATA[<p>把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[二维数组中的查找]]></title>
-        <id>https://chimaeras.ltd/post/er-wei-shu-zu-zhong-de-cha-zhao/</id>
-        <link href="https://chimaeras.ltd/post/er-wei-shu-zu-zhong-de-cha-zhao/">
-        </link>
-        <updated>2021-09-07T09:07:58.000Z</updated>
-        <summary type="html"><![CDATA[<p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[滑动窗口的最大值]]></title>
-        <id>https://chimaeras.ltd/post/hua-dong-chuang-kou-de-zui-da-zhi/</id>
-        <link href="https://chimaeras.ltd/post/hua-dong-chuang-kou-de-zui-da-zhi/">
-        </link>
-        <updated>2021-09-07T08:35:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>给定一个数组 <code>nums</code> 和滑动窗口的大小 <code>k</code>，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给定一个数组 <code>nums</code> 和滑动窗口的大小 <code>k</code>，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）</p>
 ]]></content>
     </entry>
 </feed>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>不用加减乘除做加法 | Joker&#39;s Blog</title>
+<title>从尾到头打印链表 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,18 +18,19 @@
 
 
 
-    <meta name="description" content="写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。
+    <meta name="description" content="输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
 
 
 
 
-方法1：位运算
+方法1：反转链表
 
 
-两个数异或就是不进位的加法，两个数按位与是取进位
-class Solution {
-    public int..." />
-    <meta name="keywords" content="位操作,LeetCode" />
+将链表顺序反转过来，再依次填入数组中
+/**
+ * Definition for singly-linked list.
+ * public..." />
+    <meta name="keywords" content="链表,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -104,24 +105,78 @@ class Solution {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">不用加减乘除做加法</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">从尾到头打印链表</h2>
+            <div class="post-date">2021-09-08</div>
             
             <div class="post-content" v-pre>
-              <p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
+              <p>输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="方法1位运算">方法1：位运算</h3>
+<h3 id="方法1反转链表">方法1：反转链表</h3>
 </li>
 </ul>
-<p>两个数异或就是不进位的加法，两个数按位与是取进位</p>
+<p>将链表顺序反转过来，再依次填入数组中</p>
+<pre><code class="language-java">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] reversePrint ( ListNode head ) {
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode next = null;
+        int size = 0;
+        while ( cur != null ) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+            size++;
+        }
+        int[] res = new int[size];
+        int i = 0;
+        ListNode newHead = pre;
+        while ( newHead != null ) {
+            res[i] = newHead.val;
+            newHead = newHead.next;
+            i++;
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2逆序填充">方法2：逆序填充</h3>
+</li>
+</ul>
 <pre><code class="language-java">class Solution {
-    public int add ( int a, int b ) {
-        int sum1 = a ^ b;
-        int sum2 = ( a &amp; b ) &lt;&lt; 1;
-        return sum1 + sum2;
+    public int[] reversePrint ( ListNode head ) {
+
+        int len = 0;
+        ListNode cur = head;
+        // 获取链表长度
+        while ( head != null ) {
+            head = head.next;
+            len++;
+        }
+        int[] res = new int[len];
+
+        // 逆序填充进数组中
+        while ( cur != null ) {
+            res[len - 1] = cur.val;
+            len--;
+            cur = cur.next;
+        }
+
+        return res;
     }
 }
 </code></pre>
@@ -130,8 +185,8 @@ class Solution {
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/Q7WsqiXr4/" class="tag">
-                    位操作
+                  <a href="https://chimaeras.ltd/tag/sg20kp7Dm/" class="tag">
+                    链表
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -143,9 +198,9 @@ class Solution {
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/qiu-12n/">
+                <a href="https://chimaeras.ltd/post/he-wei-s-de-liang-ge-shu-zi/">
                   <h3 class="post-title">
-                    求1+2+...+n
+                    和为s的两个数字
                   </h3>
                 </a>
               </div>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>不用加减乘除做加法 | Joker&#39;s Blog</title>
+<title>合并两个有序链表 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,18 +18,16 @@
 
 
 
-    <meta name="description" content="写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。
+    <meta name="description" content="将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
 
 
 
 
-方法1：位运算
+方法1: 迭代
 
 
-两个数异或就是不进位的加法，两个数按位与是取进位
-class Solution {
-    public int..." />
-    <meta name="keywords" content="位操作,LeetCode" />
+定义一个辅助头节点，作为最后的结果返回。同时定义一个移动节点h，也可以理解为指针，每次对L1和L2进行比较，取较小..." />
+    <meta name="keywords" content="递归,链表,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -104,24 +102,76 @@ class Solution {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">不用加减乘除做加法</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">合并两个有序链表</h2>
+            <div class="post-date">2021-09-08</div>
             
             <div class="post-content" v-pre>
-              <p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
+              <p>将两个升序链表合并为一个新的 <strong>升序</strong> 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="方法1位运算">方法1：位运算</h3>
+<h3 id="方法1-迭代">方法1: 迭代</h3>
 </li>
 </ul>
-<p>两个数异或就是不进位的加法，两个数按位与是取进位</p>
+<p>定义一个辅助头节点，作为最后的结果返回。同时定义一个移动节点h，也可以理解为指针，每次对L1和L2进行比较，取较小的节点作为h.next，同时变化了的L1和L2要往后移动。</p>
 <pre><code class="language-java">class Solution {
-    public int add ( int a, int b ) {
-        int sum1 = a ^ b;
-        int sum2 = ( a &amp; b ) &lt;&lt; 1;
-        return sum1 + sum2;
+    public ListNode mergeTwoLists ( ListNode l1, ListNode l2 ) {
+
+        if ( l1 == null ) {
+            return l2;
+        }
+        if ( l2 == null ) {
+            return l1;
+        }
+
+        // 辅助头节点，作为最后结果返回
+        ListNode head = new ListNode( -1 );
+        // 移动节点
+        ListNode h = head;
+        while ( l1 != null &amp;&amp; l2 != null ) {
+            if ( l1.val &lt;= l2.val ) {
+                h.next = l1;
+                l1 = l1.next;
+            } else {
+                h.next = l2;
+                l2 = l2.next;
+            }
+            h = h.next;
+        }
+        // 处理剩余的非空链表
+        h.next = l1 == null ? l2 : l1;
+        return head.next;
+    }
+
+
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2递归">方法2：递归</h3>
+</li>
+</ul>
+<p>根据转移方程：两个链表头部值较小的一个节点与剩下元素的 <code>merge</code> 操作结果合并。</p>
+<pre><code>{ 
+	list1[0]+merge(list1[1:],list2)        list1[0]&lt;list2[0]
+	list2[0]+merge(list1,list2[1:])        otherwise
+}
+
+</code></pre>
+<pre><code class="language-java">class Solution {
+    public ListNode mergeTwoLists ( ListNode l1, ListNode l2 ) {
+        if ( l1 == null ) {
+            return l2;
+        } else if ( l2 == null ) {
+            return l1;
+        } else if ( l1.val &lt; l2.val ) {
+            l1.next = mergeTwoLists( l1.next, l2 );
+            return l1;
+        } else {
+            l2.next = mergeTwoLists( l1, l2.next );
+            return l2;
+        }
     }
 }
 </code></pre>
@@ -130,8 +180,12 @@ class Solution {
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/Q7WsqiXr4/" class="tag">
-                    位操作
+                  <a href="https://chimaeras.ltd/tag/niP0_y79G/" class="tag">
+                    递归
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/sg20kp7Dm/" class="tag">
+                    链表
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -143,9 +197,9 @@ class Solution {
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/qiu-12n/">
+                <a href="https://chimaeras.ltd/post/lian-biao-zhong-dao-shu-di-k-ge-jie-dian/">
                   <h3 class="post-title">
-                    求1+2+...+n
+                    链表中倒数第k个节点
                   </h3>
                 </a>
               </div>
