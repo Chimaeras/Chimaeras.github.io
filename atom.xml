@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-07T12:39:03.408Z</updated>
+    <updated>2021-09-08T04:17:39.118Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,52 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[在排序数组中查找数字]]></title>
+        <id>https://chimaeras.ltd/post/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi/</id>
+        <link href="https://chimaeras.ltd/post/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi/">
+        </link>
+        <updated>2021-09-08T04:15:02.000Z</updated>
+        <summary type="html"><![CDATA[<p>统计一个数字在排序数组中出现的次数。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>统计一个数字在排序数组中出现的次数。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[把数组排成最小的数]]></title>
+        <id>https://chimaeras.ltd/post/ba-shu-zu-pai-cheng-zui-xiao-de-shu/</id>
+        <link href="https://chimaeras.ltd/post/ba-shu-zu-pai-cheng-zui-xiao-de-shu/">
+        </link>
+        <updated>2021-09-08T03:30:36.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[连续子数组的最大和]]></title>
+        <id>https://chimaeras.ltd/post/lian-xu-zi-shu-zu-de-zui-da-he/</id>
+        <link href="https://chimaeras.ltd/post/lian-xu-zi-shu-zu-de-zui-da-he/">
+        </link>
+        <updated>2021-09-08T02:40:20.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。</p>
+<p>要求时间复杂度为O(n)。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。</p>
+<p>要求时间复杂度为O(n)。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[出现次数超过一半的数字]]></title>
+        <id>https://chimaeras.ltd/post/chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi/</id>
+        <link href="https://chimaeras.ltd/post/chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi/">
+        </link>
+        <updated>2021-09-08T02:21:13.000Z</updated>
+        <summary type="html"><![CDATA[<p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[顺时针打印矩阵]]></title>
         <id>https://chimaeras.ltd/post/shun-shi-zhen-da-yin-ju-zhen/</id>
@@ -74,50 +120,6 @@
         <summary type="html"><![CDATA[<p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[求1+2+...+n]]></title>
-        <id>https://chimaeras.ltd/post/qiu-12n/</id>
-        <link href="https://chimaeras.ltd/post/qiu-12n/">
-        </link>
-        <updated>2021-09-07T01:50:09.000Z</updated>
-        <summary type="html"><![CDATA[<p>求 <code>1+2+...+n</code> ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>求 <code>1+2+...+n</code> ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[二分查找]]></title>
-        <id>https://chimaeras.ltd/post/er-fen-cha-zhao/</id>
-        <link href="https://chimaeras.ltd/post/er-fen-cha-zhao/">
-        </link>
-        <updated>2021-09-06T11:51:37.000Z</updated>
-        <summary type="html"><![CDATA[<p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[数字的补数]]></title>
-        <id>https://chimaeras.ltd/post/shu-zi-de-bu-shu/</id>
-        <link href="https://chimaeras.ltd/post/shu-zi-de-bu-shu/">
-        </link>
-        <updated>2021-09-06T11:37:51.000Z</updated>
-        <summary type="html"><![CDATA[<p>给你一个 正 整数 num ，输出它的补数。补数是对该数的二进制表示取反。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给你一个 正 整数 num ，输出它的补数。补数是对该数的二进制表示取反。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[分糖果]]></title>
-        <id>https://chimaeras.ltd/post/fen-tang-guo/</id>
-        <link href="https://chimaeras.ltd/post/fen-tang-guo/">
-        </link>
-        <updated>2021-09-06T11:09:55.000Z</updated>
-        <summary type="html"><![CDATA[<p>给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。</p>
 ]]></content>
     </entry>
 </feed>

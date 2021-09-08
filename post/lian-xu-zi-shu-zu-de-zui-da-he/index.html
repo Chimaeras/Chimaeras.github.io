@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>二维数组中的查找 | Joker&#39;s Blog</title>
+<title>连续子数组的最大和 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,11 +18,20 @@
 
 
 
-    <meta name="description" content="在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+    <meta name="description" content="输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
+要求时间复杂度为O(n)。
 
-[
-  [1,   4,  7, 11, 15]..." />
-    <meta name="keywords" content="LeetCode" />
+
+
+
+方法1：动态规划
+
+
+确立边界条件：dp【0】=nums【0】
+
+
+状态转移方程：取当前值nums【i】和 dp【i..." />
+    <meta name="keywords" content="动态规划,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -97,84 +106,37 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">二维数组中的查找</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">连续子数组的最大和</h2>
+            <div class="post-date">2021-09-08</div>
             
             <div class="post-content" v-pre>
-              <p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+              <p>输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。</p>
+<p>要求时间复杂度为O(n)。</p>
 <!-- more -->
-<pre><code>[
-  [1,   4,  7, 11, 15],
-  [2,   5,  8, 12, 19],
-  [3,   6,  9, 16, 22],
-  [10, 13, 14, 17, 24],
-  [18, 21, 23, 26, 30]
-]
-
-给定 target = 5，返回 true。
-
-给定 target = 20，返回 false。
-</code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法1">方法1：</h3>
+<h3 id="方法1动态规划">方法1：动态规划</h3>
+</li>
+<li>
+<p>确立边界条件：dp【0】=nums【0】</p>
+</li>
+<li>
+<p>状态转移方程：取当前值nums【i】和 dp【i-1】+nums【i】的最大值</p>
 </li>
 </ul>
-<p>以左下角为起点，并取坐标点 [ m , 0 ] ， 如果当前点大于目标值，则向上移动，相当于排除最后一行；如果当前点小于目标值，则向左移动，相当于排除最左一列，依次逼近到目标值。</p>
 <pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
-
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
-        }
-
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = m, b = 0;
-
-        while ( a &gt;= 0 &amp;&amp; b &lt;= n ) {
-            if ( matrix[a][b] &gt; target ) {
-                a--;
-            } else if ( matrix[a][b] &lt; target ) {
-                b++;
-            } else {
-                return true;
+    public int maxSubArray ( int[] nums ) {
+        int[] dp = new int[nums.length];
+        int max = nums[0];
+        dp[0] = nums[0];
+        for ( int i = 1; i &lt; nums.length; i++ ) {
+            dp[i] = Math.max( nums[i], dp[i - 1] + nums[i] );
+            if ( dp[i] &gt; max ) {
+                max = dp[i];
             }
         }
-
-        return false;
-
-    }
-}
-</code></pre>
-<hr>
-<p>同理，以右上角为起点也可以，只需要将初始起点修改为 [ 0 , n ]，果当前点大于目标值，则向左移动，相当于排除最后一列；如果当前点小于目标值，则向下移动，相当于排除最上一行，依次逼近到目标值。</p>
-<pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
-
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
-        }
-
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = 0, b = n;
-
-        while ( a &lt;= m &amp;&amp; b &gt;= 0 ) {
-            if ( matrix[a][b] &gt; target ) {
-                b--;
-            } else if ( matrix[a][b] &lt; target ) {
-                a++;
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-
+        return max;
     }
 }
 </code></pre>
@@ -182,6 +144,10 @@
             </div>
             
               <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
+                    动态规划
+                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -192,9 +158,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/hua-dong-chuang-kou-de-zui-da-zhi/">
+                <a href="https://chimaeras.ltd/post/chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi/">
                   <h3 class="post-title">
-                    滑动窗口的最大值
+                    出现次数超过一半的数字
                   </h3>
                 </a>
               </div>

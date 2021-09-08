@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>二维数组中的查找 | Joker&#39;s Blog</title>
+<title>把数组排成最小的数 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,11 +18,22 @@
 
 
 
-    <meta name="description" content="在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+    <meta name="description" content="输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
 
-[
-  [1,   4,  7, 11, 15]..." />
-    <meta name="keywords" content="LeetCode" />
+
+
+
+方法1：
+
+
+定义一个排序规则：
+
+
+若拼接字符串 x + y &gt; y + x ，则 x “大于” y ；
+
+
+反之，若 x + ..." />
+    <meta name="keywords" content="字符串,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -97,84 +108,49 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">二维数组中的查找</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">把数组排成最小的数</h2>
+            <div class="post-date">2021-09-08</div>
             
             <div class="post-content" v-pre>
-              <p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+              <p>输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
 <!-- more -->
-<pre><code>[
-  [1,   4,  7, 11, 15],
-  [2,   5,  8, 12, 19],
-  [3,   6,  9, 16, 22],
-  [10, 13, 14, 17, 24],
-  [18, 21, 23, 26, 30]
-]
-
-给定 target = 5，返回 true。
-
-给定 target = 20，返回 false。
-</code></pre>
 <hr>
 <ul>
 <li>
 <h3 id="方法1">方法1：</h3>
 </li>
 </ul>
-<p>以左下角为起点，并取坐标点 [ m , 0 ] ， 如果当前点大于目标值，则向上移动，相当于排除最后一行；如果当前点小于目标值，则向左移动，相当于排除最左一列，依次逼近到目标值。</p>
+<p>定义一个排序规则：</p>
+<ul>
+<li>
+<p>若拼接字符串 x + y &gt; y + x ，则 x “大于” y ；</p>
+</li>
+<li>
+<p>反之，若 x + y &lt; y + x ，则 x “小于” y ；</p>
+</li>
+</ul>
+<p><strong><em>x</em> “小于” y 代表：排序完成后，数组中 x应在 y 左边；“大于” 则反之。</strong></p>
+<p>算法流程：</p>
+<ul>
+<li>初始化字符串列表，存储各数字的字符串格式</li>
+<li>对字符串列表进行排序</li>
+<li>拼接字符串列表中的各个字符串，形成最小数字</li>
+</ul>
 <pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
-
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
+    public String minNumber ( int[] nums ) {
+        String[] strings = new String[nums.length];
+        // 存储各数字的字符串形式
+        for ( int i = 0; i &lt; nums.length; i++ ) {
+            strings[i] = String.valueOf( nums[i] );
         }
-
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = m, b = 0;
-
-        while ( a &gt;= 0 &amp;&amp; b &lt;= n ) {
-            if ( matrix[a][b] &gt; target ) {
-                a--;
-            } else if ( matrix[a][b] &lt; target ) {
-                b++;
-            } else {
-                return true;
-            }
+        // 将各个数字按照规则进行排序
+        Arrays.sort( strings, ( x, y ) -&gt; ( x + y ).compareTo( y + x ) );
+        StringBuilder res = new StringBuilder();
+        // 排序完之后依次拼接
+        for ( String s : strings ) {
+            res.append( s );
         }
-
-        return false;
-
-    }
-}
-</code></pre>
-<hr>
-<p>同理，以右上角为起点也可以，只需要将初始起点修改为 [ 0 , n ]，果当前点大于目标值，则向左移动，相当于排除最后一列；如果当前点小于目标值，则向下移动，相当于排除最上一行，依次逼近到目标值。</p>
-<pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
-
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
-        }
-
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = 0, b = n;
-
-        while ( a &lt;= m &amp;&amp; b &gt;= 0 ) {
-            if ( matrix[a][b] &gt; target ) {
-                b--;
-            } else if ( matrix[a][b] &lt; target ) {
-                a++;
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-
+        return res.toString();
     }
 }
 </code></pre>
@@ -182,6 +158,10 @@
             </div>
             
               <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Mx0ieh_sn/" class="tag">
+                    字符串
+                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -192,9 +172,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/hua-dong-chuang-kou-de-zui-da-zhi/">
+                <a href="https://chimaeras.ltd/post/lian-xu-zi-shu-zu-de-zui-da-he/">
                   <h3 class="post-title">
-                    滑动窗口的最大值
+                    连续子数组的最大和
                   </h3>
                 </a>
               </div>

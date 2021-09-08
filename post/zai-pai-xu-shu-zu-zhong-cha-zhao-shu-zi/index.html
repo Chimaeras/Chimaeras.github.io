@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>二维数组中的查找 | Joker&#39;s Blog</title>
+<title>在排序数组中查找数字 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,11 +18,16 @@
 
 
 
-    <meta name="description" content="在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+    <meta name="description" content="统计一个数字在排序数组中出现的次数。
 
-[
-  [1,   4,  7, 11, 15]..." />
-    <meta name="keywords" content="LeetCode" />
+
+
+
+方法1：二分法
+
+
+采用二分的思想，找到两个边界。当target出现在数组中时，出现次数等于右边界-左边界+1；如果不存在的话，则会出现左边界大于等于右边界或两个边界都不等于target的情况。..." />
+    <meta name="keywords" content="二分法,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -97,84 +102,70 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">二维数组中的查找</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">在排序数组中查找数字</h2>
+            <div class="post-date">2021-09-08</div>
             
             <div class="post-content" v-pre>
-              <p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+              <p>统计一个数字在排序数组中出现的次数。</p>
 <!-- more -->
-<pre><code>[
-  [1,   4,  7, 11, 15],
-  [2,   5,  8, 12, 19],
-  [3,   6,  9, 16, 22],
-  [10, 13, 14, 17, 24],
-  [18, 21, 23, 26, 30]
-]
-
-给定 target = 5，返回 true。
-
-给定 target = 20，返回 false。
-</code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法1">方法1：</h3>
+<h3 id="方法1二分法">方法1：二分法</h3>
 </li>
 </ul>
-<p>以左下角为起点，并取坐标点 [ m , 0 ] ， 如果当前点大于目标值，则向上移动，相当于排除最后一行；如果当前点小于目标值，则向左移动，相当于排除最左一列，依次逼近到目标值。</p>
+<p>采用二分的思想，找到两个边界。当target出现在数组中时，出现次数等于右边界-左边界+1；如果不存在的话，则会出现左边界大于等于右边界或两个边界都不等于target的情况。</p>
+<ul>
+<li>这里为了复用二分排序，所以通过boolean来进入不同选择。</li>
+<li>对于左边界来说，我们要找到第一个大于等于target的下标。</li>
+<li>对于右边界来说，我们要找到第一个大于target的下标。</li>
+</ul>
 <pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
-
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
+    public int search ( int[] nums, int target ) {
+        int left = binary( nums, target, true );
+        int right = binary( nums, target, false ) - 1;
+        // target可能不存在于数组中，所以要判断是否等于target
+        if ( left &lt;= right &amp;&amp; right &lt; nums.length &amp;&amp; nums[left] == target &amp;&amp; nums[right] == target ) {
+            return right - left + 1;
         }
+        return 0;
+    }
 
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = m, b = 0;
-
-        while ( a &gt;= 0 &amp;&amp; b &lt;= n ) {
-            if ( matrix[a][b] &gt; target ) {
-                a--;
-            } else if ( matrix[a][b] &lt; target ) {
-                b++;
+    public int binary ( int[] nums, int target, boolean lower ) {
+        int left = 0, right = nums.length - 1, res = nums.length;
+        while ( left &lt;= right ) {
+            int mid = left + ( right - left ) / 2;
+            // 如果lower为真，则查找第一个大于等于target的下标
+            // 如果lower为假，则查找第一个大于target的下标
+            if ( nums[mid] &gt; target || ( lower &amp;&amp; nums[mid] &gt;= target ) ) {
+                right = mid - 1;
+                res = mid;
             } else {
-                return true;
+                left = mid + 1;
             }
         }
-
-        return false;
-
+        return res;
     }
 }
 </code></pre>
 <hr>
-<p>同理，以右上角为起点也可以，只需要将初始起点修改为 [ 0 , n ]，果当前点大于目标值，则向左移动，相当于排除最后一列；如果当前点小于目标值，则向下移动，相当于排除最上一行，依次逼近到目标值。</p>
 <pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
+    public int search ( int[] nums, int target ) {
+        // 因为数组中都是整数，所以寻找target的右边界和target-1的右边界，再进行相减即可
+        return helper( nums, target ) - helper( nums, target - 1 );
+    }
 
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
-        }
-
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = 0, b = n;
-
-        while ( a &lt;= m &amp;&amp; b &gt;= 0 ) {
-            if ( matrix[a][b] &gt; target ) {
-                b--;
-            } else if ( matrix[a][b] &lt; target ) {
-                a++;
+    int helper ( int[] nums, int tar ) {
+        int i = 0, j = nums.length - 1;
+        while ( i &lt;= j ) {
+            int m = ( i + j ) / 2;
+            if ( nums[m] &lt;= tar ) {
+                i = m + 1;
             } else {
-                return true;
+                j = m - 1;
             }
         }
-
-        return false;
-
+        return i;
     }
 }
 </code></pre>
@@ -182,6 +173,10 @@
             </div>
             
               <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
+                    二分法
+                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -192,9 +187,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/hua-dong-chuang-kou-de-zui-da-zhi/">
+                <a href="https://chimaeras.ltd/post/ba-shu-zu-pai-cheng-zui-xiao-de-shu/">
                   <h3 class="post-title">
-                    滑动窗口的最大值
+                    把数组排成最小的数
                   </h3>
                 </a>
               </div>

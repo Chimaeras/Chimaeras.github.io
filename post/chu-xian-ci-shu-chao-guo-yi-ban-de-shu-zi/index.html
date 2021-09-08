@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>二维数组中的查找 | Joker&#39;s Blog</title>
+<title>出现次数超过一半的数字 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,10 +18,17 @@
 
 
 
-    <meta name="description" content="在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+    <meta name="description" content="数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
 
-[
-  [1,   4,  7, 11, 15]..." />
+
+
+
+方法1：排序法
+
+
+因为目标数字出现次数超过一半，所以数组的中间数肯定为目标数字
+class Solution {
+    public int majorityEle..." />
     <meta name="keywords" content="LeetCode" />
   </head>
   <body>
@@ -97,84 +104,43 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">二维数组中的查找</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">出现次数超过一半的数字</h2>
+            <div class="post-date">2021-09-08</div>
             
             <div class="post-content" v-pre>
-              <p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+              <p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。</p>
 <!-- more -->
-<pre><code>[
-  [1,   4,  7, 11, 15],
-  [2,   5,  8, 12, 19],
-  [3,   6,  9, 16, 22],
-  [10, 13, 14, 17, 24],
-  [18, 21, 23, 26, 30]
-]
-
-给定 target = 5，返回 true。
-
-给定 target = 20，返回 false。
-</code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法1">方法1：</h3>
+<h3 id="方法1排序法">方法1：排序法</h3>
 </li>
 </ul>
-<p>以左下角为起点，并取坐标点 [ m , 0 ] ， 如果当前点大于目标值，则向上移动，相当于排除最后一行；如果当前点小于目标值，则向左移动，相当于排除最左一列，依次逼近到目标值。</p>
+<p>因为目标数字出现次数超过一半，所以数组的中间数肯定为目标数字</p>
 <pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
-
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
-        }
-
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = m, b = 0;
-
-        while ( a &gt;= 0 &amp;&amp; b &lt;= n ) {
-            if ( matrix[a][b] &gt; target ) {
-                a--;
-            } else if ( matrix[a][b] &lt; target ) {
-                b++;
-            } else {
-                return true;
-            }
-        }
-
-        return false;
-
+    public int majorityElement ( int[] nums ) {
+        Arrays.sort( nums );
+        return nums[nums.length / 2];
     }
 }
 </code></pre>
 <hr>
-<p>同理，以右上角为起点也可以，只需要将初始起点修改为 [ 0 , n ]，果当前点大于目标值，则向左移动，相当于排除最后一列；如果当前点小于目标值，则向下移动，相当于排除最上一行，依次逼近到目标值。</p>
+<ul>
+<li>
+<h3 id="方法2摩尔投票法">方法2：摩尔投票法</h3>
+</li>
+</ul>
+<p>因为存在某个数字出现次数超过一半，所以每个数字进行投票，最后票数多的肯定是目标数字</p>
 <pre><code class="language-java">class Solution {
-    public boolean findNumberIn2DArray ( int[][] matrix, int target ) {
-
-        if ( matrix.length == 0 || matrix[0].length == 0 ) {
-            return false;
-        }
-
-        int m = matrix.length - 1;
-        int n = matrix[0].length - 1;
-
-        int a = 0, b = n;
-
-        while ( a &lt;= m &amp;&amp; b &gt;= 0 ) {
-            if ( matrix[a][b] &gt; target ) {
-                b--;
-            } else if ( matrix[a][b] &lt; target ) {
-                a++;
-            } else {
-                return true;
+    public int majorityElement ( int[] nums ) {
+        int count = 0, res = 0;
+        for ( int num : nums ) {
+            if ( count == 0 ) {
+                res = num;
             }
+            count += num == res ? 1 : -1;
         }
-
-        return false;
-
+        return res;
     }
 }
 </code></pre>
@@ -192,9 +158,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/hua-dong-chuang-kou-de-zui-da-zhi/">
+                <a href="https://chimaeras.ltd/post/shun-shi-zhen-da-yin-ju-zhen/">
                   <h3 class="post-title">
-                    滑动窗口的最大值
+                    顺时针打印矩阵
                   </h3>
                 </a>
               </div>
