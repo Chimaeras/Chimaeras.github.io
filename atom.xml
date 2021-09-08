@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-08T04:17:39.118Z</updated>
+    <updated>2021-09-08T04:59:20.720Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[和为s的两个数字]]></title>
+        <id>https://chimaeras.ltd/post/he-wei-s-de-liang-ge-shu-zi/</id>
+        <link href="https://chimaeras.ltd/post/he-wei-s-de-liang-ge-shu-zi/">
+        </link>
+        <updated>2021-09-08T04:58:03.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[在排序数组中查找数字]]></title>
         <id>https://chimaeras.ltd/post/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi/</id>
@@ -109,17 +120,6 @@
         <summary type="html"><![CDATA[<p>给定一个数组 <code>nums</code> 和滑动窗口的大小 <code>k</code>，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>给定一个数组 <code>nums</code> 和滑动窗口的大小 <code>k</code>，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[不用加减乘除做加法]]></title>
-        <id>https://chimaeras.ltd/post/bu-yong-jia-jian-cheng-chu-zuo-jia-fa/</id>
-        <link href="https://chimaeras.ltd/post/bu-yong-jia-jian-cheng-chu-zuo-jia-fa/">
-        </link>
-        <updated>2021-09-07T01:59:55.000Z</updated>
-        <summary type="html"><![CDATA[<p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。</p>
 ]]></content>
     </entry>
 </feed>
