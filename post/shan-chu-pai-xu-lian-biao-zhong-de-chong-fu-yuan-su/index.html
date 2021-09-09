@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>0~n-1中缺失的数字 | Joker&#39;s Blog</title>
+<title>删除排序链表中的重复元素 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,16 +18,18 @@
 
 
 
-    <meta name="description" content="一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+    <meta name="description" content="存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除所有重复的元素，使每个元素 只出现一次 。
+返回同样按升序排列的结果链表
 
 
 
 
-方法1：二分法
+遍历
 
 
-排序数组中的搜索问题，可以尝试运用二分法来解..." />
-    <meta name="keywords" content="二分法,LeetCode" />
+class Solution {
+    public ListNode del..." />
+    <meta name="keywords" content="链表,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -102,67 +104,90 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">0~n-1中缺失的数字</h2>
-            <div class="post-date">2021-08-27</div>
+            <h2 class="post-title">删除排序链表中的重复元素</h2>
+            <div class="post-date">2021-09-09</div>
             
             <div class="post-content" v-pre>
-              <p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
+              <p>存在一个按升序排列的链表，给你这个链表的头节点 <code>head</code> ，请你删除所有重复的元素，使每个元素 <strong>只出现一次</strong> 。</p>
+<p>返回同样按升序排列的结果链表</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="方法1二分法">方法1：二分法</h3>
+<h3 id="遍历">遍历</h3>
 </li>
 </ul>
-<p>排序数组中的搜索问题，可以尝试运用二分法来解决。最后一次交换后left=右子数组的首位元素，right=左子数组的末位元素，所以返回left。</p>
 <pre><code class="language-java">class Solution {
-    public int missingNumber ( int[] nums ) {
-        int left = 0, right = nums.length - 1;
-        while ( left &lt;= right ) {
-            int m = ( left + ( right - left ) ) / 2;
-            if ( nums[m] == m ) {
-                left = m + 1;
+    public ListNode deleteDuplicates ( ListNode head ) {
+
+        if ( head == null ) {
+            return head;
+        }
+
+        ListNode cur = head;
+        while ( cur.next != null ) {
+            if ( cur.val == cur.next.val ) {
+                cur.next = cur.next.next;
             } else {
-                right = m - 1;
+                cur = cur.next;
             }
         }
-        return left;
+        return head;
     }
 }
 </code></pre>
 <hr>
+<h2 id="进阶">进阶</h2>
+<p>存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除链表中所有存在数字重复情况的节点，只保留原始链表中 没有重复出现 的数字。</p>
+<p>返回同样按升序排列的结果链表。</p>
+<pre><code>输入：head = [1,2,3,3,4,4,5]
+输出：[1,2,5]
+
+输入：head = [1,1,1,2,3]
+输出：[2,3]
+</code></pre>
+<hr>
 <ul>
 <li>
-<h3 id="方法2抑或操作">方法2：抑或操作</h3>
+<h3 id="方法1遍历">方法1：遍历</h3>
 </li>
 </ul>
-<p>原理在于抑或（相同为0，不同为1）操作：a<sup>b</sup>b=a</p>
+<p>对于链表题目，有几个要点：</p>
+<ul>
+<li>要舍得用变量，千万别想着节省变量，否则容易被逻辑绕晕</li>
+<li>head 有可能需要改动时，先增加一个 假head，返回的时候直接取 假head.next，这样就不需要为修改 head 增加一大堆逻辑了。</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631173234754.png" alt="" loading="lazy"></figure>
 <pre><code class="language-java">class Solution {
-    public int missingNumber ( int[] nums ) {
-        // 因为缺失一个数字，所以数组的末尾会存在x=nums.length，令其与res抑或则会抵消
-        int res = nums.length;
-        for ( int i = 0; i &lt; nums.length; i++ ) {
-            res ^= nums[i];
-            res ^= i;
+    public ListNode deleteDuplicates ( ListNode head ) {
+
+        if ( head == null ) {
+            return head;
         }
-        return res;
+        // 假开头，指向head，防止出现重复元素在开头的情况
+        ListNode newHead = new ListNode( 0, head );
+        ListNode cur = newHead;
+        while ( cur.next != null &amp;&amp; cur.next.next != null ) {
+            if ( cur.next.val == cur.next.next.val ) {
+                int x = cur.next.val;
+                while ( cur.next != null &amp;&amp; x == cur.next.val ) {
+                    cur.next = cur.next.next;
+                }
+            } else {
+                cur = cur.next;
+            }
+        }
+        return newHead.next;
     }
 }
 </code></pre>
-<hr>
-<ul>
-<li>
-<h3 id="方法3遍历排查">方法3：遍历+排查</h3>
-</li>
-</ul>
-<p>可以通过遍历求的数组的sum，与实际的sum相减即可得到缺失数字，略</p>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
-                    二分法
+                  <a href="https://chimaeras.ltd/tag/sg20kp7Dm/" class="tag">
+                    链表
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -174,9 +199,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/san-jiao-xing-de-zui-da-zhou-chang/">
+                <a href="https://chimaeras.ltd/post/he-wei-s-de-lian-xu-zheng-shu-xu-lie/">
                   <h3 class="post-title">
-                    三角形的最大周长
+                    和为s的连续正数序列
                   </h3>
                 </a>
               </div>

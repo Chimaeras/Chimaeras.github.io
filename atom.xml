@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-09T03:03:34.115Z</updated>
+    <updated>2021-09-09T07:42:18.200Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,32 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[删除排序链表中的重复元素]]></title>
+        <id>https://chimaeras.ltd/post/shan-chu-pai-xu-lian-biao-zhong-de-chong-fu-yuan-su/</id>
+        <link href="https://chimaeras.ltd/post/shan-chu-pai-xu-lian-biao-zhong-de-chong-fu-yuan-su/">
+        </link>
+        <updated>2021-09-09T07:37:34.000Z</updated>
+        <summary type="html"><![CDATA[<p>存在一个按升序排列的链表，给你这个链表的头节点 <code>head</code> ，请你删除所有重复的元素，使每个元素 <strong>只出现一次</strong> 。</p>
+<p>返回同样按升序排列的结果链表</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>存在一个按升序排列的链表，给你这个链表的头节点 <code>head</code> ，请你删除所有重复的元素，使每个元素 <strong>只出现一次</strong> 。</p>
+<p>返回同样按升序排列的结果链表</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[和为s的连续正数序列]]></title>
+        <id>https://chimaeras.ltd/post/he-wei-s-de-lian-xu-zheng-shu-xu-lie/</id>
+        <link href="https://chimaeras.ltd/post/he-wei-s-de-lian-xu-zheng-shu-xu-lie/">
+        </link>
+        <updated>2021-09-09T04:54:08.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。</p>
+<p>序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。</p>
+<p>序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[合并两个有序链表]]></title>
         <id>https://chimaeras.ltd/post/he-bing-liang-ge-you-xu-lian-biao/</id>
@@ -100,28 +126,6 @@
         <summary type="html"><![CDATA[<p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[顺时针打印矩阵]]></title>
-        <id>https://chimaeras.ltd/post/shun-shi-zhen-da-yin-ju-zhen/</id>
-        <link href="https://chimaeras.ltd/post/shun-shi-zhen-da-yin-ju-zhen/">
-        </link>
-        <updated>2021-09-07T11:04:12.000Z</updated>
-        <summary type="html"><![CDATA[<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[调整数组顺序，使得奇数位于偶数前面]]></title>
-        <id>https://chimaeras.ltd/post/diao-zheng-shu-zu-shun-xu-shi-de-qi-shu-wei-yu-ou-shu-qian-mian/</id>
-        <link href="https://chimaeras.ltd/post/diao-zheng-shu-zu-shun-xu-shi-de-qi-shu-wei-yu-ou-shu-qian-mian/">
-        </link>
-        <updated>2021-09-07T10:05:31.000Z</updated>
-        <summary type="html"><![CDATA[<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
 ]]></content>
     </entry>
 </feed>

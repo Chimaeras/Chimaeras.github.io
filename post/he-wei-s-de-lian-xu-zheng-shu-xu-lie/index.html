@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>和为s的连续正数序列 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631173299962">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。
+序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。
+
+
+
+
+方法1：暴力循环
+
+
+外循环从1开始，内循环从大于外循环的初始值开始，求..." />
+    <meta name="keywords" content="双指针,数学,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631173299962" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">和为s的连续正数序列</h2>
+            <div class="post-date">2021-09-09</div>
+            
+            <div class="post-content" v-pre>
+              <p>输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。</p>
+<p>序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1暴力循环">方法1：暴力循环</h3>
+</li>
+</ul>
+<p>外循环从1开始，内循环从大于外循环的初始值开始，求出每个区间和，再进行判断。</p>
+<pre><code class="language-java">class Solution {
+    public int[][] findContinuousSequence ( int target ) {
+        ArrayList&lt; int[] &gt; res = new ArrayList&lt;&gt;();
+        int sum = 0;
+        for ( int i = 1; i &lt;= target / 2 + 1; i++ ) {
+            for ( int j = i; ; j++ ) {
+                sum += j;
+                // 如果超过了，则表示当前i到j的序列和大于target，重置sum
+                // 同时不需要判读小于的情况 因为我们是从最小的1开始递增，如果小于，接着累加即可
+                if ( sum &gt; target ) {
+                    sum = 0;
+                    break;
+                } else if ( sum == target ) {
+                    // 将当前i到j的序列添加到结果中。
+                    int[] array = new int[j - i + 1];
+                    for ( int k = i; k &lt;= j; k++ ) {
+                        array[k - i] = k;
+                    }
+                    res.add( array );
+                    break;
+                }
+            }
+        }
+        return res.toArray( new int[res.size()][] );
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2暴力循环数学优化">方法2：暴力循环+数学优化</h3>
+</li>
+</ul>
+<p>通过求和公式和target，我们可以得到等式：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">（</mi><mi>x</mi><mo>+</mo><mi>y</mi><mi mathvariant="normal">）</mi><mo>∗</mo><mi mathvariant="normal">（</mi><mi>y</mi><mo>−</mo><mi>x</mi><mo>+</mo><mn>1</mn><mi mathvariant="normal">）</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo>=</mo><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi><mo>=</mo><mo>&gt;</mo><msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><mi>y</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>∗</mo><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">（x+y）*（y-x+1）/2=target =&gt; y^2+y-x^2+x-2*target=0
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">（</span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.6597200000000001em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord cjk_fallback">）</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.7777700000000001em;vertical-align:-0.19444em;"></span><span class="mord cjk_fallback">（</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord cjk_fallback">）</span><span class="mord">/</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.80952em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0585479999999998em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.7777700000000001em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.9474379999999999em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.80952em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">e</span><span class="mord mathdefault">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span></p>
+<p>利用求根公式可以直接解得y，因为最后需要得到整数解，需要满足条件：</p>
+<ul>
+<li>判别式b^2-4ac开根需要为整数</li>
+<li>最后的求根公式的分子需要为偶数，因为分母为2</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int[][] findContinuousSequence ( int target ) {
+        List&lt; int[] &gt; res = new ArrayList&lt; int[] &gt;();
+
+        int sum = 0;
+        for ( int x = 1; x &lt;= target / 2 + 1; x++ ) {
+            // 求根公式
+            // a=1,b=1,c=-x*x+x-2*target
+            // delta为判别是否有根的公式：大于0才有根
+            long delta = 1 - 4 * ( x - ( long ) x * x - 2 * target );
+            if ( delta &lt; 0 ) {
+                continue;
+            }
+            // 求delta的平方根
+            int deltaSqrt = ( int ) Math.sqrt( delta + 0.5 );
+            // 条件1：判别式开根需要为整数
+            // 条件2：求根公式的分子需要为偶数，因为分母为2
+            if ( ( long ) deltaSqrt * deltaSqrt == delta &amp;&amp; ( deltaSqrt - 1 ) % 2 == 0 ) {
+                // 这是其中一个根
+                // 另一个解(-1-delta_sqrt)/2必然小于0，不用考虑
+                int y = ( -1 + deltaSqrt ) / 2;
+                if ( x &lt; y ) {
+                    int[] array = new int[y - x + 1];
+                    for ( int i = x; i &lt;= y; i++ ) {
+                        array[i - x] = i;
+                    }
+                    res.add( array );
+                }
+            }
+        }
+        return res.toArray( new int[res.size()][] );
+    }
+}
+
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法3双指针-窗口滑动">方法3：双指针、窗口滑动</h3>
+</li>
+</ul>
+<p>利用左右指针表示一个可以滑动的窗口，窗口的初始边界为1、2（因为题目表示至少含有两个数），内循环中求两个窗口边界之中的的数字和，并与target比较。</p>
+<ul>
+<li>若sum小于target，则右边界右移；</li>
+<li>若sum大于target，则左边界右移；</li>
+<li>若sum等于target，则将当前区间的数字加入一个int数组；</li>
+</ul>
+<p>利用梯形面积公式（上底+下底*高/2）可以快速求出区间和：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">（</mi><mi>L</mi><mo>+</mo><mi>R</mi><mi mathvariant="normal">）</mi><mo>∗</mo><mi mathvariant="normal">（</mi><mi>R</mi><mo>−</mo><mi>L</mi><mo>+</mo><mn>1</mn><mi mathvariant="normal">）</mi><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">（L+R）*（R-L+1）/2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">（</span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mord cjk_fallback">）</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord cjk_fallback">（</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord cjk_fallback">）</span><span class="mord">/</span><span class="mord">2</span></span></span></span></span></p>
+<pre><code class="language-java">class Solution {
+    public int[][] findContinuousSequence ( int target ) {
+        ArrayList&lt; int[] &gt; res = new ArrayList&lt;&gt;();
+        for ( int l = 1, r = 2; l &lt; r; ) {
+            int sum = ( l + r ) * ( r - l + 1 ) / 2;
+            if ( sum == target ) {
+                int[] array = new int[r - l + 1];
+                for ( int i = l; i &lt;= r; i++ ) {
+                    array[i - l] = i;
+                }
+                res.add( array );
+                l++;
+            } else if ( sum &gt; target ) {
+                l++;
+            } else {
+                r++;
+            }
+        }
+        return res.toArray( new int[res.size()][] );
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/slh8A8Xk4/" class="tag">
+                    双指针
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/zMIf34kkg9/" class="tag">
+                    数学
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/he-bing-liang-ge-you-xu-lian-biao/">
+                  <h3 class="post-title">
+                    合并两个有序链表
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
