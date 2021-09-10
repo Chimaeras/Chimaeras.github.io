@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>机器人的运动范围 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631276594831">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为..." />
+    <meta name="keywords" content="DFS,BFS,算法" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631276594831" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">机器人的运动范围</h2>
+            <div class="post-date">2021-09-10</div>
+            
+            <div class="post-content" v-pre>
+              <p>地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？</p>
+<!---more--->
+<hr>
+<ul>
+<li>
+<h3 id="深度遍历dfs">深度遍历（DFS）</h3>
+</li>
+</ul>
+<p>从原点开始，往下和右进行递归，使其可以递归遍历所有节点。</p>
+<p>判断条件：</p>
+<ul>
+<li>索引越界</li>
+<li>已经访问过</li>
+<li>不符合要求：坐标位和大于k</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int movingCount ( int m, int n, int k ) {
+        boolean[][] visited = new boolean[m][n];
+        return dfs( 0, 0, m, n, k, visited );
+    }
+
+    public int dfs ( int x, int y, int m, int n, int k, boolean[][] visited ) {
+        // 不符合条件
+        if ( x &gt;= m || y &gt;= n || visited[x][y] || cal( x ) + cal( y ) &gt; k ) {
+            return 0;
+        }
+        visited[x][y] = true;
+        // 1 + 下方向 + 右方向
+        return 1 + dfs( x + 1, y, m, n, k, visited ) + dfs( x, y + 1, m, n, k, visited );
+    }
+
+    public int cal ( int n ) {
+        int sum = 0;
+        while ( n &gt; 0 ) {
+            sum += n % 10;
+            n /= 10;
+        }
+        return sum;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="广度遍历bfs">广度遍历（BFS）</h3>
+</li>
+</ul>
+<p>利用队列存储所有待访问的节点，终止条件为队列为空。</p>
+<pre><code class="language-java">class Solution {
+    public int movingCount ( int m, int n, int k ) {
+        boolean[][] visited = new boolean[m][n];
+        int res = 0;
+
+        Queue&lt; int[] &gt; queue = new LinkedList&lt;&gt;();
+        queue.add( new int[] { 0, 0, m, n } );
+
+        while ( !queue.isEmpty() ) {
+            // 头节点
+            int[] temp = queue.poll();
+            int i = temp[0], j = temp[1], x = temp[2], y = temp[3];
+            // 不符合条件：1、超出边界 2、被访问过 3、当前索引位和大于k
+            if ( i &gt;= m || j &gt;= n || visited[i][j] || cal( i ) + cal( j ) &gt; k ) {
+                continue;
+            }
+            visited[i][j] = true;
+            res++;
+            // 加入队列
+            queue.add( new int[] { i + 1, j, m, n } );
+            queue.add( new int[] { i, j + 1, m, n } );
+        }
+        return res;
+    }
+
+    public int cal ( int n ) {
+        int sum = 0;
+        while ( n &gt; 0 ) {
+            sum += n % 10;
+            n /= 10;
+        }
+        return sum;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/TyxGAmZCZ/" class="tag">
+                    DFS
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/Hg7wMEs3vE/" class="tag">
+                    BFS
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/Ma9F6ENfl/" class="tag">
+                    算法
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/jian-sheng-zi/">
+                  <h3 class="post-title">
+                    剪绳子
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
