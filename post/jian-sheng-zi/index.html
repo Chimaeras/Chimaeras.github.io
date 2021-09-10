@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>连续子数组的最大和 | Joker&#39;s Blog</title>
+<title>剪绳子 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,20 +18,8 @@
 
 
 
-    <meta name="description" content="输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
-要求时间复杂度为O(n)。
-
-
-
-
-方法1：动态规划
-
-
-确立边界条件：dp【0】=nums【0】
-
-
-状态转移方程：取当前值nums【i】和 dp【i..." />
-    <meta name="keywords" content="动态规划,LeetCode" />
+    <meta name="description" content="给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n&gt;1并且m&gt;1），每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]k[1]...*k[m-1] 可能的最大乘积是多少？例如，..." />
+    <meta name="keywords" content="动态规划,数学" />
   </head>
   <body>
     <div id="app" class="main">
@@ -106,37 +94,60 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">连续子数组的最大和</h2>
-            <div class="post-date">2021-09-08</div>
+            <h2 class="post-title">剪绳子</h2>
+            <div class="post-date">2021-09-10</div>
             
             <div class="post-content" v-pre>
-              <p>输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。</p>
-<p>要求时间复杂度为O(n)。</p>
-<!-- more -->
+              <p>给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n&gt;1并且m&gt;1），每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]<em>k[1]</em>...*k[m-1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。</p>
+<!---more--->
 <hr>
 <ul>
 <li>
 <h3 id="方法1动态规划">方法1：动态规划</h3>
 </li>
-<li>
-<p>确立边界条件：dp【0】=nums【0】</p>
-</li>
-<li>
-<p>状态转移方程：取当前值nums【i】和 dp【i-1】+nums【i】的最大值</p>
-</li>
 </ul>
+<p>利用dp数组维护当前绳子长度所能得到的最大乘积，再进行遍历。</p>
 <pre><code class="language-java">class Solution {
-    public int maxSubArray ( int[] nums ) {
-        int[] dp = new int[nums.length];
-        int max = nums[0];
-        dp[0] = nums[0];
-        for ( int i = 1; i &lt; nums.length; i++ ) {
-            dp[i] = Math.max( nums[i], dp[i - 1] + nums[i] );
-            if ( dp[i] &gt; max ) {
-                max = dp[i];
+    public int cuttingRope ( int n ) {
+        // dp[i]表示长度为i的绳子被剪成m段，每段乘积的最大值
+        int[] dp = new int[n + 1];
+        // 因为m&gt;1，所以dp[2] = 1而不是2
+        dp[2] = 1;
+        // i表示绳子长度
+        for ( int i = 3; i &lt;= n; ++i ) {
+            // i-j &gt;= 2。j代表第一次剪掉的长度，剪掉1没用，所以从2开始，剩余的长度i-j怎么减直接取dp[i-j]
+            for ( int j = 1; j &lt;= i - 2; ++j ) {
+                // 这里因为m&gt;1，所以dp[2] = 1而不是2，dp[3]不能是dp[2] * 1，这样答案是1，错误.
+                // 因此下面要添加Math.max(dp[i-j], i-j)。
+                dp[i] = Math.max( Math.max( dp[i - j], i - j ) * j, dp[i] );
             }
         }
-        return max;
+        return dp[n];
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="数学归纳法">数学归纳法</h3>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631267943437.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://chimaeras.ltd/post-images/1631267949125.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://chimaeras.ltd/post-images/1631267954466.png" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Solution {
+    public int cuttingRope ( int n ) {
+        if ( n &lt;= 3 ) {
+            return n - 1;
+        }
+        int a = n / 3, b = n % 3;
+        if ( b == 0 ) {
+            return ( int ) Math.pow( 3, a );
+        }
+        if ( b == 1 ) {
+            return ( int ) Math.pow( 3, a - 1 ) * 4;
+        }
+        return ( int ) Math.pow( 3, a ) * 2;
     }
 }
 </code></pre>
@@ -149,8 +160,8 @@
                     动态规划
                   </a>
                 
-                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
-                    LeetCode
+                  <a href="https://chimaeras.ltd/tag/zMIf34kkg9/" class="tag">
+                    数学
                   </a>
                 
               </div>
@@ -158,9 +169,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi/">
+                <a href="https://chimaeras.ltd/post/gou-jian-cheng-ji-shu-zu/">
                   <h3 class="post-title">
-                    出现次数超过一半的数字
+                    构建乘积数组
                   </h3>
                 </a>
               </div>

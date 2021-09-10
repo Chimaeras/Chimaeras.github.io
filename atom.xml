@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-10T09:50:54.680Z</updated>
+    <updated>2021-09-10T11:44:13.593Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[剪绳子]]></title>
+        <id>https://chimaeras.ltd/post/jian-sheng-zi/</id>
+        <link href="https://chimaeras.ltd/post/jian-sheng-zi/">
+        </link>
+        <updated>2021-09-10T09:56:58.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[构建乘积数组]]></title>
         <id>https://chimaeras.ltd/post/gou-jian-cheng-ji-shu-zu/</id>
@@ -109,17 +116,6 @@
         <summary type="html"><![CDATA[<p>输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[在排序数组中查找数字]]></title>
-        <id>https://chimaeras.ltd/post/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi/</id>
-        <link href="https://chimaeras.ltd/post/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi/">
-        </link>
-        <updated>2021-09-08T04:15:02.000Z</updated>
-        <summary type="html"><![CDATA[<p>统计一个数字在排序数组中出现的次数。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>统计一个数字在排序数组中出现的次数。</p>
 ]]></content>
     </entry>
 </feed>
