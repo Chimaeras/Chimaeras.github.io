@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>栈 | Joker&#39;s Blog</title>
+<title>包含min函数的栈 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,7 +18,16 @@
 
 
 
-    <meta name="description" content="温故而知新">
+    <meta name="description" content="定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
+ 
+
+
+
+双栈模拟
+
+
+利用一个辅助栈来存储递减序列，栈A正常完成基本操作，栈B不断存储递..." />
+    <meta name="keywords" content="栈,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -92,43 +101,83 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <h2 class="current-tag">标签: 栈</h2>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://chimaeras.ltd/post/bao-han-min-han-shu-de-zhan/">
-                  <h2 class="post-title">包含min函数的栈</h2>
-                </a>
-                <div class="post-date">
-                  2021-09-11
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://chimaeras.ltd/post/zhan-de-ya-ru-dan-chu-xu-lie/">
-                  <h2 class="post-title">栈的压入、弹出序列</h2>
-                </a>
-                <div class="post-date">
-                  2021-09-11
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
+          <div class="post-detail">
+            <h2 class="post-title">包含min函数的栈</h2>
+            <div class="post-date">2021-09-11</div>
+            
+            <div class="post-content" v-pre>
+              <p>定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。</p>
+ <!---more--->
+<hr>
+<ul>
+<li>
+<h3 id="双栈模拟">双栈模拟</h3>
+</li>
+</ul>
+<p>利用一个辅助栈来存储递减序列，栈A正常完成基本操作，栈B不断存储递减序列，更新的同时也要注意与栈A保持一致</p>
+<ul>
+<li>如果当前值小于等于A的栈顶，则B栈也要将此元素入栈，否则后续可能会出现栈空的情况</li>
+<li>如果A的栈顶元素和B的栈顶元素相等，那么当A出栈的时候，B也要出栈，防止本该已经出栈的元素还存留在栈B</li>
+</ul>
+<pre><code class="language-java">class MinStack {
+    Stack&lt; Integer &gt; A, B;
 
-          <div class="pagination-container">
-  
-  
-</div>
+    public MinStack ( ) {
+        A = new Stack&lt;&gt;();
+        B = new Stack&lt;&gt;();
+    }
+
+    public void push ( int x ) {
+        A.add( x );
+        if ( B.empty() || B.peek() &gt;= x ) {
+            B.add( x );
+        }
+    }
+
+    public void pop ( ) {
+        if ( A.pop().equals( B.peek() ) ) {
+            B.pop();
+        }
+    }
+
+    public int top ( ) {
+        return A.peek();
+    }
+
+    public int min ( ) {
+        return B.peek();
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/QaGNQpd_a/" class="tag">
+                    栈
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/zhan-de-ya-ru-dan-chu-xu-lie/">
+                  <h3 class="post-title">
+                    栈的压入、弹出序列
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
 
         </div>
       </div>
