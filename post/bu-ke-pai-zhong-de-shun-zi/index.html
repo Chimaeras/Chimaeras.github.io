@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>连续子数组的最大和 | Joker&#39;s Blog</title>
+<title>扑克牌中的顺子 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,20 +18,16 @@
 
 
 
-    <meta name="description" content="输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
-要求时间复杂度为O(n)。
+    <meta name="description" content="从若干副扑克牌中随机抽 5 张牌，判断是不是一个顺子，即这5张牌是不是连续的。2～10为数字本身，A为1，J为11，Q为12，K为13，而大、小王为 0 ，可以看成任意数字。A 不能视为 14。
 
 
 
 
-方法1：动态规划
+方法1：set存储不重复的元素
 
 
-确立边界条件：dp【0】=nums【0】
-
-
-状态转移方程：取当前值nums【i】和 dp【i..." />
-    <meta name="keywords" content="动态规划,LeetCode" />
+..." />
+    <meta name="keywords" content="LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -106,37 +102,60 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">连续子数组的最大和</h2>
-            <div class="post-date">2021-09-08</div>
+            <h2 class="post-title">扑克牌中的顺子</h2>
+            <div class="post-date">2021-09-11</div>
             
             <div class="post-content" v-pre>
-              <p>输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。</p>
-<p>要求时间复杂度为O(n)。</p>
-<!-- more -->
+              <p>从<strong>若干副扑克牌</strong>中随机抽 <code>5</code> 张牌，判断是不是一个顺子，即这5张牌是不是连续的。2～10为数字本身，A为1，J为11，Q为12，K为13，而大、小王为 0 ，可以看成任意数字。A 不能视为 14。</p>
+<!---more--->
 <hr>
 <ul>
 <li>
-<h3 id="方法1动态规划">方法1：动态规划</h3>
-</li>
-<li>
-<p>确立边界条件：dp【0】=nums【0】</p>
-</li>
-<li>
-<p>状态转移方程：取当前值nums【i】和 dp【i-1】+nums【i】的最大值</p>
+<h3 id="方法1set存储不重复的元素">方法1：set存储不重复的元素</h3>
 </li>
 </ul>
 <pre><code class="language-java">class Solution {
-    public int maxSubArray ( int[] nums ) {
-        int[] dp = new int[nums.length];
-        int max = nums[0];
-        dp[0] = nums[0];
-        for ( int i = 1; i &lt; nums.length; i++ ) {
-            dp[i] = Math.max( nums[i], dp[i - 1] + nums[i] );
-            if ( dp[i] &gt; max ) {
-                max = dp[i];
+    public boolean isStraight ( int[] nums ) {
+        HashSet&lt; Integer &gt; set = new HashSet&lt;&gt;();
+        int max = 0, min = 14;
+        for ( int num : nums ) {
+            // 将大于0的数添加进去
+            if ( num &gt; 0 ) {
+                // 加进来之前判断是否已经存在，存在说明重复，不符合
+                if ( set.contains( num ) ) {
+                    return false;
+                }
+                set.add( num );
+                // 更新最大最小值
+                max = Math.max( max, num );
+                min = Math.min( min, num );
             }
         }
-        return max;
+        return max - min &lt; 5;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2排序遍历">方法2：排序+遍历</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public boolean isStraight ( int[] nums ) {
+        Arrays.sort( nums );
+        int joker = 0;
+        for ( int i = 0; i &lt; 4; i++ ) {
+            // 统计鬼的数量
+            if ( nums[i] == 0 ) {
+                joker++;
+            } else if ( nums[i] == nums[i + 1] ) {
+                // 存在重复
+                return false;
+            }
+        }
+        // 最大-最小&lt;5
+        return nums[nums.length - 1] - nums[joker] &lt; 5;
     }
 }
 </code></pre>
@@ -144,10 +163,6 @@
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
-                    动态规划
-                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -158,9 +173,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi/">
+                <a href="https://chimaeras.ltd/post/shu-ju-liu-zhong-de-zhong-wei-shu/">
                   <h3 class="post-title">
-                    出现次数超过一半的数字
+                    数据流中的中位数
                   </h3>
                 </a>
               </div>
