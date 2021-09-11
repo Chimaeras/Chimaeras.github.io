@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>对称的二叉树 | Joker&#39;s Blog</title>
+<title>栈的压入、弹出序列 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,8 @@
 
 
 
-    <meta name="description" content="请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
-
-例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-
-    1
-   / \
-  2   2
- / \ / \
-3  4 4  3
-但..." />
-    <meta name="keywords" content="树,LeetCode" />
+    <meta name="description" content="输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如，序列 {1,2,3,4,5} 是某栈的压栈序列，序列 {4,5,3,2,1} 是该压栈序列对应的一个弹出序列，但 {4,..." />
+    <meta name="keywords" content="栈,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,49 +94,32 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">对称的二叉树</h2>
-            <div class="post-date">2021-09-10</div>
+            <h2 class="post-title">栈的压入、弹出序列</h2>
+            <div class="post-date">2021-09-11</div>
             
             <div class="post-content" v-pre>
-              <p>请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。</p>
-<!-- more -->
-<pre><code>例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-
-    1
-   / \
-  2   2
- / \ / \
-3  4 4  3
-但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
-
-    1
-   / \
-  2   2
-   \   \
-   3    3
-
-</code></pre>
+              <p>输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如，序列 {1,2,3,4,5} 是某栈的压栈序列，序列 {4,5,3,2,1} 是该压栈序列对应的一个弹出序列，但 {4,3,5,1,2} 就不可能是该压栈序列的弹出序列。</p>
 <!---more--->
 <hr>
 <ul>
 <li>
-<h3 id="方法1递归">方法1：递归</h3>
+<h3 id="方法1模拟栈操作">方法1：模拟栈操作</h3>
 </li>
 </ul>
-<p>判断：左节点的左孩子 == 右节点的右孩子，左节点的右孩子 == 右节点的左孩子</p>
+<p>将push数组中数字按序进栈，如果顶部元素等于pop数组中的数字，就出栈。如果pop数组的序列是错误的弹出序列，则最后栈中一定存有未正确出栈的元素。</p>
 <pre><code class="language-java">class Solution {
-    public boolean isSymmetric ( TreeNode root ) {
-        return root == null || isequal( root.left, root.right );
-    }
+    public boolean validateStackSequences ( int[] pushed, int[] popped ) {
+        Stack&lt; Integer &gt; stack = new Stack&lt;&gt;();
+        int i = 0;
+        for ( int num : pushed ) {
+            stack.push( num );
+            while ( !stack.isEmpty() &amp;&amp; stack.peek() == popped[i] ) {
+                stack.pop();
+                i++;
+            }
+        }
 
-    boolean isequal ( TreeNode L, TreeNode R ) {
-        if ( L == null &amp;&amp; R == null ) {
-            return true;
-        }
-        if ( L == null || R == null || L.val != R.val ) {
-            return false;
-        }
-        return isequal( L.left, R.right ) &amp;&amp; isequal( L.right, R.left );
+        return stack.isEmpty();
     }
 }
 </code></pre>
@@ -154,8 +128,8 @@
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
-                    树
+                  <a href="https://chimaeras.ltd/tag/QaGNQpd_a/" class="tag">
+                    栈
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -167,9 +141,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/zi-fu-chuan-zhong-di-yi-ge-wei-yi-de-zi-fu/">
+                <a href="https://chimaeras.ltd/post/quan-quan-zhong-zui-hou-de-shu-zi/">
                   <h3 class="post-title">
-                    字符串中第一个唯一的字符
+                    圈圈中最后的数字
                   </h3>
                 </a>
               </div>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>对称的二叉树 | Joker&#39;s Blog</title>
+<title>圈圈中最后的数字 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,9 @@
 
 
 
-    <meta name="description" content="请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
-
-例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-
-    1
-   / \
-  2   2
- / \ / \
-3  4 4  3
-但..." />
-    <meta name="keywords" content="树,LeetCode" />
+    <meta name="description" content="0,1,···,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字（删除后从下一个数字开始计数）。求出这个圆圈里剩下的最后一个数字。
+例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则..." />
+    <meta name="keywords" content="数学,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,49 +95,30 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">对称的二叉树</h2>
-            <div class="post-date">2021-09-10</div>
+            <h2 class="post-title">圈圈中最后的数字</h2>
+            <div class="post-date">2021-09-11</div>
             
             <div class="post-content" v-pre>
-              <p>请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。</p>
-<!-- more -->
-<pre><code>例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-
-    1
-   / \
-  2   2
- / \ / \
-3  4 4  3
-但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
-
-    1
-   / \
-  2   2
-   \   \
-   3    3
-
-</code></pre>
+              <p>0,1,···,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字（删除后从下一个数字开始计数）。求出这个圆圈里剩下的最后一个数字。</p>
+<p>例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。</p>
 <!---more--->
 <hr>
 <ul>
 <li>
-<h3 id="方法1递归">方法1：递归</h3>
+<h3 id="方法1回溯迭代">方法1：回溯迭代</h3>
 </li>
 </ul>
-<p>判断：左节点的左孩子 == 右节点的右孩子，左节点的右孩子 == 右节点的左孩子</p>
 <pre><code class="language-java">class Solution {
-    public boolean isSymmetric ( TreeNode root ) {
-        return root == null || isequal( root.left, root.right );
-    }
+    public int lastRemaining ( int n, int m ) {
+        // 最后一个数字在最后一轮的位置一定是0，即只有这一个数字
+        int index = 0;
 
-    boolean isequal ( TreeNode L, TreeNode R ) {
-        if ( L == null &amp;&amp; R == null ) {
-            return true;
+        // 从倒数第二轮开始往回算起，i表示当前轮有多少个人
+        // index+m 表示下一轮的数字在上一轮的位置
+        for ( int i = 2; i &lt;= n; i++ ) {
+            index = ( index + m ) % i;
         }
-        if ( L == null || R == null || L.val != R.val ) {
-            return false;
-        }
-        return isequal( L.left, R.right ) &amp;&amp; isequal( L.right, R.left );
+        return index;
     }
 }
 </code></pre>
@@ -154,8 +127,8 @@
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
-                    树
+                  <a href="https://chimaeras.ltd/tag/zMIf34kkg9/" class="tag">
+                    数学
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -167,9 +140,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/zi-fu-chuan-zhong-di-yi-ge-wei-yi-de-zi-fu/">
+                <a href="https://chimaeras.ltd/post/bu-ke-pai-zhong-de-shun-zi/">
                   <h3 class="post-title">
-                    字符串中第一个唯一的字符
+                    扑克牌中的顺子
                   </h3>
                 </a>
               </div>
