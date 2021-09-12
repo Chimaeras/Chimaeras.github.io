@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>重建二叉树 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631439585972">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。
+假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+
+
+
+方法1：递归重建
+
+
+class Solution {
+
+    // 存储中序遍历的结果
+    Ha..." />
+    <meta name="keywords" content="树,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631439585972" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">重建二叉树</h2>
+            <div class="post-date">2021-09-12</div>
+            
+            <div class="post-content" v-pre>
+              <p>输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。</p>
+<p>假设输入的前序遍历和中序遍历的结果中都不含重复的数字。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1递归重建">方法1：递归重建</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+
+    // 存储中序遍历的结果
+    HashMap&lt; Integer, Integer &gt; map = new HashMap&lt;&gt;();
+    int[] preorder;
+
+    public TreeNode buildTree ( int[] preorder, int[] inorder ) {
+        // 保存的前序遍历，方便递归的时候查看前序遍历的索引
+        this.preorder = preorder;
+        // 将中序遍历的结果放入map中，形成key-index的健值对
+        for ( int i = 0; i &lt; inorder.length; i++ ) {
+            map.put( inorder[i], i );
+        }
+        // 参数：（当前根节点的索引，递归树的左边界，递归树的右边界）
+        return create( 0, 0, inorder.length - 1 );
+    }
+
+    public TreeNode create ( int preRoot, int inLeft, int inRight ) {
+        // 超出边界
+        if ( inLeft &gt; inRight ) {
+            return null;
+        }
+        // 创建当前子树的根节点
+        TreeNode root = new TreeNode( preorder[preRoot] );
+
+        // 中序遍历中根节点所在索引 = key:前序遍历中根节点的值-&gt;value:Index
+        int inRootIndex = map.get( preorder[preRoot] );
+
+        //左子树的根的索引为先序中的根节点+1
+        //递归左子树的左边界为原来的中序in_left
+        //递归左子树的右边界为中序中的根节点索引-1
+        root.left = create( preRoot + 1, inLeft, inRootIndex - 1 );
+
+        //右子树的根的索引为先序中的 当前根位置 + 左子树的数量 + 1
+        //递归右子树的左边界为中序中当前根节点+1
+        //递归右子树的右边界为中序中原来右子树的边界
+        root.right = create( preRoot + ( inRootIndex - inLeft ) + 1, inRootIndex + 1, inRight );
+
+        return root;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
+                    树
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/">
+                  <h3 class="post-title">
+                    链表中环的入口节点
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>替换空格 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631439585972">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="请实现一个函数，把字符串 s 中的每个空格替换成&quot;%20&quot;。
+
+
+题目描述
+请实现一个函数，把字符串 s 中的每个空格替换成&quot;%20&quot;。
+
+
+
+方法1：库函数
+
+
+class Solution {
+ ..." />
+    <meta name="keywords" content="字符串,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631439585972" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">替换空格</h2>
+            <div class="post-date">2021-09-12</div>
+            
+            <div class="post-content" v-pre>
+              <p>请实现一个函数，把字符串 s 中的每个空格替换成&quot;%20&quot;。</p>
+<!-- more -->
+<hr>
+<h3 id="题目描述">题目描述</h3>
+<p>请实现一个函数，把字符串 <code>s</code> 中的每个空格替换成&quot;%20&quot;。</p>
+<hr>
+<ul>
+<li>
+<h3 id="方法1库函数">方法1：库函数</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public String replaceSpace ( String s ) {
+        return s.replace( &quot; &quot;, &quot;%20&quot; );
+    }
+}
+
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="遍历拼接">遍历拼接</h3>
+</li>
+</ul>
+<p>字符串是不可变对象，要使用StringBuilder拼接字符串，再转换回去。</p>
+<pre><code class="language-java">class Solution {
+    public String replaceSpace ( String s ) {
+        StringBuilder res = new StringBuilder();
+        for ( Character c : s.toCharArray() ) {
+            if ( c == ' ' ) {
+                res.append( &quot;%20&quot; );
+            } else {
+                res.append( c );
+            }
+        }
+        return res.toString();
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Mx0ieh_sn/" class="tag">
+                    字符串
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/zuo-xuan-zhuan-zi-fu-chuan/">
+                  <h3 class="post-title">
+                    左旋转字符串
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

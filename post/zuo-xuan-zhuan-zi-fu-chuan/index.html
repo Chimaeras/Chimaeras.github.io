@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>左旋转字符串 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631439585972">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串&quot;abcdefg&quot;和数字2，该函数将返回左旋转两位得到的结果&quot;cdefgab&quot;..." />
+    <meta name="keywords" content="字符串,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631439585972" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">左旋转字符串</h2>
+            <div class="post-date">2021-09-12</div>
+            
+            <div class="post-content" v-pre>
+              <p>字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串&quot;abcdefg&quot;和数字2，该函数将返回左旋转两位得到的结果&quot;cdefgab&quot;。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1字符串切片库函数">方法1：字符串切片（库函数）</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public String reverseLeftWords ( String s, int n ) {
+        return s.substring( n, s.length() ) + s.substring( 0, n );
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2遍历拼接字符串如果不允许用库函数的话">方法2：遍历拼接字符串（如果不允许用库函数的话）、</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public String reverseLeftWords ( String s, int n ) {
+        StringBuilder res = new StringBuilder();
+        for ( int i = n; i &lt; s.length(); i++ ) {
+            res.append( s.charAt( i ) );
+        }
+        for ( int i = 0; i &lt; n; i++ ) {
+            res.append( s.charAt( i ) );
+        }
+        return res.toString();
+    }
+}
+
+// 利用求余运算，可以简化代码
+
+class Solution {
+    public String reverseLeftWords ( String s, int n ) {
+        StringBuilder res = new StringBuilder();
+        for ( int i = n; i &lt; n + s.length(); i++ ) {
+            res.append( s.charAt( i % s.length() ) );
+        }
+        return res.toString();
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法3字符串拼接用字符串代替列表">方法3：字符串拼接（用字符串代替列表）</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public String reverseLeftWords ( String s, int n ) {
+        String res = &quot;&quot;;
+        for ( int i = n; i &lt; s.length(); i++ ) {
+            res += s.charAt( i );
+        }
+        for ( int i = 0; i &lt; n; i++ ) {
+            res += s.charAt( i );
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="效率分析">效率分析</h3>
+<p>效率：1&gt;2&gt;3</p>
+<p>原因：</p>
+<ul>
+<li>方法1使用切片操作，无冗余操作，效率最高</li>
+<li>方法2使用列表拼接，由于StringBuilder是可变对象，所以每次拼接只是在列表尾部添加一个新的字符元素。最后转换成字符串的时候，只申请一次内存。</li>
+<li>方法3中使用字符串拼接，因为字符串是 ” 不可变对象 “，所以每一轮拼接都需要新建一个字符串，总共申请N次内存，效率低下。</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Mx0ieh_sn/" class="tag">
+                    字符串
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/fan-zhuan-dan-ci-shun-xu/">
+                  <h3 class="post-title">
+                    翻转单词顺序
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
