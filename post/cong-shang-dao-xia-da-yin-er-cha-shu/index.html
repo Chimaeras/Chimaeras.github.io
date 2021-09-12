@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>从上到下打印二叉树 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631444914352">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+
+
+
+
+方法1：队列维护节点顺序（层序）
+
+
+按照层序将节点入队，入队的同时将节点的值放入数组中，完全入队之后，输出数组。
+class Solution {
+    pu..." />
+    <meta name="keywords" content="树,链表,队列,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631444914352" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">从上到下打印二叉树</h2>
+            <div class="post-date">2021-09-12</div>
+            
+            <div class="post-content" v-pre>
+              <p>从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1队列维护节点顺序层序">方法1：队列维护节点顺序（层序）</h3>
+</li>
+</ul>
+<p>按照层序将节点入队，入队的同时将节点的值放入数组中，完全入队之后，输出数组。</p>
+<pre><code class="language-java">class Solution {
+    public int[] levelOrder ( TreeNode root ) {
+        if ( root == null ) {
+            return new int[0];
+        }
+        Queue&lt; TreeNode &gt; queue = new LinkedList&lt;&gt;();
+        queue.add( root );
+        ArrayList&lt; Integer &gt; arrayList = new ArrayList&lt;&gt;();
+
+        while ( !queue.isEmpty() ) {
+            TreeNode node = queue.poll();
+            arrayList.add( node.val );
+            if ( node.left != null ) {
+                queue.add( node.left );
+            }
+            if ( node.right != null ) {
+                queue.add( node.right );
+            }
+        }
+
+        int[] res = new int[arrayList.size()];
+        for ( int i = 0; i &lt; arrayList.size(); i++ ) {
+            res[i] = arrayList.get( i );
+        }
+
+        return res;
+    }
+}
+
+</code></pre>
+<hr>
+<h3 id="变种">变种</h3>
+<p>上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。</p>
+<ul>
+<li>
+<h3 id="方法1同上">方法1：同上</h3>
+</li>
+</ul>
+<p>大致做法和上题类似，不过这题中，我们要在每一层中，将当前队列中的节点添加进数组并清空，在插入下一层的节点。同时有一个要注意的点，当我们for循环时，要将初始值取为queue.size（），然后再i--。因为如果判断条件是i&lt;queue.size()的话，每次节点出队之后，队列的长度会变。</p>
+<pre><code class="language-java">class Solution {
+    public List&lt; List&lt; Integer &gt; &gt; levelOrder ( TreeNode root ) {
+        //创建结点队列
+        Queue&lt; TreeNode &gt; queue = new LinkedList&lt;&gt;();
+        //创建结果数组
+        List&lt; List&lt; Integer &gt; &gt; res = new ArrayList&lt;&gt;();
+        //如果根节点不为空，加入队列
+        if ( root != null ) {
+            queue.add( root );
+        }
+        //队列不为空说明未循环完
+        while ( !queue.isEmpty() ) {
+            //创建当前层的结点的数组
+            List&lt; Integer &gt; temp = new ArrayList&lt;&gt;();
+            //取当前队列的长度，依次遍历结点
+            for ( int i = queue.size(); i &gt; 0; i-- ) {
+                //结点出队
+                TreeNode t = queue.poll();
+                temp.add( t.val );
+                if ( t.left != null ) {
+                    queue.add( t.left );
+                }
+                if ( t.right != null ) {
+                    queue.add( t.right );
+                }
+            }
+            res.add( temp );
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="变种-2">变种</h3>
+<p>请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。</p>
+<ul>
+<li>
+<h3 id="方法1同上双端队列">方法1：同上+双端队列</h3>
+</li>
+</ul>
+<p>按照之子型进行打印的话，即第一层是从左到右，第二层是从右到左，我们可以利用双向队列来存储元素，当奇数层的时候我们从队列的尾部进行添加；偶数层的时候从队列的头部进行添加</p>
+<pre><code class="language-java">class Solution {
+    public List&lt; List&lt; Integer &gt; &gt; levelOrder ( TreeNode root ) {
+        //创建结点队列
+        Queue&lt; TreeNode &gt; queue = new LinkedList&lt;&gt;();
+        //创建结果数组
+        List&lt; List&lt; Integer &gt; &gt; res = new ArrayList&lt;&gt;();
+        //如果根节点不为空，加入队列
+        if ( root != null ) {
+            queue.add( root );
+        }
+        //队列不为空说明未循环完
+        while ( !queue.isEmpty() ) {
+            //创建当前层的结点的数组
+            LinkedList&lt; Integer &gt; temp = new LinkedList&lt;&gt;();
+            //取当前队列的长度，依次遍历结点
+            for ( int i = queue.size(); i &gt; 0; i-- ) {
+                //结点出队
+                TreeNode t = queue.poll();
+                // 偶数层 -&gt; 队列头部
+                // 奇数层 -&gt; 队列尾部
+                if ( res.size() % 2 == 0 ) {
+                    temp.addLast( t.val );
+                } else {
+                    temp.addFirst( t.val );
+                }
+                if ( t.left != null ) {
+                    queue.add( t.left );
+                }
+                if ( t.right != null ) {
+                    queue.add( t.right );
+                }
+            }
+            res.add( temp );
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2collections集合的翻转函数">方法2：Collections集合的翻转函数</h3>
+</li>
+</ul>
+<p>因为List继承了Collections集合，其实现了翻转函数，当奇数层的时候，我们将当前层数组进行翻转即可</p>
+<pre><code class="language-java">class Solution {
+    public List&lt; List&lt; Integer &gt; &gt; levelOrder ( TreeNode root ) {
+        Queue&lt; TreeNode &gt; queue = new LinkedList&lt;&gt;();
+        List&lt; List&lt; Integer &gt; &gt; res = new ArrayList&lt;&gt;();
+        if ( root != null ) {
+            queue.add( root );
+        }
+        while ( !queue.isEmpty() ) {
+            List&lt; Integer &gt; tmp = new ArrayList&lt;&gt;();
+            for ( int i = queue.size(); i &gt; 0; i-- ) {
+                TreeNode node = queue.poll();
+                tmp.add( node.val );
+                if ( node.left != null ) {
+                    queue.add( node.left );
+                }
+                if ( node.right != null ) {
+                    queue.add( node.right );
+                }
+            }
+            if ( res.size() % 2 == 1 ) {
+                Collections.reverse( tmp );
+            }
+            res.add( tmp );
+        }
+        return res;
+    }
+}
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
+                    树
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/sg20kp7Dm/" class="tag">
+                    链表
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/mgX1AgTV2/" class="tag">
+                    队列
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/chong-jian-er-cha-shu/">
+                  <h3 class="post-title">
+                    重建二叉树
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
