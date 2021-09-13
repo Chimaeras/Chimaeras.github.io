@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>旋转数组的最小数字 | Joker&#39;s Blog</title>
+<title>平衡二叉树 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,15 +18,18 @@
 
 
 
-    <meta name="description" content="把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。
+    <meta name="description" content="输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
 
 
 
 
-二分法
+方法1：从底至上后续遍历+剪枝
 
-..." />
-    <meta name="keywords" content="二分法,LeetCode" />
+
+
+class Solution {
+    public bool..." />
+    <meta name="keywords" content="树,递归,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -101,38 +104,68 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">旋转数组的最小数字</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">平衡二叉树</h2>
+            <div class="post-date">2021-09-13</div>
             
             <div class="post-content" v-pre>
-              <p>把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。</p>
+              <p>输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="二分法">二分法</h3>
+<h3 id="方法1从底至上后续遍历剪枝">方法1：从底至上后续遍历+剪枝</h3>
 </li>
 </ul>
-<p>和常规的二分法类似，但是有几个要注意的点：</p>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631507985064.png" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Solution {
+    public boolean isBalanced ( TreeNode root ) {
+        return len( root ) != -1;
+    }
+
+    public int len ( TreeNode root ) {
+        // 节点为空直接返回
+        if ( root == null ) {
+            return 0;
+        }
+        // 若左/右子树中存在不平衡二叉树，直接返回，减少操作
+        int left = len( root.left );
+        if ( left == -1 ) {
+            return -1;
+        }
+        int right = len( root.right );
+        if ( right == -1 ) {
+            return -1;
+        }
+        // 如果左右子树的深度差小于2，即为平衡二叉树；否则返回-1
+        return Math.abs( left - right ) &lt; 2 ? Math.max( left, right ) + 1 : -1;
+    }
+}
+</code></pre>
+<hr>
 <ul>
-<li>每次比较的时候，和右边进行比较，因为右边界可以确保是处于右旋转数组，但是就算给出了mid大于left，也不能保证left是处于左旋转数组中。</li>
-<li>如果 mid == right 的话，则表示在 [ left , mid ] 或 [ mid , right ]之间均为相等的值，也可能同时都满足，无法通过二分安全的缩小区间。</li>
+<li>
+<h3 id="方法2递归判断">方法2：递归判断</h3>
+</li>
+</ul>
+<p>思路和 “ 二叉树的深度 ”类似，先同一个函数获取以当前节点为根节点的树的深度，然后若root为平衡二叉树，需要满足几个条件：</p>
+<ul>
+<li>当前节点满足左右子树深度差小于2</li>
+<li>左节点为平衡二叉树</li>
+<li>右节点为平衡二叉树</li>
 </ul>
 <pre><code class="language-java">class Solution {
-    public int minArray ( int[] numbers ) {
-        int left = 0;
-        int rigth = numbers.length - 1;
-        while ( left &lt; rigth ) {
-            int mid = left + ( rigth - left ) / 2;
-            if ( numbers[mid] &lt; numbers[rigth] ) {
-                rigth = mid;
-            } else if ( numbers[mid] &gt; numbers[rigth] ) {
-                left = mid + 1;
-            } else {
-                rigth -= 1;
-            }
+    public boolean isBalanced ( TreeNode root ) {
+        if ( root == null ) {
+            return true;
         }
-        return numbers[left];
+        return ( Math.abs( len( root.left ) - len( root.right ) ) &lt;= 1 &amp;&amp; isBalanced( root.left ) &amp;&amp; isBalanced( root.right ) );
+    }
+
+    public int len ( TreeNode root ) {
+        if ( root == null ) {
+            return 0;
+        }
+        return 1 + Math.max( len( root.left ), len( root.right ) );
     }
 }
 </code></pre>
@@ -141,8 +174,12 @@
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
-                    二分法
+                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
+                    树
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/niP0_y79G/" class="tag">
+                    递归
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -154,9 +191,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/er-wei-shu-zu-zhong-de-cha-zhao/">
+                <a href="https://chimaeras.ltd/post/er-cha-shu-de-shen-du/">
                   <h3 class="post-title">
-                    二维数组中的查找
+                    二叉树的深度
                   </h3>
                 </a>
               </div>
