@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>对称的二叉树 | Joker&#39;s Blog</title>
+<title>LeetCode | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,7 @@
 
 
 
-    <meta name="description" content="请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
-
-例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-
-    1
-   / \
-  2   2
- / \ / \
-3  4 4  3
-但..." />
-    <meta name="keywords" content="树,LeetCode" />
+    <meta name="description" content="温故而知新">
   </head>
   <body>
     <div id="app" class="main">
@@ -102,82 +92,36 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">对称的二叉树</h2>
-            <div class="post-date">2021-09-10</div>
-            
-            <div class="post-content" v-pre>
-              <p>请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。</p>
-<!-- more -->
-<pre><code>例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-
-    1
-   / \
-  2   2
- / \ / \
-3  4 4  3
-但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
-
-    1
-   / \
-  2   2
-   \   \
-   3    3
-
-</code></pre>
-<!---more--->
-<hr>
-<ul>
-<li>
-<h3 id="方法1递归">方法1：递归</h3>
-</li>
-</ul>
-<p>判断：左节点的左孩子 == 右节点的右孩子，左节点的右孩子 == 右节点的左孩子</p>
-<pre><code class="language-java">class Solution {
-    public boolean isSymmetric ( TreeNode root ) {
-        return root == null || isequal( root.left, root.right );
-    }
-
-    boolean isequal ( TreeNode L, TreeNode R ) {
-        if ( L == null &amp;&amp; R == null ) {
-            return true;
-        }
-        if ( L == null || R == null || L.val != R.val ) {
-            return false;
-        }
-        return isequal( L.left, R.right ) &amp;&amp; isequal( L.right, R.left );
-    }
-}
-</code></pre>
-
-            </div>
-            
-              <div class="tag-container">
-                
-                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
-                    树
-                  </a>
-                
-                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
-                    LeetCode
-                  </a>
-                
-              </div>
-            
-            
-              <div class="next-post">
-                <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/zi-fu-chuan-zhong-di-yi-ge-wei-yi-de-zi-fu/">
-                  <h3 class="post-title">
-                    字符串中第一个唯一的字符
-                  </h3>
+          <h2 class="current-tag">标签: LeetCode</h2>
+          
+            <article class="post-item">
+              <div class="left">
+                <a href="https://chimaeras.ltd/post/fizzbuzz/">
+                  <h2 class="post-title">FizzBuzz</h2>
                 </a>
+                <div class="post-date">
+                  2021-08-27
+                </div>
+                <div class="post-abstract">
+                  <p>写一个程序，输出从1到n数字的字符串表示</p>
+<ol>
+<li>如果 n 是3的倍数，输出“Fizz”；</li>
+<li>如果 n 是5的倍数，输出“Buzz”；</li>
+<li>如果 n 同时是3和5的倍数，输出 “FizzBuzz”。</li>
+</ol>
+
+                </div>
               </div>
-            
+              
+            </article>
+          
 
-            
-
-          </div>
+          <div class="pagination-container">
+  
+    <a href="https://chimaeras.ltd/tag/w6VinS032/page/5/" class="prev"><i class="icon-arrow-ios-back-outline"></i> 上一页</a>
+  
+  
+</div>
 
         </div>
       </div>

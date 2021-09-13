@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>构建乘积数组 | Joker&#39;s Blog</title>
+<title>二叉树的镜像 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,8 +18,21 @@
 
 
 
-    <meta name="description" content="给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用..." />
-    <meta name="keywords" content="动态规划,LeetCode" />
+    <meta name="description" content="请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+
+例如输入：
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+
+镜像输出：
+     4
+   /   \
+  7     2
+ / \..." />
+    <meta name="keywords" content="树,递归,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -94,66 +107,77 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">构建乘积数组</h2>
-            <div class="post-date">2021-09-10</div>
+            <h2 class="post-title">二叉树的镜像</h2>
+            <div class="post-date">2021-09-13</div>
             
             <div class="post-content" v-pre>
-              <p>给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。</p>
+              <p>请完成一个函数，输入一个二叉树，该函数输出它的镜像。</p>
 <!-- more -->
+<pre><code>例如输入：
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+
+镜像输出：
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+</code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法1dp数组">方法1：dp数组</h3>
+<h3 id="方法1递归遍历">方法1：递归遍历</h3>
 </li>
 </ul>
-<p>利用左右两个dp数组来维护两边的累乘，结果的组的值等于两边累乘的乘积</p>
+<p>递归终止条件：</p>
+<ul>
+<li>root==null，表示当前节点超越叶子节点</li>
+</ul>
+<p>递归中需要完成的操作：</p>
+<ul>
+<li>交换当前节点的左右节点（ left 、right）</li>
+<li>分别递归遍历左右节点</li>
+</ul>
 <pre><code class="language-java">class Solution {
-    public int[] constructArr ( int[] a ) {
-        if ( a == null || a.length == 0 ) {
-            return a;
+    public TreeNode mirrorTree ( TreeNode root ) {
+        if ( root == null ) {
+            return null;
         }
+        dfs( root );
+        return root;
+    }
 
-        int[] left = new int[a.length];
-        int[] right = new int[a.length];
-        left[0] = 1;
-        right[a.length - 1] = 1;
-
-        for ( int i = 1; i &lt; a.length; i++ ) {
-            left[i] = left[i - 1] * a[i - 1];
+    public void dfs ( TreeNode root ) {
+        if ( root == null ) {
+            return;
         }
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
 
-        for ( int i = a.length - 2; i &gt;= 0; i-- ) {
-            right[i] = right[i + 1] * a[i + 1];
-        }
-
-        int[] res = new int[a.length];
-        for ( int i = 0; i &lt; a.length; i++ ) {
-            res[i] = left[i] * right[i];
-        }
-        return res;
+        dfs( root.left );
+        dfs( root.right );
     }
 }
 </code></pre>
 <hr>
-<h3 id="简略写法从右向左遍历时直接得到right数组并计算进入结果">简略写法：从右向左遍历时，直接得到right数组，并计算进入结果</h3>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631524706691.png" alt="" loading="lazy"></figure>
 <pre><code class="language-java">class Solution {
-    public int[] constructArr ( int[] a ) {
-        int n = a.length;
-        if ( n == 0 ) {
-            return new int[0];
-        }
-        int[] b = new int[n];
-        b[0] = 1;
-        for ( int i = 1; i &lt; n; i++ ) {
-            b[i] = a[i - 1] * b[i - 1];
-        }
+    public TreeNode mirrorTree ( TreeNode root ) {
+        if ( root == null ) {
+            return null;
+        } else {
+            TreeNode left = root.right;
+            TreeNode right = root.left;
 
-        int temp = 1;
-        for ( int i = n - 2; i &gt;= 0; i-- ) {
-            temp *= a[i + 1];
-            b[i] *= temp;
+            root.right = mirrorTree( right );
+            root.left = mirrorTree( left );
         }
-        return b;
+        return root;
     }
 }
 </code></pre>
@@ -162,8 +186,12 @@
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
-                    动态规划
+                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
+                    树
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/niP0_y79G/" class="tag">
+                    递归
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -175,9 +203,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/dui-cheng-de-er-cha-shu/">
+                <a href="https://chimaeras.ltd/post/shu-de-zi-jie-gou/">
                   <h3 class="post-title">
-                    对称的二叉树
+                    树的子结构
                   </h3>
                 </a>
               </div>
