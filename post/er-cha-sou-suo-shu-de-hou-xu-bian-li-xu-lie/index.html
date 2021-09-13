@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>滑动窗口的最大值 | Joker&#39;s Blog</title>
+<title>二叉搜索树的后序遍历序列 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,11 +18,18 @@
 
 
 
-    <meta name="description" content="给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）
+    <meta name="description" content="输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 true，否则返回 false。假设输入的数组的任意两个数字都互不相同。
 
-输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
-输出: [3,3,..." />
-    <meta name="keywords" content="队列,LeetCode" />
+
+
+
+方法1：递归
+
+
+
+class Solution {
+    public boo..." />
+    <meta name="keywords" content="树,递归,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -97,98 +104,76 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">滑动窗口的最大值</h2>
-            <div class="post-date">2021-09-07</div>
+            <h2 class="post-title">二叉搜索树的后序遍历序列</h2>
+            <div class="post-date">2021-09-13</div>
             
             <div class="post-content" v-pre>
-              <p>给定一个数组 <code>nums</code> 和滑动窗口的大小 <code>k</code>，请找出所有滑动窗口里的最大值。（你可以假设K总是有效的，即1&lt;=k&lt;=size）</p>
+              <p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 <code>true</code>，否则返回 <code>false</code>。假设输入的数组的任意两个数字都互不相同。</p>
 <!-- more -->
-<pre><code>输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
-输出: [3,3,5,5,6,7] 
-解释: 
-
-  滑动窗口的位置                最大值
----------------               -----
-[1  3  -1] -3  5  3  6  7       3
- 1 [3  -1  -3] 5  3  6  7       3
- 1  3 [-1  -3  5] 3  6  7       5
- 1  3  -1 [-3  5  3] 6  7       5
- 1  3  -1  -3 [5  3  6] 7       6
- 1  3  -1  -3  5 [3  6  7]      7
-</code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法1暴力循环">方法1：暴力循环</h3>
+<h3 id="方法1递归">方法1：递归</h3>
 </li>
 </ul>
-<p>用一个外循环来遍历整个数组，用一个内循环来模拟滑动窗口，在内循环中找出滑动窗口中的最大值，将其添加到数组中。</p>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631527230068.png" alt="" loading="lazy"></figure>
 <pre><code class="language-java">class Solution {
-    public int[] maxSlidingWindow ( int[] nums, int k ) {
-
-        if ( nums.length == 0 ) {
-            return nums;
+    public boolean verifyPostorder ( int[] postorder ) {
+        // 空节点的后序遍历结果
+        if ( postorder.length == 0 ) {
+            return true;
         }
+        return isTree( postorder, 0, postorder.length - 1 );
+    }
 
-        int size = nums.length;
-        int[] res = new int[size - k + 1];
-        int index = 0;
-
-        for ( int i = 0; i &lt;= size - k; i++ ) {
-            int m = nums[i];
-            for ( int j = i; j &lt; i + k; j++ ) {
-                m = Math.max( m, nums[j] );
+    public boolean isTree ( int[] array, int begin, int end ) {
+        // 表示只剩下一个根节点
+        if ( begin &gt; end ) {
+            return true;
+        }
+        int i;
+        for ( i = begin; i &lt;= end; i++ ) {
+            // 遇到第一个比根节点大的数就退出
+            if ( array[i] &gt;= array[end] ) {
+                break;
             }
-            res[index++] = m;
         }
-        return res;
+        if ( i &gt; end ) {
+            return false;
+        }
+        for ( int j = i; j &lt; end; j++ ) {
+            // 后面的数都要比根节点大，如果有小于的就退出
+            if ( array[j] &lt; array[end] ) {
+                return false;
+            }
+        }
+        // 递归遍历左子树和右子树
+        return isTree( array, begin, i - 1 ) &amp;&amp; isTree( array, i, end - 1 );
     }
 }
 </code></pre>
 <hr>
-<ul>
-<li>
-<h3 id="方法2动态队列">方法2：动态队列</h3>
-</li>
-</ul>
-<p>可以使用动态队列来处理，有几点要注意的：</p>
-<ul>
-<li>队列内只包含窗口内的元素，当窗口进行移动的时候，需要将上一个窗口的左临界值（nums [ i - 1 ] ）去除。</li>
-<li>队列内保证顺序是从大到小，每轮窗口进行滑动的时候，都会添加一个新的值（nums [ j + 1 ]），这时候我们要将所有小于当前新值的元素进行删除，确保队列内顺序。</li>
-</ul>
 <pre><code class="language-java">class Solution {
-    public int[] maxSlidingWindow ( int[] nums, int k ) {
-        if ( nums.length == 0 || k == 0 ) {
-            return new int[0];
+    public boolean verifyPostorder ( int[] postorder ) {
+        return recur( postorder, 0, postorder.length - 1 );
+    }
+
+    boolean recur ( int[] postorder, int i, int j ) {
+        // 节点数量&lt;=1,无需判断
+        if ( i &gt;= j ) {
+            return true;
         }
-
-        Deque&lt; Integer &gt; deque = new LinkedList&lt;&gt;();
-        int[] res = new int[nums.length - k + 1];
-
-        // 形成窗口前
-        for ( int i = 0; i &lt; k; i++ ) {
-            while ( !deque.isEmpty() &amp;&amp; deque.getLast() &lt; nums[i] ) {
-                deque.removeLast();
-            }
-            deque.addLast( nums[i] );
+        int p = i;
+        // 找到第一个大于根节点的坐标
+        while ( postorder[p] &lt; postorder[j] ) {
+            p++;
         }
-
-        res[0] = deque.getFirst();
-
-        // 形成窗口后
-        for ( int i = k; i &lt; nums.length; i++ ) {
-            if ( deque.getFirst() == nums[i - k] ) {
-                deque.removeFirst();
-            }
-            while ( !deque.isEmpty() &amp;&amp; deque.getLast() &lt; nums[i] ) {
-                deque.removeLast();
-            }
-            deque.addLast( nums[i] );
-            res[i - k + 1] = deque.getFirst();
+        int m = p;
+        // 右子树的节点都比根节点大，如果是二叉搜索树的话，会顺利走到根节点的位置
+        while ( postorder[p] &gt; postorder[j] ) {
+            p++;
         }
-
-        return res;
-
+        return p == j &amp;&amp; recur( postorder, i, m - 1 ) &amp;&amp; recur( postorder, m, j - 1 );
     }
 }
 </code></pre>
@@ -197,8 +182,12 @@
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/mgX1AgTV2/" class="tag">
-                    队列
+                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
+                    树
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/niP0_y79G/" class="tag">
+                    递归
                   </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
@@ -210,9 +199,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/bu-yong-jia-jian-cheng-chu-zuo-jia-fa/">
+                <a href="https://chimaeras.ltd/post/er-cha-shu-de-jing-xiang/">
                   <h3 class="post-title">
-                    不用加减乘除做加法
+                    二叉树的镜像
                   </h3>
                 </a>
               </div>
