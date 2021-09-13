@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>平衡二叉树 | Joker&#39;s Blog</title>
+<title>二叉搜索树与双向链表 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,18 +18,19 @@
 
 
 
-    <meta name="description" content="输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+    <meta name="description" content="输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。
 
 
 
 
-方法1：从底至上后续遍历+剪枝
+方法1：中序遍历修改引用
 
 
 
 class Solution {
-    public bool..." />
-    <meta name="keywords" content="树,递归,LeetCode" />
+    Node head, pre;
+   ..." />
+    <meta name="keywords" content="树,递归,链表,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -104,68 +105,88 @@ class Solution {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">平衡二叉树</h2>
+            <h2 class="post-title">二叉搜索树与双向链表</h2>
             <div class="post-date">2021-09-13</div>
             
             <div class="post-content" v-pre>
-              <p>输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。</p>
+              <p>输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="方法1从底至上后续遍历剪枝">方法1：从底至上后续遍历+剪枝</h3>
+<h3 id="方法1中序遍历修改引用">方法1：中序遍历修改引用</h3>
 </li>
 </ul>
-<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631507985064.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631514031493.png" alt="" loading="lazy"></figure>
 <pre><code class="language-java">class Solution {
-    public boolean isBalanced ( TreeNode root ) {
-        return len( root ) != -1;
+    Node head, pre;
+    public Node treeToDoublyList ( Node root ) {
+        if ( root == null ) {
+            return null;
+        }
+        // 修改双向引用
+        dfs( root );
+        // 首尾相连
+        pre.right = head;
+        head.left = pre;
+        return head;
     }
 
-    public int len ( TreeNode root ) {
-        // 节点为空直接返回
-        if ( root == null ) {
-            return 0;
+    public void dfs ( Node cur ) {
+        // 空节点 直接返回
+        if ( cur == null ) {
+            return;
         }
-        // 若左/右子树中存在不平衡二叉树，直接返回，减少操作
-        int left = len( root.left );
-        if ( left == -1 ) {
-            return -1;
+        // 递归左子树 ( 左 - 中 - 右 )
+        dfs( cur.left );
+        // pre为空表示正在访问头节点，所以其前驱节点为空
+        if ( pre == null ) {
+            // 记为head
+            head = cur;
+        } else {
+            // 前驱节点的右指针指向当前节点
+            pre.right = cur;
         }
-        int right = len( root.right );
-        if ( right == -1 ) {
-            return -1;
-        }
-        // 如果左右子树的深度差小于2，即为平衡二叉树；否则返回-1
-        return Math.abs( left - right ) &lt; 2 ? Math.max( left, right ) + 1 : -1;
+        // 当前节点的前驱指针指向pre
+        cur.left = pre;
+        // 往右边挪移
+        pre = cur;
+        // 递归遍历右节点
+        dfs( cur.right );
     }
 }
 </code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法2递归判断">方法2：递归判断</h3>
+<h3 id="方法2队列按照中序存储节点再修改指针">方法2：队列按照中序存储节点，再修改指针</h3>
 </li>
 </ul>
-<p>思路和 “ 二叉树的深度 ”类似，先同一个函数获取以当前节点为根节点的树的深度，然后若root为平衡二叉树，需要满足几个条件：</p>
-<ul>
-<li>当前节点满足左右子树深度差小于2</li>
-<li>左节点为平衡二叉树</li>
-<li>右节点为平衡二叉树</li>
-</ul>
 <pre><code class="language-java">class Solution {
-    public boolean isBalanced ( TreeNode root ) {
+    ArrayList&lt; Node &gt; arrayList = new ArrayList&lt;&gt;();
+    public Node treeToDoublyList ( Node root ) {
         if ( root == null ) {
-            return true;
+            return null;
         }
-        return ( Math.abs( len( root.left ) - len( root.right ) ) &lt;= 1 &amp;&amp; isBalanced( root.left ) &amp;&amp; isBalanced( root.right ) );
+        dfs( root );
+        int n = arrayList.size();
+        Node pre = arrayList.get( n - 1 );
+        
+        for ( int i = 0; i &lt; n - 1; i++ ) {
+            arrayList.get( i ).right = arrayList.get( i + 1 );
+            arrayList.get( i + 1 ).left = arrayList.get( i );
+        }
+        arrayList.get( 0 ).left = arrayList.get( n - 1 );
+        arrayList.get( n - 1 ).right = arrayList.get( 0 );
+        
+        return arrayList.get( 0 );
     }
-
-    public int len ( TreeNode root ) {
-        if ( root == null ) {
-            return 0;
+    public void dfs ( Node root ) {
+        if ( root != null ) {
+            dfs( root.left );
+            arrayList.add( root );
+            dfs( root.right );
         }
-        return 1 + Math.max( len( root.left ), len( root.right ) );
     }
 }
 </code></pre>
@@ -182,6 +203,10 @@ class Solution {
                     递归
                   </a>
                 
+                  <a href="https://chimaeras.ltd/tag/sg20kp7Dm/" class="tag">
+                    链表
+                  </a>
+                
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
                   </a>
@@ -191,9 +216,9 @@ class Solution {
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/er-cha-shu-de-shen-du/">
+                <a href="https://chimaeras.ltd/post/ping-heng-er-cha-shu/">
                   <h3 class="post-title">
-                    二叉树的深度
+                    平衡二叉树
                   </h3>
                 </a>
               </div>
