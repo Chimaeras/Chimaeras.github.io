@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>托普利兹矩阵 | Joker&#39;s Blog</title>
+<title>二叉树的深度 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,17 @@
 
 
 
-    <meta name="description" content="给你一个 m x n 的矩阵 matrix 。如果这个矩阵是托普利茨矩阵，返回 true ；否则，返回 false 。
-如果矩阵上每一条由左上到右下的对角线上的元素都相同，那么这个矩阵是 托普利茨矩阵 。
+    <meta name="description" content="输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
 
 
 
 
-方法1：遍历比较
+方法1：递归增加
 
 
-cl..." />
-    <meta name="keywords" content="LeetCode" />
+class Solution {
+    public int maxDepth..." />
+    <meta name="keywords" content="树,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,42 +103,71 @@ cl..." />
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">托普利兹矩阵</h2>
-            <div class="post-date">2021-09-03</div>
+            <h2 class="post-title">二叉树的深度</h2>
+            <div class="post-date">2021-09-13</div>
             
             <div class="post-content" v-pre>
-              <p>给你一个 m x n 的矩阵 matrix 。如果这个矩阵是托普利茨矩阵，返回 true ；否则，返回 false 。</p>
-<p>如果矩阵上每一条由左上到右下的对角线上的元素都相同，那么这个矩阵是 托普利茨矩阵 。</p>
+              <p>输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h4 id="方法1遍历比较">方法1：遍历比较</h4>
+<h3 id="方法1递归增加">方法1：递归增加</h3>
 </li>
 </ul>
 <pre><code class="language-java">class Solution {
-    public boolean isToeplitzMatrix ( int[][] matrix ) {
-        int m = matrix.length, n = matrix[0].length;
-        for ( int i = 0; i &lt; m - 1; i++ ) {
-            for ( int j = 0; j &lt; n - 1; j++ ) {
-                if ( matrix[i][j] != matrix[i + 1][j + 1] ) {
-                    return false;
-                }
-            }
+    public int maxDepth ( TreeNode root ) {
+        if ( root == null ) {
+            return 0;
         }
-        return true;
+        return 1 + Math.max( maxDepth( root.left ), maxDepth( root.right ) );
     }
 }
 </code></pre>
+<hr>
 <ul>
 <li>
-<h5 id="分析m为行n为列从左上角开始依次比较对角线上的元素若不相等则返回false">分析：M为行，N为列，从左上角开始依次比较对角线上的元素，若不相等则返回false</h5>
+<h3 id="方法2层序遍历bfs">方法2：层序遍历（BFS）</h3>
 </li>
 </ul>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631503999519.png" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Solution {
+    public int maxDepth ( TreeNode root ) {
+        if ( root == null ) {
+            return 0;
+        }
+        List&lt; TreeNode &gt; queue = new LinkedList&lt;&gt;();
+        queue.add( root );
+        int res = 0;
+        while ( !queue.isEmpty() ) {
+            // 存储当前层的节点
+            List&lt; TreeNode &gt; temp = new LinkedList&lt;&gt;();
+            // 将下一层的节点添加到队列中
+            for ( TreeNode node : queue ) {
+                if ( node.left != null ) {
+                    temp.add( node.left );
+                }
+                if ( node.right != null ) {
+                    temp.add( node.right );
+                }
+            }
+            // 令下一层的节点数组等于当前队列
+            queue = temp;
+            // 层数+1
+            res++;
+        }
+        return res;
+    }
+}
+</code></pre>
 
             </div>
             
               <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
+                    树
+                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -149,9 +178,9 @@ cl..." />
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/he-bing-liang-ge-you-xu-shu-zu/">
+                <a href="https://chimaeras.ltd/post/cong-shang-dao-xia-da-yin-er-cha-shu/">
                   <h3 class="post-title">
-                    合并两个有序数组
+                    从上到下打印二叉树
                   </h3>
                 </a>
               </div>
