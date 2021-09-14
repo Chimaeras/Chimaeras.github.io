@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-14T07:14:23.407Z</updated>
+    <updated>2021-09-14T09:57:45.509Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[LRU缓存]]></title>
+        <id>https://chimaeras.ltd/post/lru-huan-cun/</id>
+        <link href="https://chimaeras.ltd/post/lru-huan-cun/">
+        </link>
+        <updated>2021-09-14T09:16:34.000Z</updated>
+        <summary type="html"><![CDATA[<p>设计和构建一个“最近最少使用”缓存，该缓存会删除最近最少使用的项目。缓存应该从键映射到值(允许你插入和检索特定键对应的值)，并在初始化时指定最大容量。当缓存被填满时，它应该删除最近最少使用的项目。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>设计和构建一个“最近最少使用”缓存，该缓存会删除最近最少使用的项目。缓存应该从键映射到值(允许你插入和检索特定键对应的值)，并在初始化时指定最大容量。当缓存被填满时，它应该删除最近最少使用的项目。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[二叉搜索树的第k大节点]]></title>
         <id>https://chimaeras.ltd/post/er-cha-sou-suo-shu-de-di-k-da-jie-dian/</id>
@@ -115,17 +126,6 @@
         <summary type="html"><![CDATA[<p>输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[二叉树的深度]]></title>
-        <id>https://chimaeras.ltd/post/er-cha-shu-de-shen-du/</id>
-        <link href="https://chimaeras.ltd/post/er-cha-shu-de-shen-du/">
-        </link>
-        <updated>2021-09-13T03:32:50.000Z</updated>
-        <summary type="html"><![CDATA[<p>输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。</p>
 ]]></content>
     </entry>
 </feed>
