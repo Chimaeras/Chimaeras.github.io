@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>二叉搜索树中两个节点之和 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631603510524">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="给定一个二叉搜索树的 根节点 root 和一个整数 k , 请判断该二叉搜索树中是否存在两个节点它们的值之和等于 k 。假设二叉搜索树中节点的值均唯一。
+
+
+
+
+方法1：队存储所有节点，遍历查找。
+
+
+注意，这里不能用用res.cotain..." />
+    <meta name="keywords" content="树,递归,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631603510524" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">二叉搜索树中两个节点之和</h2>
+            <div class="post-date">2021-09-14</div>
+            
+            <div class="post-content" v-pre>
+              <p>给定一个二叉搜索树的 <strong>根节点</strong> <code>root</code> 和一个整数 <code>k</code> , 请判断该二叉搜索树中是否存在两个节点它们的值之和等于 <code>k</code> 。假设二叉搜索树中节点的值均唯一。</p>
+<hr>
+<!-- more -->
+<ul>
+<li>
+<h3 id="方法1队存储所有节点遍历查找">方法1：队存储所有节点，遍历查找。</h3>
+</li>
+</ul>
+<p>注意，这里不能用用res.cotains（）来进行包含查询，可能会出现 [ 1 , null , 2]。即单个点等于target的情况出现。</p>
+<pre><code class="language-JAVA">class Solution {
+    ArrayList&lt; Integer &gt; res = new ArrayList&lt;&gt;();
+
+    public boolean findTarget ( TreeNode root, int k ) {
+        if ( root == null ) {
+            return false;
+        }
+        dfs( root, k );
+        int i = 0, j = res.size() - 1;
+        while ( i &lt; j ) {
+            if ( res.get( i ) + res.get( j ) == k ) {
+                return true;
+            } else if ( res.get( i ) + res.get( j ) &lt; k ) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return false;
+    }
+
+    public void dfs ( TreeNode root, int k ) {
+        if ( root.left != null ) {
+            dfs( root.left, k );
+        }
+        res.add( root.val );
+        if ( root.right != null ) {
+            dfs( root.right, k );
+        }
+    }
+}
+</code></pre>
+<h3 id=""></h3>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/n4jjMBA6O/" class="tag">
+                    树
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/niP0_y79G/" class="tag">
+                    递归
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing/">
+                  <h3 class="post-title">
+                    二叉树中和为某一值的路径
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

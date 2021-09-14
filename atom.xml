@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-13T10:15:55.601Z</updated>
+    <updated>2021-09-14T07:11:54.875Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,56 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[二叉搜索树的第k大节点]]></title>
+        <id>https://chimaeras.ltd/post/er-cha-sou-suo-shu-de-di-k-da-jie-dian/</id>
+        <link href="https://chimaeras.ltd/post/er-cha-sou-suo-shu-de-di-k-da-jie-dian/">
+        </link>
+        <updated>2021-09-14T07:05:42.000Z</updated>
+        <summary type="html"><![CDATA[<p>给定一棵二叉搜索树，请找出其中第k大的节点。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>给定一棵二叉搜索树，请找出其中第k大的节点。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[二叉搜索树中两个节点之和]]></title>
+        <id>https://chimaeras.ltd/post/er-cha-sou-suo-shu-zhong-liang-ge-jie-dian-zhi-he/</id>
+        <link href="https://chimaeras.ltd/post/er-cha-sou-suo-shu-zhong-liang-ge-jie-dian-zhi-he/">
+        </link>
+        <updated>2021-09-14T06:36:04.000Z</updated>
+        <summary type="html"><![CDATA[<p>给定一个二叉搜索树的 <strong>根节点</strong> <code>root</code> 和一个整数 <code>k</code> , 请判断该二叉搜索树中是否存在两个节点它们的值之和等于 <code>k</code> 。假设二叉搜索树中节点的值均唯一。</p>
+<hr>
+]]></summary>
+        <content type="html"><![CDATA[<p>给定一个二叉搜索树的 <strong>根节点</strong> <code>root</code> 和一个整数 <code>k</code> , 请判断该二叉搜索树中是否存在两个节点它们的值之和等于 <code>k</code> 。假设二叉搜索树中节点的值均唯一。</p>
+<hr>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[二叉树中和为某一值的路径]]></title>
+        <id>https://chimaeras.ltd/post/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing/</id>
+        <link href="https://chimaeras.ltd/post/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing/">
+        </link>
+        <updated>2021-09-14T05:56:12.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p>
+<hr>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p>
+<hr>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[回旋镖的数量]]></title>
+        <id>https://chimaeras.ltd/post/hui-xuan-biao-de-shu-liang/</id>
+        <link href="https://chimaeras.ltd/post/hui-xuan-biao-de-shu-liang/">
+        </link>
+        <updated>2021-09-13T11:06:29.000Z</updated>
+        <summary type="html"><![CDATA[<p>给定平面上 n 对 互不相同 的点 points ，其中 points[i] = [xi, yi] 。回旋镖 是由点 (i, j, k) 表示的元组 ，其中 i 和 j 之间的距离和 i 和 k 之间的距离相等（需要考虑元组的顺序）。</p>
+<p>返回平面上所有回旋镖的数量。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>给定平面上 n 对 互不相同 的点 points ，其中 points[i] = [xi, yi] 。回旋镖 是由点 (i, j, k) 表示的元组 ，其中 i 和 j 之间的距离和 i 和 k 之间的距离相等（需要考虑元组的顺序）。</p>
+<p>返回平面上所有回旋镖的数量。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[二叉搜索树的后序遍历序列]]></title>
         <id>https://chimaeras.ltd/post/er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie/</id>
@@ -76,56 +126,6 @@
         <summary type="html"><![CDATA[<p>输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[从上到下打印二叉树]]></title>
-        <id>https://chimaeras.ltd/post/cong-shang-dao-xia-da-yin-er-cha-shu/</id>
-        <link href="https://chimaeras.ltd/post/cong-shang-dao-xia-da-yin-er-cha-shu/">
-        </link>
-        <updated>2021-09-12T11:07:57.000Z</updated>
-        <summary type="html"><![CDATA[<p>从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[重建二叉树]]></title>
-        <id>https://chimaeras.ltd/post/chong-jian-er-cha-shu/</id>
-        <link href="https://chimaeras.ltd/post/chong-jian-er-cha-shu/">
-        </link>
-        <updated>2021-09-12T09:38:37.000Z</updated>
-        <summary type="html"><![CDATA[<p>输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。</p>
-<p>假设输入的前序遍历和中序遍历的结果中都不含重复的数字。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。</p>
-<p>假设输入的前序遍历和中序遍历的结果中都不含重复的数字。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[链表中环的入口节点]]></title>
-        <id>https://chimaeras.ltd/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/</id>
-        <link href="https://chimaeras.ltd/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/">
-        </link>
-        <updated>2021-09-12T07:38:53.000Z</updated>
-        <summary type="html"><![CDATA[<p>给定一个链表，返回链表开始入环的第一个节点。 从链表的头节点开始沿着 <code>next</code> 指针进入环的第一个节点为环的入口节点。如果链表无环，则返回 <code>null</code>。</p>
-<p>为了表示给定链表中的环，我们使用整数 <code>pos</code> 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 <code>pos</code> 是 <code>-1</code>，则在该链表中没有环。<strong>注意，<code>pos</code> 仅仅是用于标识环的情况，并不会作为参数传递到函数中。</strong></p>
-<p>**说明：**不允许修改给定的链表。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给定一个链表，返回链表开始入环的第一个节点。 从链表的头节点开始沿着 <code>next</code> 指针进入环的第一个节点为环的入口节点。如果链表无环，则返回 <code>null</code>。</p>
-<p>为了表示给定链表中的环，我们使用整数 <code>pos</code> 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 <code>pos</code> 是 <code>-1</code>，则在该链表中没有环。<strong>注意，<code>pos</code> 仅仅是用于标识环的情况，并不会作为参数传递到函数中。</strong></p>
-<p>**说明：**不允许修改给定的链表。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[两个链表的公共节点]]></title>
-        <id>https://chimaeras.ltd/post/liang-ge-lian-biao-de-gong-gong-jie-dian/</id>
-        <link href="https://chimaeras.ltd/post/liang-ge-lian-biao-de-gong-gong-jie-dian/">
-        </link>
-        <updated>2021-09-12T04:48:25.000Z</updated>
-        <summary type="html"><![CDATA[<p>输入两个链表，找出它们的第一个公共节点。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>输入两个链表，找出它们的第一个公共节点。</p>
 ]]></content>
     </entry>
 </feed>
