@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631615552983">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631617810471">
 <link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
 
 
@@ -30,7 +30,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://chimaeras.ltd">
-        <img src="https://chimaeras.ltd/images/avatar.png?v=1631615552983" class="site-logo">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631617810471" class="site-logo">
         <h1 class="site-title">Joker&#39;s Blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -120,7 +120,128 @@ cache.get(4);       // 返回  4
 <hr>
 <ul>
 <li>
-<h3 id="方法1两个map分别维护value和time">方法1：两个map分别维护value和time</h3>
+<h3 id="方法1map双向队列">方法1：map+双向队列</h3>
+</li>
+</ul>
+<p>定义map<key node>和双向队列节点，使用伪开头和伪节点来指向开头和结尾，实际操作过程就比较好操作。同时准备几个方法：</p>
+<ul>
+<li>moveToHead ：将节点移动到开头</li>
+<li>removeTail：删除尾节点</li>
+<li>removeNode：删除某个节点</li>
+<li>addToHead：将某个节点添加到开头</li>
+</ul>
+<p>判断流程：</p>
+<h4 id="get方法">get方法：</h4>
+<p>通过map获取到节点，</p>
+<ul>
+<li>如果节点不存在，则返回-1；</li>
+<li>存在则调用moveToHead方法，将当前node移至开头</li>
+</ul>
+<h4 id="put方法">put方法：</h4>
+<p>通过map获取到节点，</p>
+<ul>
+<li>如果key不存在，则创建一个新的节点，将其添加进map并移动到链表头部。
+<ul>
+<li>判断链表长度，如果超出容量，则删除链表尾节点</li>
+<li>同时要删除map中的对应项</li>
+<li>size--</li>
+</ul>
+</li>
+<li>如果key存在，则修改节点value，同时将其移到头部。</li>
+</ul>
+<pre><code class="language-java">class LRUCache {
+    class dLinkedNode {
+        int key;
+        int value;
+        dLinkedNode prev;
+        dLinkedNode next;
+
+        public dLinkedNode ( ) {
+        }
+
+        public dLinkedNode ( int _key, int _value ) {
+            key = _key;
+            value = _value;
+        }
+    }
+
+    private Map&lt; Integer, dLinkedNode &gt; cache = new HashMap&lt; Integer, dLinkedNode &gt;();
+    private int size;
+    private int capacity;
+    private dLinkedNode head, tail;
+
+    public LRUCache ( int capacity ) {
+        this.size = 0;
+        this.capacity = capacity;
+        // 使用伪头部和伪尾部节点
+        head = new dLinkedNode();
+        tail = new dLinkedNode();
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    public int get ( int key ) {
+        dLinkedNode node = cache.get( key );
+        if ( node == null ) {
+            return -1;
+        }
+        // 如果 key 存在，先通过哈希表定位，再移到头部
+        moveToHead( node );
+        return node.value;
+    }
+
+    public void put ( int key, int value ) {
+        dLinkedNode node = cache.get( key );
+        if ( node == null ) {
+            // 如果 key 不存在，创建一个新的节点
+            dLinkedNode newNode = new dLinkedNode( key, value );
+            // 添加进哈希表
+            cache.put( key, newNode );
+            // 添加至双向链表的头部
+            addToHead( newNode );
+            ++size;
+            if ( size &gt; capacity ) {
+                // 如果超出容量，删除双向链表的尾部节点
+                dLinkedNode tail = removeTail();
+                // 删除哈希表中对应的项
+                cache.remove( tail.key );
+                --size;
+            }
+        } else {
+            // 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部
+            node.value = value;
+            moveToHead( node );
+        }
+    }
+
+    private void addToHead ( dLinkedNode node ) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    private void removeNode ( dLinkedNode node ) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void moveToHead ( dLinkedNode node ) {
+        removeNode( node );
+        addToHead( node );
+    }
+
+    private dLinkedNode removeTail ( ) {
+        dLinkedNode res = tail.prev;
+        removeNode( res );
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2两个map分别维护value和time">方法2：两个map分别维护value和time</h3>
 </li>
 </ul>
 <p>我们使用分别使用两个Hashmap来存储不同的健值对，分别命名为：map、count。</p>
