@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-15T10:47:10.665Z</updated>
+    <updated>2021-09-15T10:56:21.930Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,17 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[数组中的逆序对]]></title>
+        <id>https://chimaeras.ltd/post/shu-zu-zhong-de-ni-xu-dui/</id>
+        <link href="https://chimaeras.ltd/post/shu-zu-zhong-de-ni-xu-dui/">
+        </link>
+        <updated>2021-09-15T10:54:52.000Z</updated>
+        <summary type="html"><![CDATA[<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[最小的前k个数]]></title>
         <id>https://chimaeras.ltd/post/zui-xiao-de-qian-k-ge-shu/</id>
@@ -117,19 +128,6 @@
 ]]></summary>
         <content type="html"><![CDATA[<p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p>
 <hr>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[回旋镖的数量]]></title>
-        <id>https://chimaeras.ltd/post/hui-xuan-biao-de-shu-liang/</id>
-        <link href="https://chimaeras.ltd/post/hui-xuan-biao-de-shu-liang/">
-        </link>
-        <updated>2021-09-13T11:06:29.000Z</updated>
-        <summary type="html"><![CDATA[<p>给定平面上 n 对 互不相同 的点 points ，其中 points[i] = [xi, yi] 。回旋镖 是由点 (i, j, k) 表示的元组 ，其中 i 和 j 之间的距离和 i 和 k 之间的距离相等（需要考虑元组的顺序）。</p>
-<p>返回平面上所有回旋镖的数量。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>给定平面上 n 对 互不相同 的点 points ，其中 points[i] = [xi, yi] 。回旋镖 是由点 (i, j, k) 表示的元组 ，其中 i 和 j 之间的距离和 i 和 k 之间的距离相等（需要考虑元组的顺序）。</p>
-<p>返回平面上所有回旋镖的数量。</p>
 ]]></content>
     </entry>
 </feed>

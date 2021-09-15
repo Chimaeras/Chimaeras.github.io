@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>二分查找 | Joker&#39;s Blog</title>
+<title>数组中的逆序对 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,17 +18,18 @@
 
 
 
-    <meta name="description" content="给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
+    <meta name="description" content="在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。
+
+输入: [7,5,6,4]
+输出: 5
+
+[7,5] [7,6] [7,4] [5,4] [6,4]
 
 
 
 
-解法1：
-
-
-class Solution {
-    p..." />
-    <meta name="keywords" content="二分法,LeetCode" />
+方..." />
+    <meta name="keywords" content="LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -103,33 +104,67 @@ class Solution {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">二分查找</h2>
-            <div class="post-date">2021-09-06</div>
+            <h2 class="post-title">数组中的逆序对</h2>
+            <div class="post-date">2021-09-15</div>
             
             <div class="post-content" v-pre>
-              <p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</p>
+              <p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</p>
 <!-- more -->
+<pre><code>输入: [7,5,6,4]
+输出: 5
+
+[7,5] [7,6] [7,4] [5,4] [6,4]
+</code></pre>
 <hr>
 <ul>
 <li>
-<h4 id="解法1">解法1：</h4>
+<h3 id="方法1递归合并">方法1：递归合并</h3>
 </li>
 </ul>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631703319188.png" alt="" loading="lazy"></figure>
 <pre><code class="language-java">class Solution {
-    public int search ( int[] nums, int target ) {
-        int left = 0, right = nums.length - 1;
-        int mid;
-        while ( left &lt;= right ) {
-            mid = left + ( right - left ) / 2;
-            if ( nums[mid] == target ) {
-                return mid;
-            } else if ( nums[mid] &gt; target ) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
+    int[] nums, tmp;
+
+    public int reversePairs ( int[] nums ) {
+        this.nums = nums;
+        tmp = new int[nums.length];
+        return mergeSort( 0, nums.length );
+    }
+
+    public int mergeSort ( int left, int right ) {
+        // 终止条件：只剩一个节点或超过范围，
+        if ( left &gt;= right ) {
+            return 0;
+        }
+        // 取中间数
+        int mid = ( left + right ) / 2;
+        // 递归划分
+        int res = mergeSort( left, mid ) + mergeSort( mid + 1, right );
+
+        // 分为[left,mid]、[mid+1,right]两个区间
+        int i = left, j = mid + 1;
+        // 辅助数组
+        for ( int k = left; k &lt;= right; k++ ) {
+            tmp[k] = nums[k];
+        }
+        // 合并
+        for ( int k = left; k &lt;= right; k++ ) {
+            // 左子区间已经遍历完
+            if ( k == mid + 1 ) {
+                nums[k] = tmp[j++];
+            }
+            // 右子区间已经遍历完 || 左 &lt; 右
+            else if ( k == right + 1 || tmp[i] &lt;= tmp[j] ) {
+                nums[k] = tmp[i++];
+            }
+            // 左 &gt; 右
+            // 表示左子区间中left后的每一个数都能与右子区间中的right形成一个逆序对，因为区间都是按照大小进行排序的
+            else {
+                nums[k] = tmp[j++];
+                res += mid - left + 1;
             }
         }
-        return -1;
+        return res;
     }
 }
 </code></pre>
@@ -137,10 +172,6 @@ class Solution {
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
-                    二分法
-                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -151,9 +182,9 @@ class Solution {
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/shu-zi-de-bu-shu/">
+                <a href="https://chimaeras.ltd/post/zui-xiao-de-qian-k-ge-shu/">
                   <h3 class="post-title">
-                    数字的补数
+                    最小的前k个数
                   </h3>
                 </a>
               </div>
