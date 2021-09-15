@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>0~n-1中缺失的数字 | Joker&#39;s Blog</title>
+<title>1-n整数中1出现的次数 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,16 +18,21 @@
 
 
 
-    <meta name="description" content="一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+    <meta name="description" content="输入一个整数 n ，求1～n这n个整数的十进制表示中1出现的次数。
+例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。
 
 
 
 
-方法1：二分法
+方法1：从低位起，循环计算当前位中1出现的次数
 
 
-排序数组中的搜索问题，可以尝试运用二分法来解..." />
-    <meta name="keywords" content="二分法,LeetCode" />
+
+
+
+
+class ..." />
+    <meta name="keywords" content="LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -102,68 +107,65 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">0~n-1中缺失的数字</h2>
-            <div class="post-date">2021-08-27</div>
+            <h2 class="post-title">1-n整数中1出现的次数</h2>
+            <div class="post-date">2021-09-15</div>
             
             <div class="post-content" v-pre>
-              <p>一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。</p>
+              <p>输入一个整数 <code>n</code> ，求1～n这n个整数的十进制表示中1出现的次数。</p>
+<p>例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。</p>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="方法1二分法">方法1：二分法</h3>
+<h3 id="方法1从低位起循环计算当前位中1出现的次数">方法1：从低位起，循环计算当前位中1出现的次数</h3>
 </li>
 </ul>
-<p>排序数组中的搜索问题，可以尝试运用二分法来解决。最后一次交换后left=右子数组的首位元素，right=左子数组的末位元素，所以返回left。</p>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631705086544.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://chimaeras.ltd/post-images/1631705092675.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://chimaeras.ltd/post-images/1631705097239.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="https://chimaeras.ltd/post-images/1631705102863.png" alt="" loading="lazy"></figure>
 <pre><code class="language-java">class Solution {
-    public int missingNumber ( int[] nums ) {
-        int left = 0, right = nums.length - 1;
-        while ( left &lt;= right ) {
-            int m = ( left + ( right - left ) ) / 2;
-            if ( nums[m] == m ) {
-                left = m + 1;
+    public int countDigitOne ( int n ) {
+        // 结果
+        int res = 0;
+        // 位因子，即pow(10,i)
+        int dig = 1;
+        // 高位，即当前位之前的位数
+        int high = n / 10;
+        // 当前位
+        int cur = n % 10;
+        // 低位，即当前位之后的位数
+        int low = 0;
+
+        // 当 high 和 cur 同时为 0 时，说明已经越过最高位，因此跳出
+        while ( high != 0 || cur != 0 ) {
+            // 根据当前位来选择对应的计算方法
+            if ( cur == 0 ) {
+                res += high * dig;
+            } else if ( cur == 1 ) {
+                res += high * dig + low + 1;
             } else {
-                right = m - 1;
+                res += ( high + 1 ) * dig;
             }
-        }
-        return left;
-    }
-}
-</code></pre>
-<hr>
-<ul>
-<li>
-<h3 id="方法2抑或操作">方法2：抑或操作</h3>
-</li>
-</ul>
-<p>原理在于抑或（相同为0，不同为1）操作：a<sup>b</sup>b=a</p>
-<pre><code class="language-java">class Solution {
-    public int missingNumber ( int[] nums ) {
-        // 因为缺失一个数字，所以数组的末尾会存在x=nums.length，令其与res抑或则会抵消
-        int res = nums.length;
-        for ( int i = 0; i &lt; nums.length; i++ ) {
-            res ^= nums[i];
-            res ^= i;
+            // 更新位信息
+            // 低位 = low + pow(10,i) * cur
+            // 将 cur 加入 low ，组成下轮 low
+            low += cur * dig;
+            // 下轮 cur 是本轮 high 的最低位
+            cur = high % 10;
+            // 将本轮 high 最低位删除，得到下轮 high
+            high /= 10;
+            // 位因子每轮 × 10
+            dig *= 10;
         }
         return res;
     }
 }
 </code></pre>
-<hr>
-<ul>
-<li>
-<h3 id="方法3遍历排查">方法3：遍历+排查</h3>
-</li>
-</ul>
-<p>可以通过遍历求的数组的sum，与实际的sum相减即可得到缺失数字，略</p>
 
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
-                    二分法
-                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -174,9 +176,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/san-jiao-xing-de-zui-da-zhou-chang/">
+                <a href="https://chimaeras.ltd/post/shu-zu-zhong-de-ni-xu-dui/">
                   <h3 class="post-title">
-                    三角形的最大周长
+                    数组中的逆序对
                   </h3>
                 </a>
               </div>

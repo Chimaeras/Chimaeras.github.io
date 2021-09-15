@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-15T10:56:21.930Z</updated>
+    <updated>2021-09-15T11:26:25.646Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,19 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[1-n整数中1出现的次数]]></title>
+        <id>https://chimaeras.ltd/post/1-n-zheng-shu-zhong-1-chu-xian-de-ci-shu/</id>
+        <link href="https://chimaeras.ltd/post/1-n-zheng-shu-zhong-1-chu-xian-de-ci-shu/">
+        </link>
+        <updated>2021-09-15T11:23:34.000Z</updated>
+        <summary type="html"><![CDATA[<p>输入一个整数 <code>n</code> ，求1～n这n个整数的十进制表示中1出现的次数。</p>
+<p>例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>输入一个整数 <code>n</code> ，求1～n这n个整数的十进制表示中1出现的次数。</p>
+<p>例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[数组中的逆序对]]></title>
         <id>https://chimaeras.ltd/post/shu-zu-zhong-de-ni-xu-dui/</id>
@@ -114,19 +127,6 @@
 <hr>
 ]]></summary>
         <content type="html"><![CDATA[<p>给定一个二叉搜索树的 <strong>根节点</strong> <code>root</code> 和一个整数 <code>k</code> , 请判断该二叉搜索树中是否存在两个节点它们的值之和等于 <code>k</code> 。假设二叉搜索树中节点的值均唯一。</p>
-<hr>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[二叉树中和为某一值的路径]]></title>
-        <id>https://chimaeras.ltd/post/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing/</id>
-        <link href="https://chimaeras.ltd/post/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing/">
-        </link>
-        <updated>2021-09-14T05:56:12.000Z</updated>
-        <summary type="html"><![CDATA[<p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p>
-<hr>
-]]></summary>
-        <content type="html"><![CDATA[<p>输入一棵二叉树和一个整数，打印出二叉树中节点值的和为输入整数的所有路径。从树的根节点开始往下一直到叶节点所经过的节点形成一条路径。</p>
 <hr>
 ]]></content>
     </entry>
