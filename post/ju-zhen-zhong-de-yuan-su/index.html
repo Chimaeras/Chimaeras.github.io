@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>矩阵中的元素 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631701360707">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或..." />
+    <meta name="keywords" content="递归,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631701360707" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">矩阵中的元素</h2>
+            <div class="post-date">2021-09-15</div>
+            
+            <div class="post-content" v-pre>
+              <p>给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。</p>
+<p>单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1回溯遍历">方法1：回溯遍历</h3>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631692667934.png" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Solution {
+    public boolean exist ( char[][] board, String word ) {
+        // 转换成字符数组，方便根据下标取值
+        char[] words = word.toCharArray();
+        // 以每一个节点为开头尝试一遍
+        for ( int i = 0; i &lt; board.length; i++ ) {
+            for ( int j = 0; j &lt; board[0].length; j++ ) {
+                if ( dfs( i, j, 0, board, words ) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean dfs ( int i, int j, int pos, char[][] board, char[] words ) {
+        // 索引越界
+        if ( i &gt;= board.length || i &lt; 0 || j &gt;= board[0].length || j &lt; 0 || board[i][j] != words[pos] ) {
+            return false;
+        }
+
+        // 全部匹配
+        if ( pos == words.length - 1 ) {
+            return true;
+        }
+
+        // 修改当前位置访问标记
+        board[i][j] = '\0';
+        // 递归四个不同方向
+        boolean res = dfs( i + 1, j, pos + 1, board, words )
+                || dfs( i - 1, j, pos + 1, board, words )
+                || dfs( i, j + 1, pos + 1, board, words )
+                || dfs( i, j - 1, pos + 1, board, words );
+        // 如果没有匹配成功，回溯之前的修改
+        board[i][j] = words[pos];
+        return res;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/niP0_y79G/" class="tag">
+                    递归
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/zi-fu-chuan-de-pai-lie/">
+                  <h3 class="post-title">
+                    字符串的排列
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

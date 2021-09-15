@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>最小的前k个数 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631701360707">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
+
+
+
+
+方法1：大根堆
+
+
+我们用一个大根堆实时维护数组的前 k 小值。首先将前 k 个数插入大根堆中..." />
+    <meta name="keywords" content="LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631701360707" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">最小的前k个数</h2>
+            <div class="post-date">2021-09-15</div>
+            
+            <div class="post-content" v-pre>
+              <p>输入整数数组 <code>arr</code> ，找出其中最小的 <code>k</code> 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。</p>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h3 id="方法1大根堆">方法1：大根堆</h3>
+</li>
+</ul>
+<p>我们用一个大根堆实时维护数组的前 k 小值。首先将前 k 个数插入大根堆中，随后从第 k+1个数开始遍历，如果当前遍历到的数比大根堆的堆顶的数要小，就把堆顶的数弹出，再插入当前遍历到的数。最后将大根堆里的数存入数组返回即可。</p>
+<pre><code class="language-java">class Solution {
+    public int[] getLeastNumbers ( int[] arr, int k ) {
+        int[] vec = new int[k];
+        if ( k == 0 ) {
+            return vec;
+        }
+        PriorityQueue&lt; Integer &gt; queue = new PriorityQueue&lt; Integer &gt;( new Comparator&lt; Integer &gt;() {
+            @Override
+            public int compare ( Integer num1, Integer num2 ) {
+                return num2 - num1;
+            }
+        } );
+        for ( int i = 0; i &lt; k; ++i ) {
+            queue.offer( arr[i] );
+        }
+        for ( int i = k; i &lt; arr.length; ++i ) {
+            if ( queue.peek() &gt; arr[i] ) {
+                queue.poll();
+                queue.offer( arr[i] );
+            }
+        }
+        for ( int i = 0; i &lt; k; ++i ) {
+            vec[i] = queue.poll();
+        }
+        return vec;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法2排序">方法2：排序</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int[] getLeastNumbers ( int[] arr, int k ) {
+        int[] res = new int[k];
+        Arrays.sort( arr );
+        for ( int i = 0; i &lt; k; ++i ) {
+            res[i] = arr[i];
+        }
+        return res;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法3快排后找前k个">方法3：快排后找前k个</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int[] getLeastNumbers ( int[] arr, int k ) {
+        quickSort( arr, 0, arr.length - 1 );
+        return Arrays.copyOf( arr, k );
+    }
+
+    private void quickSort ( int[] arr, int l, int r ) {
+        // 子数组长度为 1 时终止递归
+        if ( l &gt;= r ) {
+            return;
+        }
+        // 哨兵划分操作（以 arr[l] 作为基准数）
+        int i = l, j = r;
+        while ( i &lt; j ) {
+            while ( i &lt; j &amp;&amp; arr[j] &gt;= arr[l] ) {
+                j--;
+            }
+            while ( i &lt; j &amp;&amp; arr[i] &lt;= arr[l] ) {
+                i++;
+            }
+            swap( arr, i, j );
+        }
+        // arr[i]为哨兵，当前轮的最后换到中间去
+        swap( arr, i, l );
+        // 递归左（右）子数组执行哨兵划分
+        quickSort( arr, l, i - 1 );
+        quickSort( arr, i + 1, r );
+    }
+
+    private void swap ( int[] arr, int i, int j ) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法4基于快排的前k个数不保证顺序">方法4：基于快排的前k个数（不保证顺序）</h3>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631701184795.png" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Solution {
+    public int[] getLeastNumbers ( int[] arr, int k ) {
+        if ( k &gt;= arr.length ) {
+            return arr;
+        }
+        return quickSort( arr, k, 0, arr.length - 1 );
+    }
+
+    private int[] quickSort ( int[] arr, int k, int l, int r ) {
+        int i = l, j = r;
+        while ( i &lt; j ) {
+            while ( i &lt; j &amp;&amp; arr[j] &gt;= arr[l] ) {
+                j--;
+            }
+            while ( i &lt; j &amp;&amp; arr[i] &lt;= arr[l] ) {
+                i++;
+            }
+            swap( arr, i, j );
+        }
+        swap( arr, i, l );
+        // 表示前k个数在左子区间
+        if ( i &gt; k ) {
+            return quickSort( arr, k, l, i - 1 );
+        }
+        // 表示前k个数的一部分在右子区间
+        if ( i &lt; k ) {
+            return quickSort( arr, k, i + 1, r );
+        }
+        // 返回代表找到了第k个数
+        return Arrays.copyOf( arr, k );
+    }
+
+    private void swap ( int[] arr, int i, int j ) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/ju-zhen-zhong-de-yuan-su/">
+                  <h3 class="post-title">
+                    矩阵中的元素
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

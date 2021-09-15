@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>字符串的排列 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631701360707">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="输入一个字符串，打印出该字符串中字符的所有排列。
+你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。
+
+
+
+
+
+
+方法1：递归回溯
+
+
+class Solution {
+    List&lt; String &gt; list =..." />
+    <meta name="keywords" content="字符串,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631701360707" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">字符串的排列</h2>
+            <div class="post-date">2021-09-15</div>
+            
+            <div class="post-content" v-pre>
+              <p>输入一个字符串，打印出该字符串中字符的所有排列。</p>
+<p>你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。</p>
+<!-- more -->
+<hr>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631690046816.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://chimaeras.ltd/post-images/1631690053453.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<h3 id="方法1递归回溯">方法1：递归回溯</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    List&lt; String &gt; list = new ArrayList&lt;&gt;();
+    char[] c;
+
+    public String[] permutation ( String s ) {
+        c = s.toCharArray();
+        //从第一层开始递归
+        dfs( 0 );
+        //将字符串数组ArrayList转化为String类型数组
+        return list.toArray( new String[list.size()] );
+    }
+
+    private void dfs ( int x ) {
+        //当递归函数到达第三层，就返回，因为此时第二第三个位置已经发生了交换
+        if ( x == c.length - 1 ) {
+            //将字符数组转换为字符串
+            list.add( String.valueOf( c ) );
+            return;
+        }
+        //为了防止同一层递归出现重复元素
+        HashSet&lt; Character &gt; set = new HashSet&lt;&gt;();
+        //这里就很巧妙了,第一层可以是a,b,c那么就有三种情况，这里i = x,正巧dfs(0)，正好i = 0开始
+        // 当第二层只有两种情况，dfs(1）i = 1开始
+        for ( int i = x; i &lt; c.length; i++ ) {
+            //发生剪枝，当包含这个元素的时候，直接跳过
+            if ( set.contains( c[i] ) ) {
+                continue;
+            }
+            set.add( c[i] );
+            //交换元素，这里很是巧妙，当在第二层dfs(1),x = 1,那么i = 1或者 2， 不是交换1和1，要就是交换1和2
+            swap( i, x );
+            //进入下一层递归
+            dfs( x + 1 );
+            //返回时交换回来，这样保证到达第1层的时候，一直都是abc。这里捋顺一下，开始一直都是abc，那么第一位置总共就3个交换
+            //分别是a与a交换，这个就相当于 x = 0, i = 0;
+            //     a与b交换            x = 0, i = 1;
+            //     a与c交换            x = 0, i = 2;
+            //就相当于上图中开始的三条路径
+            //第一个元素固定后，每个引出两条路径,
+            //     b与b交换            x = 1, i = 1;
+            //     b与c交换            x = 1, i = 2;
+            //所以，结合上图，在每条路径上标注上i的值，就会非常容易好理解了
+            swap( i, x );
+        }
+    }
+
+    private void swap ( int i, int x ) {
+        char temp = c[i];
+        c[i] = c[x];
+        c[x] = temp;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Mx0ieh_sn/" class="tag">
+                    字符串
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu/">
+                  <h3 class="post-title">
+                    把字符串转换成整数
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

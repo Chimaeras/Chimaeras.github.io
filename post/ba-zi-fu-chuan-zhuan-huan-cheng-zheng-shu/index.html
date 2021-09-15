@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>把字符串转换成整数 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631701360707">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="写一个函数 StrToInt，实现把字符串转换成整数这个功能。不能使用 atoi 或者其他类似的库函数。
+
+首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。
+当我们寻找到的第一个非空字符为正或者负号时，则将该..." />
+    <meta name="keywords" content="字符串,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631701360707" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">把字符串转换成整数</h2>
+            <div class="post-date">2021-09-15</div>
+            
+            <div class="post-content" v-pre>
+              <p>写一个函数 StrToInt，实现把字符串转换成整数这个功能。不能使用 atoi 或者其他类似的库函数。</p>
+<!-- more -->
+<p>首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。</p>
+<p>当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。</p>
+<p>该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。</p>
+<p>注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换。</p>
+<p>在任何情况下，若函数不能进行有效的转换时，请返回 0。</p>
+<p><strong>说明：</strong></p>
+<p>假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231, 231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。</p>
+<hr>
+<ul>
+<li>
+<h3 id="方法1字符拼接">方法1：字符拼接</h3>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631688343801.png" alt="" loading="lazy"></figure>
+<pre><code class="language-java">class Solution {
+    public int strToInt ( String str ) {
+        // 去除首尾空格
+        char[] number = str.trim().toCharArray();
+        // 特殊情况
+        if ( number.length == 0 ) {
+            return 0;
+        }
+        // 存储结果、边界
+        int res = 0, edge = Integer.MAX_VALUE / 10;
+        // 当前数字下标、符号
+        int i = 1, sign = 1;
+
+        // 开头符号为-，表示负数
+        if ( number[0] == '-' ) {
+            sign = -1;
+        } else if ( number[0] != '+' ) {
+            // 开头没有+号，则为无符号整数
+            i = 0;
+        }
+
+        for ( int j = i; j &lt; number.length; j++ ) {
+            // 开头不是数字，直接退出
+            if ( number[j] &lt; '0' || number[j] &gt; '9' ) {
+                break;
+            }
+            // 条件1：res大于边界，执行10*res后会超出范围
+            // 条件2：如果大于7，拼接之后会超出范围
+            if ( res &gt; edge || ( res == edge &amp;&amp; number[j] &gt; '7' ) ) {
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+            // 数字拼接
+            res = res * 10 + ( number[j] - '0' );
+        }
+        return res * sign;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Mx0ieh_sn/" class="tag">
+                    字符串
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/xu-lie-hua-er-cha-shu/">
+                  <h3 class="post-title">
+                    序列化二叉树
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
