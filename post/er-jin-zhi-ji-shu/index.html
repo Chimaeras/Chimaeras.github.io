@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>二进制计数 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631786789145">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="网易互娱
+小A刚学了二进制，他十分激动。为了确定他的确掌握了二进制，你给他出了这样一道题目：给定N个非负整数，将这N个数字按照二进制下1的个数分类，二进制下1的个数相同的数字属于同一类。求最后一共有几类数字？
+
+
+输入描述:
+输入的第一行是..." />
+    <meta name="keywords" content="面试真题" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631786789145" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">二进制计数</h2>
+            <div class="post-date">2021-09-16</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="网易互娱">网易互娱</h3>
+<p>小A刚学了二进制，他十分激动。为了确定他的确掌握了二进制，你给他出了这样一道题目：给定N个非负整数，将这N个数字按照二进制下1的个数分类，二进制下1的个数相同的数字属于同一类。求最后一共有几类数字？</p>
+<!-- more -->
+<hr>
+<h5 id="输入描述"><strong>输入描述:</strong></h5>
+<pre><code>输入的第一行是一个正整数T（0&lt;T&lt;=10），表示样例个数。对于每一个样例，第一行是一个正整数N（0&lt;N&lt;=100），表示有多少个数字。接下来一行是N个由空格分隔的非负整数，大小不超过2^31 – 1。，
+</code></pre>
+<h5 id="输出描述"><strong>输出描述:</strong></h5>
+<pre><code>对于每一组样例，输出一个正整数，表示输入的数字一共有几类。
+</code></pre>
+<h5 id="输入例子1"><strong>输入例子1:</strong></h5>
+<pre><code>1
+5
+8 3 5 7 2
+</code></pre>
+<h5 id="输出例子1"><strong>输出例子1:</strong></h5>
+<pre><code>3
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法1与操作计算位1的数量">方法1：与操作计算位1的数量</h3>
+</li>
+</ul>
+<pre><code class="language-java">public class Main {
+    public static void main ( String[] src ) {
+        Scanner input = new Scanner( System.in );
+        // 样例组数
+        int group = input.nextInt();
+        int[][] data = new int[group][];
+        for ( int i = 0; i &lt; group; i++ ) {
+            // 样例长度
+            int size = input.nextInt();
+            int[] temp = new int[size];
+            for ( int j = 0; j &lt; size; j++ ) {
+                temp[j] = input.nextInt();
+            }
+            data[i] = temp;
+        }
+
+        int[] res = new int[group];
+        for ( int i = 0; i &lt; group; i++ ) {
+            // set存储不同类数
+            Set&lt; Integer &gt; set = new HashSet&lt;&gt;();
+            for ( int j = 0; j &lt; data[i].length; j++ ) {
+                set.add( numberOfOne( data[i][j] ) );
+            }
+            res[i] = set.size();
+        }
+        for ( int i = 0; i &lt; group; i++ ) {
+            System.out.println( res[i] );
+        }
+    }
+
+    public static int numberOfOne ( int n ) {
+        int count = 0;
+        while ( n != 0 ) {
+            n = n &amp; n - 1;
+            count++;
+        }
+        return count;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/IU6dZ4MGy/" class="tag">
+                    面试真题
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/shui-chi-pai-shui-guan-wen-ti/">
+                  <h3 class="post-title">
+                    水池排水管问题
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

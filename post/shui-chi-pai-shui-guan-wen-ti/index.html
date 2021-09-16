@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>水池排水管问题 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631786789145">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="网易互娱
+小明作为一个游泳池管理员，以玩弄给水管和排水管为乐，也因此产生了很多数学题考验小朋友。
+
+现在小明想把这个行动升级，考验一下程序员，做了一个自动装置来控制给水管和排水管。在开始时，给水管和排水管都是打开状态的，并且游泳池里没有水。..." />
+    <meta name="keywords" content="面试真题" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631786789145" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">水池排水管问题</h2>
+            <div class="post-date">2021-09-16</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="网易互娱">网易互娱</h3>
+<p>小明作为一个游泳池管理员，以玩弄给水管和排水管为乐，也因此产生了很多数学题考验小朋友。</p>
+<!-- more -->
+<p>现在小明想把这个行动升级，考验一下程序员，做了一个自动装置来控制给水管和排水管。在开始时，给水管和排水管都是打开状态的，并且游泳池里没有水。在自动装置的作用下，每经过t1分钟，给水管的状态都会改变，即从打开状态变为关闭状态或从关闭状态变为打开状态，而同时每经过t2分钟，排水管的状态也会改变。当给水管打开时，给水管每分钟会向游泳池里注入m1升水；当排水管打开时，排水管每分钟会把游泳池里水排走m2升；当给水管和排水管同时打开时，游泳池的水量变化为每分钟(m1-m2)升。当然泳池的水量不能变为负数，同时泳池也有个最大容量m，水量不能超过m升。那么经过t分钟后，游泳池里有多少升水？</p>
+<h5 id="输入描述"><strong>输入描述:</strong></h5>
+<pre><code>输入第一行为一个正整数T，表示有T组数据。
+
+每组数据的为一行包含六个整数，分别表示m, t, m1, t1, m2, t2。
+
+数据范围：
+
+对于所有数据，满足1&lt;=T&lt;=10, 1&lt;=m&lt;=100000, 1&lt;=t&lt;=86400, 1&lt;=m1,m2&lt;=100, 1&lt;=t1,t2&lt;=10。
+</code></pre>
+<h5 id="输出描述"><strong>输出描述:</strong></h5>
+<pre><code>对于每一个数据，输出一行，包括一个整数，为在t分钟后游泳池中的水量。
+</code></pre>
+<h5 id="输入例子1"><strong>输入例子1:</strong></h5>
+<pre><code>5
+10 2 1 5 2 5
+10 2 10 5 2 5
+10 2 3 5 2 5
+100 100 3 4 4 3
+10000 1000 10 5 5 3
+</code></pre>
+<h5 id="输出例子1"><strong>输出例子1:</strong></h5>
+<pre><code>0
+10
+2
+3
+24
+</code></pre>
+<hr>
+<ul>
+<li>
+<h3 id="方法1模拟法">方法1：模拟法</h3>
+</li>
+</ul>
+<p>在每分钟内，模拟水池中水管的状态，判断当前给水管和排水管分别处于什么状态，这一分钟完后，水池的水处于什么状态。</p>
+<pre><code class="language-java">public class Main {
+    public static void main ( String[] src ) {
+        Scanner input = new Scanner( System.in );
+        int size = input.nextInt();
+        // ( 最大容量：m、总时间：t、给水管速率：m1、给水管变换时间：t1、排水管速率：m2、排水管时间、t2 )
+        int[][] data = new int[size][6];
+        for ( int i = 0; i &lt; size; i++ ) {
+            for ( int j = 0; j &lt; 6; j++ ) {
+                data[i][j] = input.nextInt();
+            }
+        }
+        int[] res = new int[size];
+
+        for ( int i = 0; i &lt; size; i++ ) {
+            // 水池最小容量和最大容量
+            int min = 0, m = data[i][0];
+            // 总共时间
+            int time = data[i][1];
+            // 给水管速率m1、排水管速率m2
+            int m1 = data[i][2], m2 = data[i][4];
+            // 给水管时间t1、排水管时间t2
+            int t1 = data[i][3], t2 = data[i][5];
+            // 从0时刻开始计算
+            int t = 0;
+            // 开始时水池里面没有水
+            int sum = 0;
+            while ( t &lt; time ) {
+                // 给水管打开状态，加水
+                if ( ( t / t1 ) % 2 == 0 ) {
+                    sum += m1;
+                }
+                // 排水管打开状态，抽水
+                if ( ( t / t2 ) % 2 == 0 ) {
+                    sum -= m2;
+                }
+                // 水池的水不会超过边界
+                if ( sum &lt; 0 ) {
+                    sum = 0;
+                } else if ( sum &gt; m ) {
+                    sum = m;
+                }
+                t++;
+            }
+            res[i] = sum;
+        }
+        for ( int re : res ) {
+            System.out.println( re );
+        }
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/IU6dZ4MGy/" class="tag">
+                    面试真题
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/ji-qi-ren-de-tiao-yue-wen-ti/">
+                  <h3 class="post-title">
+                    机器人的跳跃问题
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
