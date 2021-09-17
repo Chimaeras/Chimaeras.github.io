@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>幸运N串 | Joker&#39;s Blog</title>
+<title>Nim游戏 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,11 +18,13 @@
 
 
 
-    <meta name="description" content="网易互娱
-小A很喜欢字母N，他认为连续的N串是他的幸运串。有一天小A看到了一个全部由大写字母组成的字符串，他被允许改变最多2个大写字母（也允许不改变或者只改变1个大写字母），使得字符串中所包含的最长的连续的N串的长度最长。你能帮助他吗？
+    <meta name="description" content="题目：你和你的朋友，两个人一起玩Nim游戏：桌子上有一堆石头，每次你们轮流拿掉1-3块石头。拿掉最后一块石头的人就是获胜者。你作为先手。你们是聪明人，每一步都是最优解。编写一个函数，来判断你是否可以在给定石头数量的情况下赢得游戏
 
-..." />
-    <meta name="keywords" content="面试真题" />
+
+
+
+解..." />
+    <meta name="keywords" content="数学,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -97,82 +99,69 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">幸运N串</h2>
-            <div class="post-date">2021-09-16</div>
+            <h2 class="post-title">Nim游戏</h2>
+            <div class="post-date">2021-09-17</div>
             
             <div class="post-content" v-pre>
-              <h3 id="网易互娱">网易互娱</h3>
-<p>小A很喜欢字母N，他认为连续的N串是他的幸运串。有一天小A看到了一个全部由大写字母组成的字符串，他被允许改变最多2个大写字母（也允许不改变或者只改变1个大写字母），使得字符串中所包含的最长的连续的N串的长度最长。你能帮助他吗？</p>
+              <h4 id="题目你和你的朋友两个人一起玩nim游戏桌子上有一堆石头每次你们轮流拿掉1-3块石头-拿掉最后一块石头的人就是获胜者-你作为先手-你们是聪明人每一步都是最优解-编写一个函数来判断你是否可以在给定石头数量的情况下赢得游戏">题目：你和你的朋友，两个人一起玩Nim游戏：桌子上有一堆石头，每次你们轮流拿掉1-3块石头。拿掉最后一块石头的人就是获胜者。你作为先手。你们是聪明人，每一步都是最优解。编写一个函数，来判断你是否可以在给定石头数量的情况下赢得游戏</h4>
 <!-- more -->
-<h5 id="输入描述"><strong>输入描述:</strong></h5>
-<pre><code>输入的第一行是一个正整数T（0 &lt; T &lt;= 20），表示有T组测试数据。对于每一个测试数据包含一行大写字符串S（0 &lt; |S| &lt;= 50000，|S|表示字符串长度）。
-
-数据范围：
-
-20%的数据中，字符串长度不超过100；
-
-70%的数据中，字符串长度不超过1000；
-
-100%的数据中，字符串长度不超过50000。
-</code></pre>
-<h5 id="输出描述"><strong>输出描述:</strong></h5>
-<pre><code>对于每一组测试样例，输出一个整数，表示操作后包含的最长的连续N串的长度。
-</code></pre>
-<h5 id="输入例子1"><strong>输入例子1:</strong></h5>
-<pre><code>3
-NNTN
-NNNNGGNNNN
-NGNNNNGNNNNNNNNSNNNN
-</code></pre>
-<h5 id="输出例子1"><strong>输出例子1:</strong></h5>
-<pre><code>4
-10
-18
-</code></pre>
 <hr>
 <ul>
 <li>
-<h3 id="方法1遍历">方法1：遍历</h3>
+<h5 id="解法1">解法1：</h5>
 </li>
 </ul>
-<pre><code class="language-java">public class Main {
-    public static void main ( String[] src ) {
-        Scanner input = new Scanner( System.in );
-        int size = input.nextInt();
-        for ( int i = 0; i &lt; size; i++ ) {
-            String s = input.next();
-            char[] chars = s.toCharArray();
-            // 记录全局（1次、2次）最大值
-            int maxTime1 = 0, maxTime2 = 0;
-            // 每层循环中值
-            int count = 0, time1 = 0, time2 = 0;
-            for ( char aChar : chars ) {
-                // 如果当前字母==N，累计+1
-                if ( aChar == 'N' ) {
-                    count += 1;
-                    time1++;
-                    time2++;
-                } else {
-                    // 如果不是，可以通过修改让其变为N，同时长度+1
-                    time2 = time1 + 1;
-                    time1 = count + 1;
-                    count = 0;
-                }
-                maxTime1 = Math.max( maxTime1, time1 );
-                maxTime2 = Math.max( maxTime2, time2 );
-            }
-            System.out.println( Math.max( maxTime2, maxTime1 ) );
-        }
+<pre><code class="language-java">class Solution {
+    public boolean canWinNim ( int n ) {
+        return n &gt; 0 &amp;&amp; n % 4 != 0;
     }
 }
 </code></pre>
+<h4 id="分析">分析：</h4>
+<ul>
+<li>
+<h5 id="1如果n是4的倍数则有三种情况">1.如果n是4的倍数，则有三种情况</h5>
+</li>
+<li>
+<p>1.1 我拿1个，他拿3个</p>
+</li>
+<li>
+<p>1.2 我拿2个，他拿2个</p>
+</li>
+<li>
+<p>1.3 我拿3个，他拿1个</p>
+</li>
+<li>
+<p>如此分配的话，无论我一开始拿多少个，最后都是由他拿走最后一块石头</p>
+</li>
+<li>
+<h5 id="2如果n不是4的倍数则有三种情况">2.如果n不是4的倍数，则有三种情况</h5>
+</li>
+<li>
+<p>2.1 n=4k+1，我拿1个。情况则与1相反</p>
+</li>
+<li>
+<p>2.2 n=4k+2，我拿2个。情况则与1相反</p>
+</li>
+<li>
+<p>2.3 n=4k+3，我拿3个。情况则与1相反</p>
+</li>
+<li>
+<p>即游戏必由我结尾。</p>
+</li>
+</ul>
+<h4 id="故问题简化为判断n是否为4的倍数">故问题简化为判断n是否为4的倍数</h4>
 
             </div>
             
               <div class="tag-container">
                 
-                  <a href="https://chimaeras.ltd/tag/IU6dZ4MGy/" class="tag">
-                    面试真题
+                  <a href="https://chimaeras.ltd/tag/zMIf34kkg9/" class="tag">
+                    数学
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
                   </a>
                 
               </div>
@@ -180,9 +169,9 @@ NGNNNNGNNNNNNNNSNNNN
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/er-jin-zhi-ji-shu/">
+                <a href="https://chimaeras.ltd/post/bao-shi-yu-shi-tou/">
                   <h3 class="post-title">
-                    二进制计数
+                    宝石与石头
                   </h3>
                 </a>
               </div>

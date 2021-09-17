@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>删除排序链表中的重复元素 | Joker&#39;s Blog</title>
+<title>宝石与石头 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,18 +18,8 @@
 
 
 
-    <meta name="description" content="存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除所有重复的元素，使每个元素 只出现一次 。
-返回同样按升序排列的结果链表
-
-
-
-
-遍历
-
-
-class Solution {
-    public ListNode del..." />
-    <meta name="keywords" content="链表,LeetCode" />
+    <meta name="description" content="题目：给定字符串J 代表石头中宝石的类型，字符串 S代表你拥有的石头。 S 中每个字符代表了一种你拥有的石头的类型，你想知道你拥有的石头中有多少是宝石。J 中的字母不重复，J 和 S中的所有字符都是字母。字母区分大小写，因此&quot;a&..." />
+    <meta name="keywords" content="LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -104,80 +94,86 @@ class Solution {
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">删除排序链表中的重复元素</h2>
-            <div class="post-date">2021-09-09</div>
+            <h2 class="post-title">宝石与石头</h2>
+            <div class="post-date">2021-09-17</div>
             
             <div class="post-content" v-pre>
-              <p>存在一个按升序排列的链表，给你这个链表的头节点 <code>head</code> ，请你删除所有重复的元素，使每个元素 <strong>只出现一次</strong> 。</p>
-<p>返回同样按升序排列的结果链表</p>
+              <h4 id="题目给定字符串j-代表石头中宝石的类型字符串-s代表你拥有的石头-s-中每个字符代表了一种你拥有的石头的类型你想知道你拥有的石头中有多少是宝石-j-中的字母不重复j-和-s中的所有字符都是字母-字母区分大小写因此a和a是不同类型的石头">题目：给定字符串J 代表石头中宝石的类型，字符串 S代表你拥有的石头。 S 中每个字符代表了一种你拥有的石头的类型，你想知道你拥有的石头中有多少是宝石。J 中的字母不重复，J 和 S中的所有字符都是字母。字母区分大小写，因此&quot;a&quot;和&quot;A&quot;是不同类型的石头。</h4>
 <!-- more -->
 <hr>
 <ul>
 <li>
-<h3 id="遍历">遍历</h3>
+<h4 id="解法1暴力遍历">解法1：暴力遍历</h4>
 </li>
 </ul>
 <pre><code class="language-java">class Solution {
-    public ListNode deleteDuplicates ( ListNode head ) {
+    public int numJewelsInStones ( String jewels, String stones ) {
+        char[] jChar = jewels.toCharArray();
+        char[] sChar = stones.toCharArray();
 
-        if ( head == null ) {
-            return head;
-        }
-
-        ListNode cur = head;
-        while ( cur.next != null ) {
-            if ( cur.val == cur.next.val ) {
-                cur.next = cur.next.next;
-            } else {
-                cur = cur.next;
+        int res = 0;
+        for ( char j : jChar ) {
+            for ( char s : sChar ) {
+                //对比两个数组的字母 若有相同项就加1
+                if ( j == s ) {
+                    res++;
+                }
             }
         }
-        return head;
+        return res;
+    }
+}
+</code></pre>
+<ul>
+<li>
+<h5 id="分析对比两个数组的字母-若有相同项就加1">分析：对比两个数组的字母 若有相同项就加1</h5>
+</li>
+</ul>
+<hr>
+<ul>
+<li>
+<h3 id="方法2set存储宝石种类">方法2：set存储宝石种类</h3>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public int numJewelsInStones ( String jewels, String stones ) {
+        int count = 0;
+        Set&lt; Character &gt; set = new HashSet&lt; Character &gt;();
+        // 放进set中，存储宝石种类
+        for ( int i = 0; i &lt; jewels.length(); i++ ) {
+            char j = jewels.charAt( i );
+            set.add( j );
+        }
+        // 查询个数
+        for ( int i = 0; i &lt; stones.length(); i++ ) {
+            char s = stones.charAt( i );
+            if ( set.contains( s ) ) {
+                count++;
+            }
+        }
+        return count;
     }
 }
 </code></pre>
 <hr>
-<h2 id="进阶">进阶</h2>
-<p>存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除链表中所有存在数字重复情况的节点，只保留原始链表中 没有重复出现 的数字。</p>
-<p>返回同样按升序排列的结果链表。</p>
-<pre><code>输入：head = [1,2,3,3,4,4,5]
-输出：[1,2,5]
-
-输入：head = [1,1,1,2,3]
-输出：[2,3]
-</code></pre>
-<hr>
 <ul>
 <li>
-<h3 id="方法1遍历">方法1：遍历</h3>
+<h3 id="方法3数组模拟set">方法3：数组模拟set</h3>
 </li>
 </ul>
-<p>对于链表题目，有几个要点：</p>
-<ul>
-<li>要舍得用变量，千万别想着节省变量，否则容易被逻辑绕晕</li>
-<li>head 有可能需要改动时，先增加一个 假head，返回的时候直接取 假head.next，这样就不需要为修改 head 增加一大堆逻辑了。</li>
-</ul>
-<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1631173234754.png" alt="" loading="lazy"></figure>
 <pre><code class="language-java">class Solution {
-    public ListNode deleteDuplicates ( ListNode head ) {
-
-        if ( head == null ) {
-            return head;
+    public int numJewelsInStones ( String J, String S ) {
+        int[] type = new int[256];
+        // 存储宝石种类
+        for ( int i = 0; i &lt; J.length(); i++ ) {
+            type[J.charAt( i )] = 1;
         }
-        // 假开头，指向head，防止出现重复元素在开头的情况
-        ListNode newHead = new ListNode( 0, head );
-        ListNode cur = newHead;
-        while ( cur.next != null &amp;&amp; cur.next.next != null ) {
-            if ( cur.next.val == cur.next.next.val ) {
-                int x = cur.next.val;
-                while ( cur.next != null &amp;&amp; x == cur.next.val ) {
-                    cur.next = cur.next.next;
-                }
-            } else {
-                cur = cur.next;
-            }
+        int ans = 0;
+        // 累计宝石个数
+        for ( int i = 0; i &lt; S.length(); i++ ) {
+            ans += type[S.charAt( i )];
         }
-        return newHead.next;
+        return ans;
     }
 }
 </code></pre>
@@ -185,10 +181,6 @@ class Solution {
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://chimaeras.ltd/tag/sg20kp7Dm/" class="tag">
-                    链表
-                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -199,9 +191,9 @@ class Solution {
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/he-wei-s-de-lian-xu-zheng-shu-xu-lie/">
+                <a href="https://chimaeras.ltd/post/xing-yun-n-chuan/">
                   <h3 class="post-title">
-                    和为s的连续正数序列
+                    幸运N串
                   </h3>
                 </a>
               </div>
