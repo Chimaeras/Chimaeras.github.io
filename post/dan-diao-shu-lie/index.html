@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>单调数列 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1631955600308">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="题目：当给定的数组A是单调数组时返回true，否则返回 false。
+
+
+
+
+解法1：
+
+
+class Solution {
+    public boolean isMonotonic ( int[] nums ) {
+        i..." />
+    <meta name="keywords" content="LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1631955600308" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">单调数列</h2>
+            <div class="post-date">2021-09-18</div>
+            
+            <div class="post-content" v-pre>
+              <h4 id="题目当给定的数组a是单调数组时返回true否则返回-false">题目：当给定的数组A是单调数组时返回true，否则返回 false。</h4>
+<!-- more -->
+<hr>
+<ul>
+<li>
+<h4 id="解法1">解法1：</h4>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public boolean isMonotonic ( int[] nums ) {
+        int flag = 0;
+        for ( int i = 0; i &lt; nums.length - 1; i++ ) {
+            if ( nums[i + 1] &gt;= nums[i] ) {
+                flag++;
+            }
+        }
+        // 如果是递增的，flag应该等于长度减一
+        if ( flag == nums.length - 1 ) {
+            return true;
+        } else {
+            flag = 0;
+            for ( int i = 0; i &lt; nums.length - 1; i++ ) {
+                if ( nums[i + 1] &lt;= nums[i] ) {
+                    flag++;
+                }
+            }
+            //是否为递减
+            return flag == nums.length - 1;
+        }
+    }
+}
+</code></pre>
+<ul>
+<li>
+<h5 id="分析用flag记录前项后项的次数若为单调则次数应该等于size-1">分析：用flag记录前项&gt;/&lt;后项的次数，若为单调，则次数应该等于size-1</h5>
+</li>
+</ul>
+<hr>
+<ul>
+<li>
+<h4 id="解法2">解法2：</h4>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public boolean isMonotonic ( int[] nums ) {
+        int flag = 0;
+        for ( int i = 0; i &lt; nums.length - 1; i++ ) {
+            //作差记为标识符
+            int num = nums[i + 1] - nums[i];
+            if ( flag == 0 ) {
+                flag = num;
+            } else if ( flag &gt; 0 &amp;&amp; num &lt; 0 ) {
+                // 如果flah大于0，表示开始为正
+                // 所以后面num应该都大于0
+                return false;
+            } else if ( flag &lt; 0 &amp;&amp; num &gt; 0 ) {
+                //同上相反
+                return false;
+            }
+        }
+        return true;
+    }
+}
+</code></pre>
+<ul>
+<li>
+<h5 id="分析num为ai1-ai的值flag为ai-ai-1的值如果num小于0-而flag大于0-则前面一个为增后面一个为减-相反同理">分析：num为A[i+1] - A[i]的值，flag为A[i] - A[i-1]的值，如果num小于0 而flag大于0 则前面一个为增后面一个为减。相反同理</h5>
+</li>
+</ul>
+<hr>
+<ul>
+<li>
+<h4 id="解法3">解法3：</h4>
+</li>
+</ul>
+<pre><code class="language-java">class Solution {
+    public boolean isMonotonic ( int[] nums ) {
+        boolean c1 = true, c2 = true;
+        for ( int i = 0; i &lt; nums.length - 1; i++ ) {
+            c1 = c1 &amp;&amp; ( nums[i] &lt;= nums[i + 1] );
+            c2 = c2 &amp;&amp; ( nums[i] &gt;= nums[i + 1] );
+        }
+        return c1 || c2;
+    }
+}
+</code></pre>
+<h5 id="分析">分析：</h5>
+<ul>
+<li>若单调递增，则c1一直为1，c2一直为0，c1 | c2 =1</li>
+<li>若单调递减，则c1一直为0，c2一直为1，c1 | c2 =1</li>
+<li>若不为单调，即存在A[i]&lt;A[i+2]&lt;A[i+1]或A[i+1]&lt;A[i+2]&lt;A[i]的情况，c1和c2均为0，返回false</li>
+</ul>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/2-de-mi/">
+                  <h3 class="post-title">
+                    2的幂
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
