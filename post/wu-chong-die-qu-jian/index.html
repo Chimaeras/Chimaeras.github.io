@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>无重叠区间 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632122155344">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。
+
+可以认为区间的终点总是大于它的起点。
+区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。
+
+
+输入: [ [1,2], [2,3], [3,4], ..." />
+    <meta name="keywords" content="动态规划,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632122155344" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">无重叠区间</h2>
+            <div class="post-date">2021-09-18</div>
+            
+            <div class="post-content" v-pre>
+              <h4 id="给定一个区间的集合找到需要移除区间的最小数量使剩余区间互不重叠">给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。</h4>
+<ul>
+<li>可以认为区间的终点总是大于它的起点。</li>
+<li>区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。</li>
+</ul>
+<!-- more -->
+<pre><code>输入: [ [1,2], [2,3], [3,4], [1,3] ]
+
+输出: 1
+
+解释: 移除 [1,3] 后，剩下的区间没有重叠。
+
+</code></pre>
+<pre><code>输入: [ [1,2], [1,2], [1,2] ]
+
+输出: 2
+
+解释: 你需要移除两个 [1,2] 来使剩下的区间没有重叠。
+</code></pre>
+<h4 id="思路将二维数组按照一维的第二个元素排序即将事件按照结束时间排序看下一个事件的开始时间是否和上一个事件的结束时间相重叠没有重叠则1最后总数减去重叠的数量就是要移除的数量">思路：将二维数组按照一维的第二个元素排序，即将事件按照结束时间排序，看下一个事件的开始时间是否和上一个事件的结束时间相重叠，没有重叠则+1，最后总数减去重叠的数量，就是要移除的数量。</h4>
+<h4 id="解法排序后遍历">解法：排序后遍历</h4>
+<pre><code class="language-java">class Solution {
+    public int eraseOverlapIntervals ( int[][] intervals ) {
+        Arrays.sort( intervals, new Comparator&lt; int[] &gt;() {
+            @Override
+            public int compare ( int[] o1, int[] o2 ) {
+                return o1[1] - o2[1];
+            }
+        } );
+        int end = intervals[0][0];
+        int res = 0;
+        for ( int[] interval : intervals ) {
+            if ( interval[0] &gt;= end ) {
+                res++;
+                end = interval[1];
+            }
+        }
+        return intervals.length - res;
+    }
+}
+
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
+                    动态规划
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/chong-xin-pai-lie-shu-zu/">
+                  <h3 class="post-title">
+                    重新排列数组
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
