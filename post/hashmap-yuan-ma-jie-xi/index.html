@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632306652485">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632315736969">
 <link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
 
 
@@ -18,8 +18,8 @@
 
 
 
-    <meta name="description" content="打的
-" />
+    <meta name="description" content="前言
+map接口是基于哈希表的实现，允许空键（只能有一个）和空值（可以有多个）。它大致等同与HashTable，但HashMap是非同步（不是线程安全的）的且允许空值。改类不保证映射的顺序，即不保证顺序会随着时间的推移保持不变（ it do..." />
     <meta name="keywords" content="数据结构" />
   </head>
   <body>
@@ -29,7 +29,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://chimaeras.ltd">
-        <img src="https://chimaeras.ltd/images/avatar.png?v=1632306652485" class="site-logo">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632315736969" class="site-logo">
         <h1 class="site-title">Joker&#39;s Blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -102,7 +102,385 @@
               </div>
             
             <div class="post-content" v-pre>
-              <p>打的</p>
+              <h3 id="前言">前言</h3>
+<p>map接口是基于哈希表的实现，允许空键（只能有一个）和空值（可以有多个）。它大致等同与HashTable，但HashMap是非同步（不是线程安全的）的且允许空值。改类不保证映射的顺序，即不保证顺序会随着时间的推移保持不变（ it does not guarantee that the order will remain constant over time.）</p>
+<p>其基本操作（get、put）的时间性能和实例的容量（桶的数量）、实例的大小（键值映射的数量）成正比。因此，如果迭代性能很重要，则不要将初始容量设置得太高（或负载因子太低）。</p>
+<p>HashMap的实例有两个影响其性能的参数：初始容量和负载因子。 容量是哈希表中的桶数，初始容量就是哈希表创建时的容量。 负载因子是衡量哈希表在其容量自动增加之前允许达到多满的指标。 当哈希表中的条目数超过负载因子和当前容量的乘积时，重新哈希表（即重建内部数据结构），使哈希表具有大约两倍的桶数。</p>
+<p>作为一般规则，默认负载因子 (.75) 在时间和空间成本之间提供了很好的权衡。 较高的值会减少空间开销，但会增加查找成本（反映在HashMap类的大多数操作中，包括get和put ）。 在设置其初始容量时，应考虑地图中的预期条目数及其负载因子，以尽量减少重新哈希操作的次数。 如果初始容量大于最大条目数除以负载因子，则不会发生重新哈希操作。</p>
+<p>如果要在一个HashMap实例中存储许多映射，则应该在初始创建时，创建具有足够大容量的实例，这样能够更有效地存储映射，而不应该让它根据需要执行自动重新散列以增加表。 请注意，使用具有相同hashCode的多个键会显著地降低哈希表的性能。</p>
+<p>请注意，此实现不是同步的。 如果多个线程并发访问一个散列映射，并且至少有一个线程在结构上修改了映射，则必须在外部进行同步。 （结构修改是添加或删除一个或多个映射的任何操作；仅更改与实例已包含的键关联的值不是结构修改。）如果在未来可预料范围内，有可能应用到多线程，应该在创建的时候，使用Collections.synchronizedMap方法“包装”地图。</p>
+<pre><code> Map m = Collections.synchronizedMap(new HashMap(...));
+</code></pre>
+<p>此类中的迭代器方法是快速失败的：如果在遍历访问之初创建了迭代器，但是在后续对映射进行了结构修改的话，除了迭代器本身的remove方法还能用之外，其他所有（访问）方法都会抛出异常（ConcurrentModificationException）。因此，面对并发修改，迭代器快速而干净地失败（指一旦发现修改，干净利落的抛出异常，而不是等待后面可能发生的异常），而不是冒着在未来不确定的时间出现任意、非确定性行为的风险。</p>
+<hr>
+<h2 id="源码">源码</h2>
+<h3 id="基础属性">基础属性</h3>
+<pre><code class="language-java">//HashMap继承了AbstractMap类，同时实现了Map、Cloneable、Serializable接口
+public class HashMap &lt; K, V &gt; extends AbstractMap&lt; K, V &gt;
+        implements Map&lt; K, V &gt;, Cloneable, Serializable { 
+    
+    	// 序列版本ID
+        private static final long serialVersionUID = 362498820763181265L;
+    
+    	// 默认初始哦容量-必须是2的幂
+        static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4; // aka 16
+    
+    	// 最大容量，在两个带参数的构造函数隐式指定更高值时使用。 必须是 2 的幂 &lt;= 1&lt;&lt;30。
+        static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30;
+
+    	// 在构造函数中未指定时使用的负载因子。
+	    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    
+    	// 由链表转换成树的阈值
+        static final int TREEIFY_THRESHOLD = 8;
+    
+    	// 由树转换成链表的阈值
+        static final int UNTREEIFY_THRESHOLD = 6;
+
+    	// 当桶中的bin被树化时最小的hash表容量。
+    	//（如果没有达到这个阈值，即hash表容量小于MIN_TREEIFY_CAPACITY，当桶中bin的数量太多时会执行resize扩容操作）这个MIN_TREEIFY_CAPACITY的值至少是TREEIFY_THRESHOLD的4倍
+    	static final int MIN_TREEIFY_CAPACITY = 64;
+    
+    	// 表，在第一次使用时初始化，并根据需要调整大小。 分配时，长度始终是 2 的幂。 （我们还在某些操作中容忍长度为零，以允许当前不需要的引导机制。）
+    	transient Node&lt;K,V&gt;[] table;
+    
+    	// 保存缓存的 entrySet()。 请注意，AbstractMap 字段用于 keySet() 和 values()。
+    	transient Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet;
+
+    	// HashMap的长度
+    	transient int size;
+
+    	// 该 HashMap 被结构修改的次数，当创建迭代器的时候使用，判断是否快速失败( fail-fast )
+		transient int modCount;
+    
+    	// 要调整大小的下一个大小值（容量 * 负载因子）。
+    	// 如果结果在初始时没有指定大小，则这个字段保存初始数组容量
+    	int threshold;
+
+    	// 哈西表的负载因子
+    	final float loadFactor;
+
+
+}
+</code></pre>
+<hr>
+<h3 id="内部节点">内部节点</h3>
+<pre><code class="language-java">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+    	// 哈希值
+        final int hash;
+    	// 键
+        final K key;
+    	// 值
+        V value;
+    	// 指针，迭代器时使用
+        Node&lt;K,V&gt; next;
+
+    	// 初始化
+        Node(int hash, K key, V value, Node&lt;K,V&gt; next) {
+            this.hash = hash;
+            this.key = key;
+            this.value = value;
+            this.next = next;
+        }
+
+        public final K getKey()        { return key; }
+        public final V getValue()      { return value; }
+        public final String toString() { return key + &quot;=&quot; + value; }
+
+    	// 节点的hashcode = key的hashcode ^ value的hashcode
+        public final int hashCode() {
+            return Objects.hashCode(key) ^ Objects.hashCode(value);
+        }
+
+    	// 更新键值，会返回旧值
+        public final V setValue(V newValue) {
+            V oldValue = value;
+            value = newValue;
+            return oldValue;
+        }
+
+    	// 比较方法
+        public final boolean equals(Object o) {
+            // 判断是否等于同一个实例
+            if (o == this)
+                return true;
+            // 是否是Entry的类型
+            if (o instanceof Map.Entry) {
+                // 分别判断键和值
+                Map.Entry&lt;?,?&gt; e = (Map.Entry&lt;?,?&gt;)o;
+                if (Objects.equals(key, e.getKey()) &amp;&amp;
+                    Objects.equals(value, e.getValue()))
+                    return true;
+            }
+            return false;
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="hash方法">hash方法</h3>
+<ul>
+<li>计算 key.hashCode() 并将散列的较高位（异或）传播到较低位。 由于该表使用二次幂掩码，因此仅在当前掩码之上位变化的散列集将始终发生冲突。 （众所周知的例子是在小表中保存连续整数的浮点键集。）我们利用移位操作将高位的影响拓展到低位，在位扩展的速度、效用和质量之间找到权衡点。 因为许多常见的哈希集已经合理分布（因此不会从传播中受益），并且因为我们使用树来处理 bin 中的大量冲突，所以我们只是以最便宜的方式对一些移位的位进行异或以减少系统损失，以及合并最高位的影响，否则由于表边界而永远不会在索引计算中使用。</li>
+</ul>
+<pre><code class="language-java">static final int hash(Object key) {
+        int h;
+    	// 判断是否等于null 
+    	// 不等于则返回key的hashcode中高位和低位的操作结果
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);
+    }
+</code></pre>
+<hr>
+<h3 id="类比较方法待分析">类比较方法（待分析）</h3>
+<pre><code class="language-java">// 判断传入的类x是否实现Comparable，否则返回空
+static Class&lt;?&gt; comparableClassFor(Object x) {
+        if (x instanceof Comparable) {
+            Class&lt;?&gt; c; Type[] ts, as; Type t; ParameterizedType p;
+            if ((c = x.getClass()) == String.class) // bypass checks
+                return c;
+            if ((ts = c.getGenericInterfaces()) != null) {
+                for (int i = 0; i &lt; ts.length; ++i) {
+                    if (((t = ts[i]) instanceof ParameterizedType) &amp;&amp;
+                        ((p = (ParameterizedType)t).getRawType() ==
+                         Comparable.class) &amp;&amp;
+                        (as = p.getActualTypeArguments()) != null &amp;&amp;
+                        as.length == 1 &amp;&amp; as[0] == c) // type arg is c
+                        return c;
+                }
+            }
+        }
+        return null;
+    }
+</code></pre>
+<hr>
+<h3 id="comparato方法待分析">comparaTo方法（待分析）</h3>
+<pre><code class="language-java">// 如果 x 匹配 kc（k 的筛选可比类），则返回 k.compareTo(x)，否则返回 0。
+@SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;}) // for cast to Comparable
+    static int compareComparables(Class&lt;?&gt; kc, Object k, Object x) {
+        return (x == null || x.getClass() != kc ? 0 :
+                ((Comparable)k).compareTo(x));
+    }
+</code></pre>
+<hr>
+<h3 id="扩容方法">扩容方法</h3>
+<pre><code class="language-java">// 返回给定目标容量的二次幂。
+// 当传入参数不为2的幂次方时，将其转换成2的幂次方
+static final int tableSizeFor(int cap) {
+        int n = cap - 1;
+    	// 无符号右移：正数不会变负数，负数有可能变正数
+    	// 按位或
+        n |= n &gt;&gt;&gt; 1;
+        n |= n &gt;&gt;&gt; 2;
+        n |= n &gt;&gt;&gt; 4;
+        n |= n &gt;&gt;&gt; 8;
+        n |= n &gt;&gt;&gt; 16;
+        return (n &lt; 0) ? 1 : (n &gt;= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    }
+
+// eg：cap = 12 , n = 12-1 = 11 =&gt; 1011(二进制); n&gt;&gt;&gt;1 = 0101(二进制) ; 1011 | 0101 = 1111(二进制) 
+// 返回 n + 1 =&gt; 1111(二进制) + 1 = 15 + 1 = 16 
+</code></pre>
+<hr>
+<h3 id="map接口函数">Map接口函数</h3>
+<pre><code class="language-java">// 实现 Map.putAll 和 Map 构造函数。
+// 参数：
+//		m - map
+//		evict – 最初构造此映射时为 false，否则为 true（中继到方法 afterNodeInsertion）
+
+final void putMapEntries(Map&lt;? extends K, ? extends V&gt; m, boolean evict) {
+    	// 获取传入map的长度
+        int s = m.size();
+        if (s &gt; 0) {
+            // 判断table是否为空
+            if (table == null) { // pre-size
+                // 长度 / 负载因子 = map的容量大小
+                float ft = ((float)s / loadFactor) + 1.0F;
+                // 判断容量大小是否超过容量最大值，没超过的话就没问题
+                int t = ((ft &lt; (float)MAXIMUM_CAPACITY) ?
+                         (int)ft : MAXIMUM_CAPACITY);
+                // 判断是否超过第一个要调整的大小
+                if (t &gt; threshold)
+                    // 调用扩容函数把t转换成2的幂次方
+                    threshold = tableSizeFor(t);
+            }
+            else if (s &gt; threshold)
+                // 变换map长度
+                resize();
+            // 将所有健值对进行复制
+            for (Map.Entry&lt;? extends K, ? extends V&gt; e : m.entrySet()) {
+                K key = e.getKey();
+                V value = e.getValue();
+                putVal(hash(key), key, value, false, evict);
+            }
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="构造函数">构造函数</h3>
+<pre><code class="language-java">// 构造一个具有指定初始容量和负载因子的空HashMap 。
+// 参数：
+// 		initialCapacity – 初始容量 (@Range(from = 0,to =Integer.MAX_VALUE))
+//		loadFactor – 负载因子
+public HashMap(int initialCapacity, float loadFactor) {
+    	// 初始容量范围：0-MAX_VALUE
+    	// 如果小于0，抛出异常
+        if (initialCapacity &lt; 0)
+            throw new IllegalArgumentException(&quot;Illegal initial capacity: &quot; +
+                                               initialCapacity);
+    	// 如果大于整型最大值，则令其等于最大值
+        if (initialCapacity &gt; MAXIMUM_CAPACITY)
+            initialCapacity = MAXIMUM_CAPACITY;
+    	// 负载因子小于0或不是float，抛出异常
+        if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))
+            throw new IllegalArgumentException(&quot;Illegal load factor: &quot; +
+                                               loadFactor);
+        this.loadFactor = loadFactor;
+    	// 调用扩容方法（讲cap转换成2的幂次方）
+        this.threshold = tableSizeFor(initialCapacity);
+    }
+
+// 只定义了初始大小，负载因子默认为0.75
+public HashMap(int initialCapacity) {
+        this(initialCapacity, DEFAULT_LOAD_FACTOR);
+    }
+
+// 默认大小为16，默认负载因子为0.75
+public HashMap() {
+        this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
+    }
+
+// 使用与指定Map相同的映射构造一个新的HashMap 。 HashMap是使用默认负载因子 (0.75) 创建的，初始容量足以在指定的Map 中保存映射。
+public HashMap(Map&lt;? extends K, ? extends V&gt; m) {
+        this.loadFactor = DEFAULT_LOAD_FACTOR;
+        putMapEntries(m, false);
+    }
+</code></pre>
+<hr>
+<h3 id="长度函数">长度函数</h3>
+<pre><code class="language-java">// 返回HashMap的长度(返回此映射中键值映射的数量)
+public int size() {
+        return size;
+    }
+
+// 判断是否为空
+public boolean isEmpty() {
+        return size == 0;
+    }
+
+</code></pre>
+<hr>
+<h3 id="查询方法">查询方法</h3>
+<pre><code class="language-java">// 返回指定键映射到的值，如果此映射不包含键的映射，则返回null 。
+// 更正式地说，如果此映射包含从键k到值v的映射，使得(key==null ? k==null : key.equals(k)) ，则此方法返回v ； 否则返回null 。 （最多可以有一个这样的映射。）
+// 返回值null不一定表示映射不包含键的映射,也有可能表示当前键值为null
+// 如果需要判断map中是否存在某个key，需要使用containKey操作
+public V get(Object key) {
+        Node&lt;K,V&gt; e;
+        return (e = getNode(hash(key), key)) == null ? null : e.value;
+    }
+</code></pre>
+<pre><code class="language-java">// 参数：
+//		hash - 密钥的散列值
+// 		key - key 
+// 返回值：
+// 		节点/null
+final Node&lt;K,V&gt; getNode(int hash, Object key) {
+    	// 节点列表tab
+    	// first头节点
+        Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;
+    	// 判断各种为空的情况
+        if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
+            (first = tab[(n - 1) &amp; hash]) != null) {
+            // 检查头结点的hash是否等于目标节点
+            if (first.hash == hash &amp;&amp; // always check first node
+                ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))
+                return first;
+            // 判断下一个节点是否为空
+            if ((e = first.next) != null) {
+                // 如果头结点是树节点的类型（表示HashMap的内部已经转换成树结构）
+                if (first instanceof TreeNode)
+                    return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);
+                do {
+                    // 当节点的next不为空时，依次判断hash和key
+                    if (e.hash == hash &amp;&amp;
+                        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                        return e;
+                } while ((e = e.next) != null);
+            }
+        }
+        return null;
+    }
+
+
+</code></pre>
+<hr>
+<h3 id="containkey方法">ContainKey方法</h3>
+<pre><code class="language-java">// 如果此映射包含指定键的映射，则返回true 。
+public boolean containsKey(Object key) {
+        return getNode(hash(key), key) != null;
+    }
+
+</code></pre>
+<hr>
+<h3 id="put方法">put方法</h3>
+<pre><code class="language-java"> // 将值与指定键相映射，如果键之前存在，则旧值将被替换
+public V put(K key, V value) {
+        return putVal(hash(key), key, value, false, true);
+    }
+
+// 实现 Map.put 和相关方法。
+// 参数：
+//		hash - 密钥的散列值
+// 		key - key 
+//		value - 要放置的值
+//		onlyIfAbsent - 如果为真，则不更改现有值
+// 		evict - 如果为false，则表处于创建模式
+// 返回值：
+// 		节点/null
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+    	// 节点列表tab
+    	// 节点p
+        Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;
+    	// 判断
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) &amp; hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node&lt;K,V&gt; e; K k;
+            if (p.hash == hash &amp;&amp;
+                ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
+                e = p;
+            else if (p instanceof TreeNode)
+                e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &amp;&amp;
+                        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size &gt; threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
+</code></pre>
 
             </div>
             
