@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>用最少数量的箭引爆气球 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632299659192">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="在二维空间中有许多球形的气球。对于每个气球，提供的输入是水平方向上，气球直径的开始和结束坐标。由于它是水平的，所以纵坐标并不重要，因此只要知道开始和结束的横坐标就足够了。开始坐标总是小于结束坐标。
+
+一支弓箭可以沿着 x 轴从不同点完全垂直..." />
+    <meta name="keywords" content="贪心,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632299659192" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">用最少数量的箭引爆气球</h2>
+            <div class="post-date">2021-09-22</div>
+            
+            <div class="post-content" v-pre>
+              <h4 id="在二维空间中有许多球形的气球-对于每个气球提供的输入是水平方向上气球直径的开始和结束坐标-由于它是水平的所以纵坐标并不重要因此只要知道开始和结束的横坐标就足够了-开始坐标总是小于结束坐标">在二维空间中有许多球形的气球。对于每个气球，提供的输入是水平方向上，气球直径的开始和结束坐标。由于它是水平的，所以纵坐标并不重要，因此只要知道开始和结束的横坐标就足够了。开始坐标总是小于结束坐标。</h4>
+<!-- more -->
+<h4 id="一支弓箭可以沿着-x-轴从不同点完全垂直地射出-在坐标-x-处射出一支箭若有一个气球的直径的开始和结束坐标为-xstartxend-且满足-xstart-x-xend则该气球会被引爆-可以射出的弓箭的数量没有限制-弓箭一旦被射出之后可以无限地前进-我们想找到使得所有气球全部被引爆所需的弓箭的最小数量">一支弓箭可以沿着 x 轴从不同点完全垂直地射出。在坐标 x 处射出一支箭，若有一个气球的直径的开始和结束坐标为 xstart，xend， 且满足  xstart ≤ x ≤ xend，则该气球会被引爆。可以射出的弓箭的数量没有限制。 弓箭一旦被射出之后，可以无限地前进。我们想找到使得所有气球全部被引爆，所需的弓箭的最小数量。</h4>
+<h4 id="给你一个数组-points-其中-points-i-xstartxend-返回引爆所有气球所必须射出的最小弓箭数">给你一个数组 points ，其中 points [i] = [xstart,xend] ，返回引爆所有气球所必须射出的最小弓箭数。</h4>
+<pre><code>points = [[10,16],[2,8],[1,6],[7,12]]
+输出：2
+解释：对于该样例，x = 6 可以射爆 [2,8],[1,6] 两个气球，以及 x = 11 射爆另外两个气球
+
+
+</code></pre>
+<pre><code>输入：points = [[1,2],[3,4],[5,6],[7,8]]
+输出：4
+</code></pre>
+<h4 id="思路将二维数组按照一维的第二个元素排序即将气球按照边界排序看下一个气球的右边是否和上一个气球的左边相重叠没有重叠则1最后得到的就是重叠的数量和所需弓箭的数量一致">思路：将二维数组按照一维的第二个元素排序，即将气球按照边界排序，看下一个气球的右边是否和上一个气球的左边相重叠，没有重叠则+1，最后得到的就是重叠的数量，和所需弓箭的数量一致。</h4>
+<pre><code>根据 x_end 将气球进行排序。
+初始化 first_end 为第一个气球结束的坐标 points[0][1]。
+初始化箭的数量 arrows = 1。
+遍历所有的气球：
+    如果气球的开始坐标大于 first_end：
+        则增加箭的数量。
+        将 first_end 设置为当前气球的 x_end。
+    否则：
+        如果气球的结束坐标小于first_end:
+            将 first_end 设置为当前气球的 结束坐标。
+返回 arrows。
+</code></pre>
+<h4 id="解法贪心算法">解法：贪心算法</h4>
+<pre><code class="language-java">class Solution {
+    public int findMinArrowShots ( int[][] points ) {
+        if ( points.length == 0 ) {
+            return 0;
+        }
+        Arrays.sort( points, new Comparator&lt; int[] &gt;() {
+            @Override
+            public int compare ( int[] point1, int[] point2 ) {
+                return Integer.compare( point1[1], point2[1] );
+            }
+        } );
+        int end = points[0][1];
+        int res = 1;
+        for ( int[] point : points ) {
+            if ( point[0] &gt; end ) {
+                end = point[1];
+                res++;
+            }
+        }
+        return res;
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/weuuybOuh/" class="tag">
+                    贪心
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/n-ge-tou-zi-de-dian-shu/">
+                  <h3 class="post-title">
+                    n个骰子的点数
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

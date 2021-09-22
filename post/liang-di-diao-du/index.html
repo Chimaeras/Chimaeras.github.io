@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>最后一块石头的重量 | Joker&#39;s Blog</title>
+<title>两地调度 | Joker&#39;s Blog</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -18,12 +18,15 @@
 
 
 
-    <meta name="description" content="有一堆石头，每块石头的重量都是正整数。
-每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;= y。那么粉碎的可能结果如下：
+    <meta name="description" content="公司计划面试 2N 人。第 i 人飞往 A 市的费用为 costs[i][0]，飞往 B 市的费用为 costs[i][1]。
+返回将每个人都飞到某座城市的最低费用，要求每个城市都有 N 人抵达。
 
-如果 x == y，那么两块石头都会被完全粉碎；
-如果 ..." />
-    <meta name="keywords" content="LeetCode" />
+
+思路：
+
+比较去A和去B那个比较便宜
+..." />
+    <meta name="keywords" content="贪心,LeetCode" />
   </head>
   <body>
     <div id="app" class="main">
@@ -98,62 +101,47 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">最后一块石头的重量</h2>
-            <div class="post-date">2021-09-18</div>
+            <h2 class="post-title">两地调度</h2>
+            <div class="post-date">2021-09-22</div>
             
             <div class="post-content" v-pre>
-              <h4 id="有一堆石头每块石头的重量都是正整数">有一堆石头，每块石头的重量都是正整数。</h4>
-<h4 id="每一回合从中选出两块-最重的-石头然后将它们一起粉碎-假设石头的重量分别为-x-和-y且-x-y-那么粉碎的可能结果如下">每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;= y。那么粉碎的可能结果如下：</h4>
+              <h4 id="公司计划面试-2n-人-第-i-人飞往-a-市的费用为-costsi0飞往-b-市的费用为-costsi1">公司计划面试 2N 人。第 i 人飞往 A 市的费用为 costs[i][0]，飞往 B 市的费用为 costs[i][1]。</h4>
+<h4 id="返回将每个人都飞到某座城市的最低费用要求每个城市都有-n-人抵达">返回将每个人都飞到某座城市的最低费用，要求每个城市都有 N 人抵达。</h4>
 <!-- more -->
-<pre><code>如果 x == y，那么两块石头都会被完全粉碎；
-如果 x != y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。
-</code></pre>
-<h4 id="最后最多只会剩下一块石头-返回此石头的重量-如果没有石头剩下就返回-0">最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。</h4>
+<hr>
+<h5 id="思路">思路：</h5>
+<ul>
+<li>比较去A和去B那个比较便宜</li>
+<li>A和B各一半人</li>
+<li>创建一个bool帮助判断谁去A 谁去B</li>
+</ul>
 <hr>
 <ul>
 <li>
-<h4 id="解法1从后往前遍历">解法1：从后往前遍历</h4>
+<h4 id="解法1">解法1：</h4>
 </li>
 </ul>
 <pre><code class="language-java">class Solution {
-    public int lastStoneWeight ( int[] stones ) {
-        int len = stones.length - 1;
-        if ( len == 0 ) {
-            //如果只有一个石头 输出那一个石头重量
-            return stones[len];
-        }
-        Arrays.sort( stones );
-        //如果所有都粉碎完 那么倒数第二个肯定为0
-        while ( stones[len - 1] != 0 ) {
-            //最后一个减倒数第二个
-            stones[len] = stones[len] - stones[len - 1];
-            //倒数第二个变为0
-            stones[len - 1] = 0;
-            Arrays.sort( stones );
-        }
-        return stones[len];
-    }
-}
+    public int twoCitySchedCost ( int[][] costs ) {
+        //costs[i][1]-costs[i][0] 越大代表越适合去A，越小代表越适合去B
+        int[] tmp = new int[costs.length];
+        int sum = 0;
+        for ( int i = 0; i &lt; costs.length; i++ ) {
+            //求出差值，放进tmp数组
+            tmp[i] = costs[i][1] - costs[i][0];
+            //求出所有去A的总价
+            sum += costs[i][0];
 
-</code></pre>
-<hr>
-<ul>
-<li>
-<h4 id="解法2大根堆队列">解法2：大根堆队列</h4>
-</li>
-</ul>
-<pre><code class="language-java">class Solution {
-    public int lastStoneWeight ( int[] stones ) {
-        PriorityQueue&lt; Integer &gt; queue = new PriorityQueue&lt;&gt;( ( x, y ) -&gt; ( y - x ) );
-        for ( int stone : stones ) {
-            queue.add( stone );
         }
-        while ( queue.size() &gt; 1 ) {
-            int a = queue.poll();
-            int b = queue.poll();
-            queue.add( a - b );
+        //按差值从小到大排
+        Arrays.sort( tmp );
+        //前N个差值小，适合去B
+        for ( int i = 0; i &lt; costs.length / 2; i++ ) {
+            //sum+costs[i][1]-costs[i][0],前面加过一次cost[i][0]
+            //相当于前面那个循环算所有去A的，这个循环算N个去B的，同时减掉他们刚才去A的钱
+            sum += tmp[i];
         }
-        return queue.poll();
+        return sum;
     }
 }
 </code></pre>
@@ -162,6 +150,10 @@
             </div>
             
               <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/weuuybOuh/" class="tag">
+                    贪心
+                  </a>
                 
                   <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
                     LeetCode
@@ -172,9 +164,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://chimaeras.ltd/post/an-mo-shi/">
+                <a href="https://chimaeras.ltd/post/gu-piao-de-zui-da-li-run/">
                   <h3 class="post-title">
-                    按摩师
+                    股票的最大利润
                   </h3>
                 </a>
               </div>

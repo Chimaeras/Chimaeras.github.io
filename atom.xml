@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-20T07:16:56.214Z</updated>
+    <updated>2021-09-22T08:34:22.874Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,41 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[两地调度]]></title>
+        <id>https://chimaeras.ltd/post/liang-di-diao-du/</id>
+        <link href="https://chimaeras.ltd/post/liang-di-diao-du/">
+        </link>
+        <updated>2021-09-22T08:29:24.000Z</updated>
+        <summary type="html"><![CDATA[<h4 id="公司计划面试-2n-人-第-i-人飞往-a-市的费用为-costsi0飞往-b-市的费用为-costsi1">公司计划面试 2N 人。第 i 人飞往 A 市的费用为 costs[i][0]，飞往 B 市的费用为 costs[i][1]。</h4>
+<h4 id="返回将每个人都飞到某座城市的最低费用要求每个城市都有-n-人抵达">返回将每个人都飞到某座城市的最低费用，要求每个城市都有 N 人抵达。</h4>
+]]></summary>
+        <content type="html"><![CDATA[<h4 id="公司计划面试-2n-人-第-i-人飞往-a-市的费用为-costsi0飞往-b-市的费用为-costsi1">公司计划面试 2N 人。第 i 人飞往 A 市的费用为 costs[i][0]，飞往 B 市的费用为 costs[i][1]。</h4>
+<h4 id="返回将每个人都飞到某座城市的最低费用要求每个城市都有-n-人抵达">返回将每个人都飞到某座城市的最低费用，要求每个城市都有 N 人抵达。</h4>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[股票的最大利润]]></title>
+        <id>https://chimaeras.ltd/post/gu-piao-de-zui-da-li-run/</id>
+        <link href="https://chimaeras.ltd/post/gu-piao-de-zui-da-li-run/">
+        </link>
+        <updated>2021-09-22T08:00:15.000Z</updated>
+        <summary type="html"><![CDATA[<h3 id="假设把某股票的价格按照时间先后顺序存储在数组中请问买卖该股票一次可能获得的最大利润是多少">假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？</h3>
+]]></summary>
+        <content type="html"><![CDATA[<h3 id="假设把某股票的价格按照时间先后顺序存储在数组中请问买卖该股票一次可能获得的最大利润是多少">假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？</h3>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[用最少数量的箭引爆气球]]></title>
+        <id>https://chimaeras.ltd/post/yong-zui-shao-shu-liang-de-jian-yin-bao-qi-qiu/</id>
+        <link href="https://chimaeras.ltd/post/yong-zui-shao-shu-liang-de-jian-yin-bao-qi-qiu/">
+        </link>
+        <updated>2021-09-22T07:46:18.000Z</updated>
+        <summary type="html"><![CDATA[<h4 id="在二维空间中有许多球形的气球-对于每个气球提供的输入是水平方向上气球直径的开始和结束坐标-由于它是水平的所以纵坐标并不重要因此只要知道开始和结束的横坐标就足够了-开始坐标总是小于结束坐标">在二维空间中有许多球形的气球。对于每个气球，提供的输入是水平方向上，气球直径的开始和结束坐标。由于它是水平的，所以纵坐标并不重要，因此只要知道开始和结束的横坐标就足够了。开始坐标总是小于结束坐标。</h4>
+]]></summary>
+        <content type="html"><![CDATA[<h4 id="在二维空间中有许多球形的气球-对于每个气球提供的输入是水平方向上气球直径的开始和结束坐标-由于它是水平的所以纵坐标并不重要因此只要知道开始和结束的横坐标就足够了-开始坐标总是小于结束坐标">在二维空间中有许多球形的气球。对于每个气球，提供的输入是水平方向上，气球直径的开始和结束坐标。由于它是水平的，所以纵坐标并不重要，因此只要知道开始和结束的横坐标就足够了。开始坐标总是小于结束坐标。</h4>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[n个骰子的点数]]></title>
         <id>https://chimaeras.ltd/post/n-ge-tou-zi-de-dian-shu/</id>
@@ -103,39 +138,6 @@
         <summary type="html"><![CDATA[<h3 id="题目不使用运算符-和-计算两整数-a-b-之和">题目：不使用运算符 + 和 - ​​​​​​​，计算两整数 ​​​​​​​a 、b ​​​​​​​之和。</h3>
 ]]></summary>
         <content type="html"><![CDATA[<h3 id="题目不使用运算符-和-计算两整数-a-b-之和">题目：不使用运算符 + 和 - ​​​​​​​，计算两整数 ​​​​​​​a 、b ​​​​​​​之和。</h3>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[阶乘后的零]]></title>
-        <id>https://chimaeras.ltd/post/jie-cheng-hou-de-ling/</id>
-        <link href="https://chimaeras.ltd/post/jie-cheng-hou-de-ling/">
-        </link>
-        <updated>2021-09-18T07:01:27.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[各位相加]]></title>
-        <id>https://chimaeras.ltd/post/ge-wei-xiang-jia/</id>
-        <link href="https://chimaeras.ltd/post/ge-wei-xiang-jia/">
-        </link>
-        <updated>2021-09-18T06:57:09.000Z</updated>
-        <summary type="html"><![CDATA[<h4 id="题目给定一个非负整数num反复将各个位上的数字相加直到结果为一位数">题目：给定一个非负整数num，反复将各个位上的数字相加，直到结果为一位数</h4>
-]]></summary>
-        <content type="html"><![CDATA[<h4 id="题目给定一个非负整数num反复将各个位上的数字相加直到结果为一位数">题目：给定一个非负整数num，反复将各个位上的数字相加，直到结果为一位数</h4>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[x的平方根]]></title>
-        <id>https://chimaeras.ltd/post/x-de-ping-fang-gen/</id>
-        <link href="https://chimaeras.ltd/post/x-de-ping-fang-gen/">
-        </link>
-        <updated>2021-09-18T06:36:03.000Z</updated>
-        <summary type="html"><![CDATA[<h4 id="题目实现-int-sqrtint-x-函数">题目：实现 int sqrt(int x) 函数。</h4>
-<p>计算并返回 x 的平方根，其中 x 是非负整数。</p>
-<p>由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。</p>
-]]></summary>
-        <content type="html"><![CDATA[<h4 id="题目实现-int-sqrtint-x-函数">题目：实现 int sqrt(int x) 函数。</h4>
-<p>计算并返回 x 的平方根，其中 x 是非负整数。</p>
-<p>由于返回类型是整数，结果只保留整数的部分，小数部分将被舍去。</p>
 ]]></content>
     </entry>
 </feed>
