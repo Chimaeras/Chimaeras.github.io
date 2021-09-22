@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>编辑距离 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632302352867">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
+
+你可以对一个单词进行如下三种操作：
+
+插入一个字符
+删除一个字符
+替换一个字符
+
+输入：word1 = &quot;horse..." />
+    <meta name="keywords" content="动态规划,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632302352867" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">编辑距离</h2>
+            <div class="post-date">2021-09-22</div>
+            
+            <div class="post-content" v-pre>
+              <h4 id="给你两个单词-word1-和-word2请你计算出将-word1-转换成-word2-所使用的最少操作数">给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。</h4>
+<!-- more -->
+<h4 id="你可以对一个单词进行如下三种操作">你可以对一个单词进行如下三种操作：</h4>
+<ul>
+<li>插入一个字符</li>
+<li>删除一个字符</li>
+<li>替换一个字符</li>
+</ul>
+<pre><code>输入：word1 = &quot;horse&quot;, word2 = &quot;ros&quot;
+输出：3
+解释：
+horse -&gt; rorse (将 'h' 替换为 'r')
+rorse -&gt; rose (删除 'r')
+rose -&gt; ros (删除 'e')
+
+</code></pre>
+<pre><code>输入：word1 = &quot;intention&quot;, word2 = &quot;execution&quot;
+输出：5
+解释：
+intention -&gt; inention (删除 't')
+inention -&gt; enention (将 'i' 替换为 'e')
+enention -&gt; exention (将 'n' 替换为 'x')
+exention -&gt; exection (将 'n' 替换为 'c')
+exection -&gt; execution (插入 'u')
+</code></pre>
+<hr>
+<h4 id="解法动态规划java">解法：动态规划（java）</h4>
+<pre><code class="language-java">class Solution {
+    public int minDistance ( String s1, String s2 ) {
+        int m = s1.length(), n = s2.length();
+        // dp[i][j]表示A的前i个字母和B的前j个字母之间的编辑距离
+        int[][] dp = new int[m + 1][n + 1];
+        // base case
+        // 相当于对word1执行i次删除操作
+        for ( int i = 1; i &lt;= m; i++ ) {
+            dp[i][0] = i;
+        }
+        // 相当于对word2执行j次插入操作
+        for ( int j = 1; j &lt;= n; j++ ) {
+            dp[0][j] = j;
+        }
+        // 自底向上求解
+        for ( int i = 1; i &lt;= m; i++ ) {
+            for ( int j = 1; j &lt;= n; j++ ) {
+                if ( s1.charAt( i - 1 ) == s2.charAt( j - 1 ) ) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = min
+                            (
+                                    dp[i - 1][j] + 1,
+                                    dp[i][j - 1] + 1,
+                                    dp[i - 1][j - 1] + 1
+                            );
+                }
+            }
+        }
+        // 储存着整个 s1 和 s2 的最小编辑距离
+        return dp[m][n];
+    }
+
+    int min ( int a, int b, int c ) {
+        return Math.min( a, Math.min( b, c ) );
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
+                    动态规划
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/bu-tong-lu-jing/">
+                  <h3 class="post-title">
+                    不同路径
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

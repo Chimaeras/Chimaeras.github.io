@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>鸡蛋掉落 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632302352867">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="你将获得 K 个鸡蛋，并可以使用一栋从 1 到 N  共有 N 层楼的建筑，每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。
+你知道存在楼层 F ，满足 0 &lt;= F &lt;= N 任何从高于 F 的楼层落下的鸡蛋都会..." />
+    <meta name="keywords" content="算法,动态规划,二分法,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632302352867" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">鸡蛋掉落</h2>
+            <div class="post-date">2021-09-22</div>
+            
+            <div class="post-content" v-pre>
+              <h4 id="你将获得-k-个鸡蛋并可以使用一栋从-1-到-n-共有-n-层楼的建筑每个蛋的功能都是一样的如果一个蛋碎了你就不能再把它掉下去">你将获得 K 个鸡蛋，并可以使用一栋从 1 到 N  共有 N 层楼的建筑，每个蛋的功能都是一样的，如果一个蛋碎了，你就不能再把它掉下去。</h4>
+<h4 id="你知道存在楼层-f-满足-0-f-n-任何从高于-f-的楼层落下的鸡蛋都会碎从-f-楼层或比它低的楼层落下的鸡蛋都不会破">你知道存在楼层 F ，满足 0 &lt;= F &lt;= N 任何从高于 F 的楼层落下的鸡蛋都会碎，从 F 楼层或比它低的楼层落下的鸡蛋都不会破。</h4>
+<h4 id="每次移动你可以取一个鸡蛋如果你有完整的鸡蛋并把它从任一楼层-x-扔下满足-1-x-n">每次移动，你可以取一个鸡蛋（如果你有完整的鸡蛋）并把它从任一楼层 X 扔下（满足 1 &lt;= X &lt;= N）。</h4>
+<h4 id="你的目标是确切地知道-f-的值是多少-无论-f-的初始值如何你确定-f-的值的最小移动次数是多少">你的目标是确切地知道 F 的值是多少。无论 F 的初始值如何，你确定 F 的值的最小移动次数是多少？</h4>
+<!-- more -->
+<h4 id="解法1动态规划二分查找java">解法1：动态规划+二分查找（java）</h4>
+<pre><code class="language-java">class Solution {
+    public int superEggDrop ( int k, int n ) {
+        int[][] dp = new int[n + 1][k + 1];
+        //i表示楼层，j表示鸡蛋
+        for ( int i = 1; i &lt;= n; i++ ) {
+            //当只有1个鸡蛋却要检查N层楼时，只能线性扫描N层楼
+            dp[i][1] = i;
+        }
+        for ( int j = 1; j &lt;= k; j++ ) {
+            //在第一层，无论有多少个鸡蛋 都只用一次检查
+            dp[1][j] = 1;
+        }
+
+        //后续节点通过binary函数算出来
+        for ( int i = 2; i &lt;= n; i++ ) {
+            for ( int j = 2; j &lt;= k; j++ ) {
+                dp[i][j] = binary( i, j, dp );
+            }
+        }
+        return dp[n][k];
+    }
+
+    public int binary ( int floors, int eggs, int[][] dp ) {
+        int left = 1, right = floors;
+        while ( left &lt; right ) {
+            //定义中间节点
+            int mid = ( left + right ) / 2;
+            //碎了：楼层-1，鸡蛋-1
+            int broken = dp[mid - 1][eggs - 1];
+            //没碎：楼层+1，鸡蛋不变
+            int not_broken = dp[floors - mid][eggs];
+            //如果没碎&gt;碎了
+            if ( not_broken &gt; broken ) {
+                //左边界变为中间值+1
+                left = mid + 1;
+            } else {
+                //更新右边值
+                right = mid;
+            }
+        }
+        return Math.max( dp[right - 1][eggs - 1], dp[floors - right][eggs] ) + 1;
+    }
+}
+</code></pre>
+<hr>
+<h3 id="方法2数学法">方法2：数学法</h3>
+<pre><code class="language-java">class Solution {
+    public int superEggDrop ( int k, int n ) {
+        if ( n == 1 ) {
+            return 1;
+        }
+        int[][] f = new int[n + 1][k + 1];
+        for ( int i = 1; i &lt;= k; ++i ) {
+            f[1][i] = 1;
+        }
+        int ans = -1;
+        for ( int i = 2; i &lt;= n; ++i ) {
+            for ( int j = 1; j &lt;= k; ++j ) {
+                f[i][j] = 1 + f[i - 1][j - 1] + f[i - 1][j];
+            }
+            if ( f[i][k] &gt;= n ) {
+                ans = i;
+                break;
+            }
+        }
+        return ans;
+    }
+}
+</code></pre>
+<p><a href="https://leetcode-cn.com/problems/super-egg-drop/solution/ji-dan-diao-luo-by-leetcode-solution-2/">详细解法</a></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/Ma9F6ENfl/" class="tag">
+                    算法
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
+                    动态规划
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/HVJCSUtku/" class="tag">
+                    二分法
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/bian-ji-ju-chi/">
+                  <h3 class="post-title">
+                    编辑距离
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

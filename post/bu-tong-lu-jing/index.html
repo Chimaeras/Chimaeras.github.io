@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>不同路径 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632302352867">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+问总共有多少条不同的路径？
+
+
+分析：从起点 (x..." />
+    <meta name="keywords" content="动态规划,LeetCode" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632302352867" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">不同路径</h2>
+            <div class="post-date">2021-09-22</div>
+            
+            <div class="post-content" v-pre>
+              <h4 id="一个机器人位于一个-m-x-n-网格的左上角-起始点在下图中标记为start">一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。</h4>
+<h4 id="机器人每次只能向下或者向右移动一步-机器人试图达到网格的右下角在下图中标记为finish">机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。</h4>
+<h4 id="问总共有多少条不同的路径">问总共有多少条不同的路径？</h4>
+<!-- more -->
+<hr>
+<h4 id="分析从起点-x0y0x0y0-出发下一步只能向右或者向下到达第二点向右则为-x1yx1y-向下则为-xy1xy1一直到-xmynxmyn-这个点则为结束点视为一条路径">分析：从起点 (x=0,y=0)(x=0,y=0) 出发，下一步只能向右或者向下到达第二点，向右则为 (x+1，y)(x+1，y) 向下则为 (x，y+1)(x，y+1)，一直到 (x=m，y=n)(x=m，y=n) 这个点则为结束点视为一条路径。</h4>
+<h4 id="则sumxysumx-1ysumxy-1">则sum(x,y)=sum(x-1,y)+sum(x,y-1)</h4>
+<h4 id="方法1使用动态规划可以避免大量重复计算">方法1：使用动态规划，可以避免大量重复计算</h4>
+<pre><code class="language-java">class Solution {
+    static int[][] a = new int[101][101];
+    public int uniquePaths ( int m, int n ) {
+        if ( m &lt;= 0 || n &lt;= 0 ) {
+            return 0;
+        } else if ( m == 1 || n == 1 ) {
+            //1*1
+            return 1;
+        } else if ( m == 2 &amp;&amp; n == 2 ) {
+            //2*2
+            return 2;
+        } else if ( ( m == 3 &amp;&amp; n == 2 ) || ( m == 2 &amp;&amp; n == 3 ) ) {
+            //3*2
+            return 3;
+        }
+        if ( a[m][n] &gt; 0 ) {
+            return a[m][n];
+        }
+        a[m - 1][n] = uniquePaths( m - 1, n );
+        a[m][n - 1] = uniquePaths( m, n - 1 );
+        a[m][n] = a[m - 1][n] + a[m][n - 1];
+        return a[m][n];
+    }
+}
+</code></pre>
+<hr>
+<h4 id="方法2两个for遍历左边和上边的值">方法2：两个for遍历左边和上边的值</h4>
+<pre><code class="language-java">class Solution {
+    public int uniquePaths ( int m, int n ) {
+        // 状态定义：dp[i][j]是到达i，j的路径数。
+        // 递推方程：dp[i][j] = dp[i-1][j] + dp[i][j-1]。向右走一步或者向下走一步就可以到达i，j的方案数之和
+        int[][] dp = new int[m][n];
+        for ( int i = 0; i &lt; m; ++i ) {
+            for ( int j = 0; j &lt; n; ++j ) {
+                if ( i == 0 || j == 0 ) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+}
+
+时间：O(N^2)
+空间：O(N*M)
+</code></pre>
+<hr>
+<h4 id="每次更新的值只和左侧以及上一行的值有关只更新一行的值">每次更新的值只和左侧以及上一行的值有关，只更新一行的值</h4>
+<pre><code class="language-java">class Solution {
+    public int uniquePaths ( int m, int n ) {
+        // 状态定义：dp[i][j]是到达i，j的路径数。
+        // 递推方程：dp[i][j] = dp[i-1][j] + dp[i][j-1]。向右走一步或者向下走一步就可以到达i，j的方案数之和
+        int[] dp = new int[n];
+        Arrays.fill( dp, 1 );
+        for ( int i = 1; i &lt; m; ++i ) {
+            for ( int j = 1; j &lt; n; ++j ) {
+                dp[j] += dp[j - 1];
+            }
+        }
+        return dp[n - 1];
+    }
+}
+
+时间：O(N^2)
+空间：O(N)
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/xlYh6sOao/" class="tag">
+                    动态规划
+                  </a>
+                
+                  <a href="https://chimaeras.ltd/tag/w6VinS032/" class="tag">
+                    LeetCode
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/liang-di-diao-du/">
+                  <h3 class="post-title">
+                    两地调度
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
