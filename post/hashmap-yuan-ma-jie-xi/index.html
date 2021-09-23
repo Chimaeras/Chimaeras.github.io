@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632315736969">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632380125644">
 <link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
 
 
@@ -18,8 +18,11 @@
 
 
 
-    <meta name="description" content="前言
-map接口是基于哈希表的实现，允许空键（只能有一个）和空值（可以有多个）。它大致等同与HashTable，但HashMap是非同步（不是线程安全的）的且允许空值。改类不保证映射的顺序，即不保证顺序会随着时间的推移保持不变（ it do..." />
+    <meta name="description" content="总结
+
+HashMap是一个“链表散列”的数据结构，即数组和链表的结合体。底层数据结构是一个数组，数组中的每一项是一条链表
+HashMap的实例有两个参数影响其性能：初始容量 和 负载因子
+HashMap实现不同步，线程不安全。HashTa..." />
     <meta name="keywords" content="数据结构" />
   </head>
   <body>
@@ -29,7 +32,7 @@ map接口是基于哈希表的实现，允许空键（只能有一个）和空�
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://chimaeras.ltd">
-        <img src="https://chimaeras.ltd/images/avatar.png?v=1632315736969" class="site-logo">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632380125644" class="site-logo">
         <h1 class="site-title">Joker&#39;s Blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -102,7 +105,50 @@ map接口是基于哈希表的实现，允许空键（只能有一个）和空�
               </div>
             
             <div class="post-content" v-pre>
-              <h3 id="前言">前言</h3>
+              <h3 id="总结">总结</h3>
+<ul>
+<li>HashMap是一个“链表散列”的数据结构，即数组和链表的结合体。底层数据结构是一个数组，数组中的每一项是一条链表</li>
+<li>HashMap的实例有两个参数影响其性能：初始容量 和 负载因子</li>
+<li>HashMap实现不同步，线程不安全。HashTable线程安全。</li>
+<li>HashMap的key-value都是存储在Entry中</li>
+<li>HashMap可以存储null键和null值，不保证元素的顺序恒久不变，他的底层使用的是数组和链表，通过hashcode（）方法和euqals方法保证键的唯一性。</li>
+<li>解决冲突的方法：
+<ul>
+<li>定址法：当冲突发生时，通过某种探查技术在散列表中形成一个探查序列，沿此序列逐个单元查找，直到找到给定的关键字，或者碰到一个开放的地址（即该地址单元为空）</li>
+<li>拉链法（HashMap）：将相同hash值的对象组成一个链表放在hash值对应的槽位</li>
+<li>再散列法</li>
+</ul>
+</li>
+</ul>
+<h3 id="hashmap和hashtable的区别">HashMap和HashTable的区别</h3>
+<ul>
+<li>
+<p>继承不同：</p>
+<pre><code class="language-java">public class Hashtable extends Dictionary implements Map
+    
+public class HashMap extends AbstractMap implements Map 
+</code></pre>
+</li>
+<li>
+<p>HashTable中的方法是同步的，而HashMap中的方法在缺省情况下是非同步的。在多线程并发的环境下，可以直接使用HashTable，但是要使用HashMap就要自己增加同步处理。</p>
+</li>
+<li>
+<p>HashTbale中不允许出现null的key或value；HashMap中可以有一个值为null的key，可以有多个值为null的value。所以放get方法返回null时，既可以表示HashMap中没有该key，也可以表示该键的值为null。如果需要判断是否存在某个key，应该是用Containskey方法。</p>
+</li>
+<li>
+<p>遍历方法的内部实现上不同。两者都使用了Iterator的方法，但是HashTable还是用了Enumeration的方法</p>
+</li>
+<li>
+<p>哈希值的不同。Hashtable直接使用对象的hashcode；HashMap重新计算hash值</p>
+</li>
+<li>
+<p>内部数组的初始大小的和扩容方式不同。HashTable中的数默认大小为11，增加的方式是old*2+1;hashmap中数组默认大小为16，而且一定是2的幂次方</p>
+</li>
+</ul>
+<h3 id="ps">PS</h3>
+<p>HashSet使用Map保存数据，即将HashSet的数据作为Map的key值保存，这也是HashSet中的元素不能重复的原因。而Map中保存key值，会去判断当前Map中是否含有key对象，内部先计算key的hashcode，确定有相同的hashcode之后，再通过equals方法判断是否相同。</p>
+<hr>
+<h3 id="前言">前言</h3>
 <p>map接口是基于哈希表的实现，允许空键（只能有一个）和空值（可以有多个）。它大致等同与HashTable，但HashMap是非同步（不是线程安全的）的且允许空值。改类不保证映射的顺序，即不保证顺序会随着时间的推移保持不变（ it does not guarantee that the order will remain constant over time.）</p>
 <p>其基本操作（get、put）的时间性能和实例的容量（桶的数量）、实例的大小（键值映射的数量）成正比。因此，如果迭代性能很重要，则不要将初始容量设置得太高（或负载因子太低）。</p>
 <p>HashMap的实例有两个影响其性能的参数：初始容量和负载因子。 容量是哈希表中的桶数，初始容量就是哈希表创建时的容量。 负载因子是衡量哈希表在其容量自动增加之前允许达到多满的指标。 当哈希表中的条目数超过负载因子和当前容量的乘积时，重新哈希表（即重建内部数据结构），使哈希表具有大约两倍的桶数。</p>
@@ -278,6 +324,107 @@ static final int tableSizeFor(int cap) {
 // eg：cap = 12 , n = 12-1 = 11 =&gt; 1011(二进制); n&gt;&gt;&gt;1 = 0101(二进制) ; 1011 | 0101 = 1111(二进制) 
 // 返回 n + 1 =&gt; 1111(二进制) + 1 = 15 + 1 = 16 
 </code></pre>
+<h3 id="resize函数">resize函数</h3>
+<pre><code class="language-java">// 初始化或加倍表大小。 
+// 如果为空，则根据字段阈值中持有的初始容量目标进行分配。 
+// 否则，因为我们使用的是 2 的幂扩展，所以每个 bin 中的元素必须保持相同的索引，或者在新表中以 2 的幂的偏移量移动。
+
+final Node&lt;K,V&gt;[] resize() {
+    	// 旧表
+        Node&lt;K,V&gt;[] oldTab = table;
+    	// 旧表长度
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+    	// 旧表下一个拓展长度
+        int oldThr = threshold;
+    	// 新表长度、新表下一个拓展长度
+        int newCap, newThr = 0;
+    	// 长度大于0
+        if (oldCap &gt; 0) {
+            // 超过最大长度
+            if (oldCap &gt;= MAXIMUM_CAPACITY) {
+                // 下一个待调整长度为int最大值
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            }
+            // 新长度(旧长度的二倍)小于最大值 and 旧长度大于 默认长度
+            else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                     oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+                // 2倍的旧长度
+                newThr = oldThr &lt;&lt; 1; // double threshold
+        }
+        else if (oldThr &gt; 0) // initial capacity was placed in threshold
+            // 初始容量置为阈值
+            newCap = oldThr;
+        else {               // zero initial threshold signifies using defaults
+            // 默认容量
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            // 下一个调整的大小 = 默认容量 * 负载因子
+            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+        }
+        if (newThr == 0) {
+            float ft = (float)newCap * loadFactor;
+            newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?
+                      (int)ft : Integer.MAX_VALUE);
+        }
+        threshold = newThr;
+        @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];
+        table = newTab;
+        if (oldTab != null) {
+            // 遍历将旧map中的值复制进去
+            for (int j = 0; j &lt; oldCap; ++j) {
+                Node&lt;K,V&gt; e;
+                if ((e = oldTab[j]) != null) {
+                    // 将旧map赋值给e，然后释放旧map
+                    oldTab[j] = null;
+                    // 下一个节点为空
+                    if (e.next == null)
+                        newTab[e.hash &amp; (newCap - 1)] = e;
+                    // 树节点
+                    else if (e instanceof TreeNode)
+                        ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);
+                    else { // preserve order
+                        Node&lt;K,V&gt; loHead = null, loTail = null;
+                        Node&lt;K,V&gt; hiHead = null, hiTail = null;
+                        Node&lt;K,V&gt; next;
+                        do {
+                            next = e.next;
+                            // 判断e的hash是否为0，即判断是否位于散列表头部
+                            if ((e.hash &amp; oldCap) == 0) {
+                                // 旧尾巴为空，则旧开头为e
+                                if (loTail == null)
+                                    loHead = e;
+                                // 旧尾巴的next为e
+                                else
+                                    loTail.next = e;
+                                // 旧尾巴往后移
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+                        } while ((e = next) != null);
+                        // 旧尾巴指为空，同时定义旧表头
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        // 新尾巴为空，定义新表头
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                   }
+                }
+            }
+        }
+        return newTab;
+    }
+</code></pre>
 <hr>
 <h3 id="map接口函数">Map接口函数</h3>
 <pre><code class="language-java">// 实现 Map.putAll 和 Map 构造函数。
@@ -420,6 +567,24 @@ public boolean containsKey(Object key) {
 
 </code></pre>
 <hr>
+<h3 id="containvalue方法">ContainValue方法</h3>
+<pre><code class="language-java">// 查询是否包含某个键映射到value
+public boolean containsValue(Object value) {
+        Node&lt;K,V&gt;[] tab; V v;
+        if ((tab = table) != null &amp;&amp; size &gt; 0) {
+            // 遍历map的长度
+            for (int i = 0; i &lt; tab.length; ++i) {
+                // 查询在当前位置的链表中，是否存在目标value
+                for (Node&lt;K,V&gt; e = tab[i]; e != null; e = e.next) {
+                    if ((v = e.value) == value ||
+                        (value != null &amp;&amp; value.equals(v)))
+                        return true;
+                }
+            }
+        }
+        return false;
+</code></pre>
+<hr>
 <h3 id="put方法">put方法</h3>
 <pre><code class="language-java"> // 将值与指定键相映射，如果键之前存在，则旧值将被替换
 public V put(K key, V value) {
@@ -439,47 +604,1581 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
                    boolean evict) {
     	// 节点列表tab
     	// 节点p
+    	// 长度n
+    	// 索引i
         Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;
-    	// 判断
+    	// 判断长度是否为空
         if ((tab = table) == null || (n = tab.length) == 0)
+            // 获取长度
             n = (tab = resize()).length;
+    	// 查看尾部节点是否为空，可知链表是否为空，为空则new一个
         if ((p = tab[i = (n - 1) &amp; hash]) == null)
             tab[i] = newNode(hash, key, value, null);
         else {
             Node&lt;K,V&gt; e; K k;
+            // 如果是同一个节点(判断key)
             if (p.hash == hash &amp;&amp;
                 ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
                 e = p;
+            // 判断是否为树节点类型
             else if (p instanceof TreeNode)
+                // 树的插入节点方法
                 e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
             else {
                 for (int binCount = 0; ; ++binCount) {
+                    // 链表中没有目标key，遍历到下一个
                     if ((e = p.next) == null) {
+                        // 创建新的node
                         p.next = newNode(hash, key, value, null);
                         if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st
                             treeifyBin(tab, hash);
                         break;
                     }
+                    // 如果已经存在相同的key
                     if (e.hash == hash &amp;&amp;
                         ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
                         break;
                     p = e;
                 }
             }
+            // 已经存在key
             if (e != null) { // existing mapping for key
+                // 保存旧值
                 V oldValue = e.value;
+                // 判断是否结构修改
                 if (!onlyIfAbsent || oldValue == null)
                     e.value = value;
                 afterNodeAccess(e);
                 return oldValue;
             }
         }
+    	// 修改次数++
         ++modCount;
+    	// 如果长度超过了下一个要调整的大小
         if (++size &gt; threshold)
+            // 扩容
             resize();
         afterNodeInsertion(evict);
         return null;
     }
+</code></pre>
+<hr>
+<h3 id="链表节点转换成树节点">链表节点转换成树节点</h3>
+<pre><code class="language-java">// 当表变大时，将链表节点转换成树节点
+final void treeifyBin(Node&lt;K,V&gt;[] tab, int hash) {
+        int n, index; Node&lt;K,V&gt; e;
+    	// 判断表是否为空 或 小于 转化成树的 阈值
+        if (tab == null || (n = tab.length) &lt; MIN_TREEIFY_CAPACITY)
+            resize();
+    	// 判断最后一个位置是否为空，不为空说明满了
+        else if ((e = tab[index = (n - 1) &amp; hash]) != null) {
+            TreeNode&lt;K,V&gt; hd = null, tl = null;
+            do {
+                // 转换成树节点
+                TreeNode&lt;K,V&gt; p = replacementTreeNode(e, null);
+                if (tl == null)
+                    hd = p;
+                else {
+                    // 双向链接
+                    p.prev = tl;
+                    tl.next = p;
+                }
+                tl = p;
+            } while ((e = e.next) != null);
+            if ((tab[index] = hd) != null)
+                hd.treeify(tab);
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="复制函数">复制函数</h3>
+<pre><code class="language-java">// 将所有映射从指定映射复制到此映射。 这些映射将替换此映射对当前在指定映射中的任何键的任何映射。
+public void putAll(Map&lt;? extends K, ? extends V&gt; m) {
+        putMapEntries(m, true);
+    }
+
+</code></pre>
+<hr>
+<h3 id="移除函数">移除函数</h3>
+<pre><code class="language-java">// 如果存在，则从此映射中删除指定键的映射。
+public V remove(Object key) {
+        Node&lt;K,V&gt; e;
+        return (e = removeNode(hash(key), key, null, false, true)) == null ?
+            null : e.value;
+    }
+
+// 实现 Map.remove 和相关方法。
+// 参数：
+//		hash - 密钥的散列值
+// 		key - key 
+//		value - 如果 matchValue 匹配的值，否则忽略
+//		matchValue – 如果为真，则仅在值相等时删除
+// 		movable - 如果为false，则在删除时不移动其他节点
+// 返回值：
+// 		节点/null
+final Node&lt;K,V&gt; removeNode(int hash, Object key, Object value,
+                               boolean matchValue, boolean movable) {
+        Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, index;
+    	// 判断 表长度是否为空 或 表长度大于0 或 表最后一位是否为空
+        if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;
+            (p = tab[index = (n - 1) &amp; hash]) != null) {
+            Node&lt;K,V&gt; node = null, e; K k; V v;
+            // p为最后一个节点 判断其是否等于目标节点
+            if (p.hash == hash &amp;&amp;
+                ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
+                node = p;
+            // 当表中还有节点时，进行遍历
+            else if ((e = p.next) != null) {
+                // 判断是否是树节点
+                if (p instanceof TreeNode)
+                    node = ((TreeNode&lt;K,V&gt;)p).getTreeNode(hash, key);
+                else {
+                    // 遍历找到目标节点
+                    do {
+                        if (e.hash == hash &amp;&amp;
+                            ((k = e.key) == key ||
+                             (key != null &amp;&amp; key.equals(k)))) {
+                            node = e;
+                            break;
+                        }
+                        p = e;
+                    } while ((e = e.next) != null);
+                }
+            }
+            // mathcValue为真，则只在值相等时才删除，但是默认为false，即根据键删除
+            if (node != null &amp;&amp; (!matchValue || (v = node.value) == value ||
+                                 (value != null &amp;&amp; value.equals(v)))) {
+                // 判断是否为树节点
+                if (node instanceof TreeNode)
+                    ((TreeNode&lt;K,V&gt;)node).removeTreeNode(this, tab, movable);
+                // 找到目标节点，则令当前节点为next节点
+                else if (node == p)
+                    tab[index] = node.next;
+                // 遍历修改后续节点指针
+                else
+                    p.next = node.next;
+                // 修改次数增加
+                ++modCount;
+                // 长度减少
+                --size;
+                afterNodeRemoval(node);
+                return node;
+            }
+        }
+        return null;
+    }
+</code></pre>
+<hr>
+<h3 id="清空函数">清空函数</h3>
+<pre><code class="language-java">// 从此映射中删除所有映射。 此调用返回后，map将为空。
+public void clear() {
+        Node&lt;K,V&gt;[] tab;
+        modCount++;
+        if ((tab = table) != null &amp;&amp; size &gt; 0) {
+            size = 0;
+            // 遍历令其指向null
+            for (int i = 0; i &lt; tab.length; ++i)
+                tab[i] = null;
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="set接口">Set接口</h3>
+<pre><code class="language-java">// 返回此映射中包含的键的Set视图。 该集合由map支持，因此对map的更改会反映在该集合中，反之亦然。 
+// 如果在对集合进行迭代时修改了映射（通过迭代器自己的删除操作除外），则迭代的结果是不确定的。 该集合支持元素移除，即通过Iterator.remove 、 Set.remove 、 removeAll 、 retainAll和clear操作从map中移除相应的映射。 它不支持add或addAll操作。
+public Set&lt;K&gt; keySet() {
+        Set&lt;K&gt; ks = keySet;
+        if (ks == null) {
+            ks = new KeySet();
+            keySet = ks;
+        }
+        return ks;
+    }
+
+// 继承了AbstractSet类
+final class KeySet extends AbstractSet&lt;K&gt; {
+    	// 长度
+        public final int size()                 { return size; }
+    	// 调用map的clear方法
+        public final void clear()               { HashMap.this.clear(); }
+    	// 迭代器
+        public final Iterator&lt;K&gt; iterator()     { return new KeyIterator(); }
+    	// 包含查询
+        public final boolean contains(Object o) { return containsKey(o); }
+    	// 移除操作
+        public final boolean remove(Object key) {
+            return removeNode(hash(key), key, null, false, true) != null;
+        }
+    	// 分割器
+        public final Spliterator&lt;K&gt; spliterator() {
+            return new KeySpliterator&lt;&gt;(HashMap.this, 0, -1, 0, 0);
+        }
+    	// foeEach遍历工具
+        public final void forEach(Consumer&lt;? super K&gt; action) {
+            Node&lt;K,V&gt;[] tab;
+            if (action == null)
+                throw new NullPointerException();
+            if (size &gt; 0 &amp;&amp; (tab = table) != null) {
+                int mc = modCount;
+                for (int i = 0; i &lt; tab.length; ++i) {
+                    for (Node&lt;K,V&gt; e = tab[i]; e != null; e = e.next)
+                        action.accept(e.key);
+                }
+                // 如果遍历次数不等于长度，说明发生了结构修改，抛出异常
+                if (modCount != mc)
+                    throw new ConcurrentModificationException();
+            }
+        }
+    }
+
+</code></pre>
+<hr>
+<h3 id="collection接口">Collection接口</h3>
+<pre><code class="language-java">// 返回此映射中包含的值的Collection视图。 集合由map支持，因此对map的更改会反映在集合中，反之亦然。 
+// 如果在对集合进行迭代时修改了映射（通过迭代器自己的删除操作除外），则迭代的结果是不确定的。 
+// 该集合支持元素移除，即通过Iterator.remove 、 Collection.remove 、 removeAll 、 retainAll和clear操作从map中移除相应的映射。 它不支持add或addAll操作。
+public Collection&lt;V&gt; values() {
+        Collection&lt;V&gt; vs = values;
+        if (vs == null) {
+            vs = new Values();
+            values = vs;
+        }
+        return vs;
+    }
+
+// 继承了AbstractCollection类
+final class Values extends AbstractCollection&lt;V&gt; {
+        public final int size()                 { return size; }
+        public final void clear()               { HashMap.this.clear(); }
+        public final Iterator&lt;V&gt; iterator()     { return new ValueIterator(); }
+        public final boolean contains(Object o) { return containsValue(o); }
+        public final Spliterator&lt;V&gt; spliterator() {
+            return new ValueSpliterator&lt;&gt;(HashMap.this, 0, -1, 0, 0);
+        }
+        public final void forEach(Consumer&lt;? super V&gt; action) {
+            Node&lt;K,V&gt;[] tab;
+            if (action == null)
+                throw new NullPointerException();
+            if (size &gt; 0 &amp;&amp; (tab = table) != null) {
+                int mc = modCount;
+                for (int i = 0; i &lt; tab.length; ++i) {
+                    for (Node&lt;K,V&gt; e = tab[i]; e != null; e = e.next)
+                        action.accept(e.value);
+                }
+                if (modCount != mc)
+                    throw new ConcurrentModificationException();
+            }
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="entryset接口">EntrySet接口</h3>
+<pre><code class="language-java">// 返回此映射中包含的映射的Set视图。 该集合由map支持，因此对地图的更改会反映在该集合中，反之亦然。 
+// 如果在对集合进行迭代时修改了映射（除了通过迭代器自己的删除操作，或者通过迭代器返回的映射条目上的setValue操作），迭代的结果是未定义的。 
+// 该集合支持元素移除，即通过Iterator.remove 、 Set.remove 、 removeAll 、 retainAll和clear操作从map中移除相应的映射。 它不支持add或addAll操作
+public Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet() {
+        Set&lt;Map.Entry&lt;K,V&gt;&gt; es;
+        return (es = entrySet) == null ? (entrySet = new EntrySet()) : es;
+    }
+
+final class EntrySet extends AbstractSet&lt;Map.Entry&lt;K,V&gt;&gt; {
+    	// 长度
+        public final int size()                 { return size; }
+    	// clear方法
+        public final void clear()               { HashMap.this.clear(); }
+    	// 迭代器
+        public final Iterator&lt;Map.Entry&lt;K,V&gt;&gt; iterator() {
+            return new EntryIterator();
+        }
+    	// 包含查询
+        public final boolean contains(Object o) {
+            // 判断是否是Entry类
+            if (!(o instanceof Map.Entry))
+                return false;
+            Map.Entry&lt;?,?&gt; e = (Map.Entry&lt;?,?&gt;) o;
+            Object key = e.getKey();
+            Node&lt;K,V&gt; candidate = getNode(hash(key), key);
+            return candidate != null &amp;&amp; candidate.equals(e);
+        }
+    	// 移除节点
+        public final boolean remove(Object o) {
+            if (o instanceof Map.Entry) {
+                Map.Entry&lt;?,?&gt; e = (Map.Entry&lt;?,?&gt;) o;
+                // 找到目标节点的key和value
+                Object key = e.getKey();
+                Object value = e.getValue();
+                return removeNode(hash(key), key, value, true, true) != null;
+            }
+            return false;
+        }
+        public final Spliterator&lt;Map.Entry&lt;K,V&gt;&gt; spliterator() {
+            return new EntrySpliterator&lt;&gt;(HashMap.this, 0, -1, 0, 0);
+        }
+    	// forEach遍历
+        public final void forEach(Consumer&lt;? super Map.Entry&lt;K,V&gt;&gt; action) {
+            Node&lt;K,V&gt;[] tab;
+            if (action == null)
+                throw new NullPointerException();
+            if (size &gt; 0 &amp;&amp; (tab = table) != null) {
+                int mc = modCount;
+                for (int i = 0; i &lt; tab.length; ++i) {
+                    for (Node&lt;K,V&gt; e = tab[i]; e != null; e = e.next)
+                        action.accept(e);
+                }
+                if (modCount != mc)
+                    throw new ConcurrentModificationException();
+            }
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="jdk8拓展方法">JDK8拓展方法</h3>
+<pre><code class="language-java">// 查看是否存在，不存在就赋默认值
+@Override
+public V getOrDefault(Object key, V defaultValue) {
+        Node&lt;K,V&gt; e;
+        return (e = getNode(hash(key), key)) == null ? defaultValue : e.value;
+    }
+
+// 如果不存在，则添加进去
+@Override
+public V putIfAbsent(K key, V value) {
+        return putVal(hash(key), key, value, true, true);
+    }
+
+// 移除节点
+@Override
+public boolean remove(Object key, Object value) {
+        return removeNode(hash(key), key, value, true, true) != null;
+    }
+
+// 替换节点
+@Override
+public boolean replace(K key, V oldValue, V newValue) {
+        Node&lt;K,V&gt; e; V v;
+        if ((e = getNode(hash(key), key)) != null &amp;&amp;
+            ((v = e.value) == oldValue || (v != null &amp;&amp; v.equals(oldValue)))) {
+            e.value = newValue;
+            afterNodeAccess(e);
+            return true;
+        }
+        return false;
+    }
+
+// 替换节点，返回旧值
+@Override
+public V replace(K key, V value) {
+        Node&lt;K,V&gt; e;
+        if ((e = getNode(hash(key), key)) != null) {
+            V oldValue = e.value;
+            e.value = value;
+            afterNodeAccess(e);
+            return oldValue;
+        }
+        return null;
+    }
+
+
+</code></pre>
+<hr>
+<h3 id="待分析">（待分析）</h3>
+<pre><code class="language-java">// 
+@Override
+public V computeIfAbsent(K key,
+                             Function&lt;? super K, ? extends V&gt; mappingFunction) {
+        if (mappingFunction == null)
+            throw new NullPointerException();
+        int hash = hash(key);
+        Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first; int n, i;
+        int binCount = 0;
+        TreeNode&lt;K,V&gt; t = null;
+        Node&lt;K,V&gt; old = null;
+        if (size &gt; threshold || (tab = table) == null ||
+            (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((first = tab[i = (n - 1) &amp; hash]) != null) {
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);
+            else {
+                Node&lt;K,V&gt; e = first; K k;
+                do {
+                    if (e.hash == hash &amp;&amp;
+                        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k)))) {
+                        old = e;
+                        break;
+                    }
+                    ++binCount;
+                } while ((e = e.next) != null);
+            }
+            V oldValue;
+            if (old != null &amp;&amp; (oldValue = old.value) != null) {
+                afterNodeAccess(old);
+                return oldValue;
+            }
+        }
+        V v = mappingFunction.apply(key);
+        if (v == null) {
+            return null;
+        } else if (old != null) {
+            old.value = v;
+            afterNodeAccess(old);
+            return v;
+        }
+        else if (t != null)
+            t.putTreeVal(this, tab, hash, key, v);
+        else {
+            tab[i] = newNode(hash, key, v, first);
+            if (binCount &gt;= TREEIFY_THRESHOLD - 1)
+                treeifyBin(tab, hash);
+        }
+        ++modCount;
+        ++size;
+        afterNodeInsertion(true);
+        return v;
+    }
+
+public V computeIfPresent(K key,
+                              BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction) {
+        if (remappingFunction == null)
+            throw new NullPointerException();
+        Node&lt;K,V&gt; e; V oldValue;
+        int hash = hash(key);
+        if ((e = getNode(hash, key)) != null &amp;&amp;
+            (oldValue = e.value) != null) {
+            V v = remappingFunction.apply(key, oldValue);
+            if (v != null) {
+                e.value = v;
+                afterNodeAccess(e);
+                return v;
+            }
+            else
+                removeNode(hash, key, null, false, true);
+        }
+        return null;
+    }
+
+@Override
+public V compute(K key,
+                     BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction) {
+        if (remappingFunction == null)
+            throw new NullPointerException();
+        int hash = hash(key);
+        Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first; int n, i;
+        int binCount = 0;
+        TreeNode&lt;K,V&gt; t = null;
+        Node&lt;K,V&gt; old = null;
+        if (size &gt; threshold || (tab = table) == null ||
+            (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        if ((first = tab[i = (n - 1) &amp; hash]) != null) {
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);
+            else {
+                Node&lt;K,V&gt; e = first; K k;
+                do {
+                    if (e.hash == hash &amp;&amp;
+                        ((k = e.key) == key || (key != null &amp;&amp; key.equals(k)))) {
+                        old = e;
+                        break;
+                    }
+                    ++binCount;
+                } while ((e = e.next) != null);
+            }
+        }
+        V oldValue = (old == null) ? null : old.value;
+        V v = remappingFunction.apply(key, oldValue);
+        if (old != null) {
+            if (v != null) {
+                old.value = v;
+                afterNodeAccess(old);
+            }
+            else
+                removeNode(hash, key, null, false, true);
+        }
+        else if (v != null) {
+            if (t != null)
+                t.putTreeVal(this, tab, hash, key, v);
+            else {
+                tab[i] = newNode(hash, key, v, first);
+                if (binCount &gt;= TREEIFY_THRESHOLD - 1)
+                    treeifyBin(tab, hash);
+            }
+            ++modCount;
+            ++size;
+            afterNodeInsertion(true);
+        }
+        return v;
+    }
+
+@Override
+public void forEach(BiConsumer&lt;? super K, ? super V&gt; action) {
+        Node&lt;K,V&gt;[] tab;
+        if (action == null)
+            throw new NullPointerException();
+        if (size &gt; 0 &amp;&amp; (tab = table) != null) {
+            int mc = modCount;
+            for (int i = 0; i &lt; tab.length; ++i) {
+                for (Node&lt;K,V&gt; e = tab[i]; e != null; e = e.next)
+                    action.accept(e.key, e.value);
+            }
+            if (modCount != mc)
+                throw new ConcurrentModificationException();
+        }
+    }
+
+@Override
+public void replaceAll(BiFunction&lt;? super K, ? super V, ? extends V&gt; function) {
+        Node&lt;K,V&gt;[] tab;
+        if (function == null)
+            throw new NullPointerException();
+        if (size &gt; 0 &amp;&amp; (tab = table) != null) {
+            int mc = modCount;
+            for (int i = 0; i &lt; tab.length; ++i) {
+                for (Node&lt;K,V&gt; e = tab[i]; e != null; e = e.next) {
+                    e.value = function.apply(e.key, e.value);
+                }
+            }
+            if (modCount != mc)
+                throw new ConcurrentModificationException();
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="复制函数-2">复制函数</h3>
+<pre><code class="language-java">// 返回此HashMap实例的浅表副本：不会克隆键和值本身。
+public Object clone() {
+        HashMap&lt;K,V&gt; result;
+        try {
+            result = (HashMap&lt;K,V&gt;)super.clone();
+        } catch (CloneNotSupportedException e) {
+            // this shouldn't happen, since we are Cloneable
+            // 一般来说不应该发生，因为我们实现了Cloneable接口
+            throw new InternalError(e);
+        }
+    	// ?
+        result.reinitialize();
+        result.putMapEntries(this, false);
+        return result;
+    }
+</code></pre>
+<hr>
+<h3 id="反序列化函数">(反)序列化函数</h3>
+<pre><code class="language-java">// 序列化时使用
+final float loadFactor() { return loadFactor; }
+
+// 将HashMap实例的状态保存到一个流中（即序列化它）。
+private void writeObject(java.io.ObjectOutputStream s)
+        throws IOException {
+        int buckets = capacity();
+        // Write out the threshold, loadfactor, and any hidden stuff
+        s.defaultWriteObject();
+        s.writeInt(buckets);
+        s.writeInt(size);
+        internalWriteEntries(s);
+    }
+
+// 从流中重建此映射（即反序列化它）。
+private void readObject(java.io.ObjectInputStream s)
+        throws IOException, ClassNotFoundException {
+        // 读入阈值（忽略）、负载因子和任何隐藏的东西
+        s.defaultReadObject();
+        reinitialize();
+        if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))
+            throw new InvalidObjectException(&quot;Illegal load factor: &quot; +
+                                             loadFactor);
+        s.readInt();                // 读取并忽略桶数
+        int mappings = s.readInt(); // 读取映射数（大小）
+        if (mappings &lt; 0)
+            throw new InvalidObjectException(&quot;Illegal mappings count: &quot; +
+                                             mappings);
+        else if (mappings &gt; 0) { // （如果为零，则使用默认值）
+            // 仅在以下情况下才使用给定的负载因子调整表的大小
+            // 范围 0.25~4.0
+            float lf = Math.min(Math.max(0.25f, loadFactor), 4.0f);
+            float fc = (float)mappings / lf + 1.0f;
+            int cap = ((fc &lt; DEFAULT_INITIAL_CAPACITY) ?
+                       DEFAULT_INITIAL_CAPACITY :
+                       (fc &gt;= MAXIMUM_CAPACITY) ?
+                       MAXIMUM_CAPACITY :
+                       tableSizeFor((int)fc));
+            float ft = (float)cap * lf;
+            threshold = ((cap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; MAXIMUM_CAPACITY) ?
+                         (int)ft : Integer.MAX_VALUE);
+
+            // 检查 Map.Entry[].class 因为它是最接近我们实际创建的公共类型。
+            SharedSecrets.getJavaOISAccess().checkArray(s, Map.Entry[].class, cap);
+            @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+            Node&lt;K,V&gt;[] tab = (Node&lt;K,V&gt;[])new Node[cap];
+            table = tab;
+
+            // 读取键和值，并将映射放入HashMap
+            for (int i = 0; i &lt; mappings; i++) {
+                @SuppressWarnings(&quot;unchecked&quot;)
+                    K key = (K) s.readObject();
+                @SuppressWarnings(&quot;unchecked&quot;)
+                    V value = (V) s.readObject();
+                putVal(hash(key), key, value, false, false);
+            }
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="长度函数-2">长度函数</h3>
+<pre><code class="language-java">// 返回表长度
+final int capacity() {
+        return (table != null) ? table.length :
+            (threshold &gt; 0) ? threshold :
+            DEFAULT_INITIAL_CAPACITY;
+    }
+</code></pre>
+<hr>
+<h3 id="迭代器">迭代器</h3>
+<pre><code class="language-java">abstract class HashIterator {
+        Node&lt;K,V&gt; next;        // 下一个返回的条目
+        Node&lt;K,V&gt; current;     // 当前条目
+        int expectedModCount;  // 快速失败参数
+        int index;             // 当前索引
+
+    	// 迭代器构造函数
+        HashIterator() {
+            expectedModCount = modCount;
+            Node&lt;K,V&gt;[] t = table;
+            current = next = null;
+            index = 0;
+            if (t != null &amp;&amp; size &gt; 0) { // 进入第一个条目
+                do {} while (index &lt; t.length &amp;&amp; (next = t[index++]) == null);
+            }
+        }
+		
+    	// 是否有下一个
+        public final boolean hasNext() {
+            return next != null;
+        }
+
+    	// 返回下一个节点
+        final Node&lt;K,V&gt; nextNode() {
+            Node&lt;K,V&gt;[] t;
+            Node&lt;K,V&gt; e = next;
+            // 修改次数不等于预期修改次数，抛出异常
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+            // 下一个节点为空，抛出异常
+            if (e == null)
+                throw new NoSuchElementException();
+            // 从当前节点遍历到下一个节点
+            if ((next = (current = e).next) == null &amp;&amp; (t = table) != null) {
+                do {} while (index &lt; t.length &amp;&amp; (next = t[index++]) == null);
+            }
+            return e;
+        }
+
+    	// 移除当前节点
+        public final void remove() {
+            Node&lt;K,V&gt; p = current;
+            if (p == null)
+                throw new IllegalStateException();
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+            current = null;
+            K key = p.key;
+            removeNode(hash(key), key, null, false, false);
+            expectedModCount = modCount;
+        }
+    }
+
+// key迭代器
+final class KeyIterator extends HashIterator
+        implements Iterator&lt;K&gt; {
+        public final K next() { return nextNode().key; }
+    }
+
+// value迭代器
+final class ValueIterator extends HashIterator
+        implements Iterator&lt;V&gt; {
+        public final V next() { return nextNode().value; }
+    }
+
+// entry迭代器
+final class EntryIterator extends HashIterator
+        implements Iterator&lt;Map.Entry&lt;K,V&gt;&gt; {
+        public final Map.Entry&lt;K,V&gt; next() { return nextNode(); }
+    }
+</code></pre>
+<hr>
+<h3 id="分割器待分析">分割器（待分析）</h3>
+<pre><code class="language-java">static class HashMapSpliterator&lt;K,V&gt; {
+        final HashMap&lt;K,V&gt; map;
+        Node&lt;K,V&gt; current;          // 当前节点
+        int index;                  // 当前索引，在提前/拆分时修改
+        int fence;                  // 过去最后一个索引
+        int est;                    // 尺寸估计
+        int expectedModCount;       // 用于预期检查
+
+    	// 构造函数
+        HashMapSpliterator(HashMap&lt;K,V&gt; m, int origin,
+                           int fence, int est,
+                           int expectedModCount) {
+            this.map = m;
+            this.index = origin;
+            this.fence = fence;
+            this.est = est;
+            this.expectedModCount = expectedModCount;
+        }
+
+        final int getFence() { // 首次使用时初始化围栏和大小
+            int hi;
+            if ((hi = fence) &lt; 0) {
+                HashMap&lt;K,V&gt; m = map;
+                est = m.size;
+                expectedModCount = m.modCount;
+                Node&lt;K,V&gt;[] tab = m.table;
+                hi = fence = (tab == null) ? 0 : tab.length;
+            }
+            return hi;
+        }
+
+        public final long estimateSize() {
+            getFence(); // 强制初始化
+            return (long) est;
+        }
+    }
+
+// 键分割器
+static final class KeySpliterator&lt;K,V&gt;
+        extends HashMapSpliterator&lt;K,V&gt;
+        implements Spliterator&lt;K&gt; {
+        KeySpliterator(HashMap&lt;K,V&gt; m, int origin, int fence, int est,
+                       int expectedModCount) {
+            super(m, origin, fence, est, expectedModCount);
+        }
+
+        public KeySpliterator&lt;K,V&gt; trySplit() {
+            int hi = getFence(), lo = index, mid = (lo + hi) &gt;&gt;&gt; 1;
+            return (lo &gt;= mid || current != null) ? null :
+                new KeySpliterator&lt;&gt;(map, lo, index = mid, est &gt;&gt;&gt;= 1,
+                                        expectedModCount);
+        }
+
+        public void forEachRemaining(Consumer&lt;? super K&gt; action) {
+            int i, hi, mc;
+            if (action == null)
+                throw new NullPointerException();
+            HashMap&lt;K,V&gt; m = map;
+            Node&lt;K,V&gt;[] tab = m.table;
+            if ((hi = fence) &lt; 0) {
+                mc = expectedModCount = m.modCount;
+                hi = fence = (tab == null) ? 0 : tab.length;
+            }
+            else
+                mc = expectedModCount;
+            if (tab != null &amp;&amp; tab.length &gt;= hi &amp;&amp;
+                (i = index) &gt;= 0 &amp;&amp; (i &lt; (index = hi) || current != null)) {
+                Node&lt;K,V&gt; p = current;
+                current = null;
+                do {
+                    if (p == null)
+                        p = tab[i++];
+                    else {
+                        action.accept(p.key);
+                        p = p.next;
+                    }
+                } while (p != null || i &lt; hi);
+                if (m.modCount != mc)
+                    throw new ConcurrentModificationException();
+            }
+        }
+
+        public boolean tryAdvance(Consumer&lt;? super K&gt; action) {
+            int hi;
+            if (action == null)
+                throw new NullPointerException();
+            Node&lt;K,V&gt;[] tab = map.table;
+            if (tab != null &amp;&amp; tab.length &gt;= (hi = getFence()) &amp;&amp; index &gt;= 0) {
+                while (current != null || index &lt; hi) {
+                    if (current == null)
+                        current = tab[index++];
+                    else {
+                        K k = current.key;
+                        current = current.next;
+                        action.accept(k);
+                        if (map.modCount != expectedModCount)
+                            throw new ConcurrentModificationException();
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public int characteristics() {
+            return (fence &lt; 0 || est == map.size ? Spliterator.SIZED : 0) |
+                Spliterator.DISTINCT;
+        }
+    }
+
+// 值分割器
+static final class ValueSpliterator&lt;K,V&gt;
+        extends HashMapSpliterator&lt;K,V&gt;
+        implements Spliterator&lt;V&gt; {
+        ValueSpliterator(HashMap&lt;K,V&gt; m, int origin, int fence, int est,
+                         int expectedModCount) {
+            super(m, origin, fence, est, expectedModCount);
+        }
+
+        public ValueSpliterator&lt;K,V&gt; trySplit() {
+            int hi = getFence(), lo = index, mid = (lo + hi) &gt;&gt;&gt; 1;
+            return (lo &gt;= mid || current != null) ? null :
+                new ValueSpliterator&lt;&gt;(map, lo, index = mid, est &gt;&gt;&gt;= 1,
+                                          expectedModCount);
+        }
+
+        public void forEachRemaining(Consumer&lt;? super V&gt; action) {
+            int i, hi, mc;
+            if (action == null)
+                throw new NullPointerException();
+            HashMap&lt;K,V&gt; m = map;
+            Node&lt;K,V&gt;[] tab = m.table;
+            if ((hi = fence) &lt; 0) {
+                mc = expectedModCount = m.modCount;
+                hi = fence = (tab == null) ? 0 : tab.length;
+            }
+            else
+                mc = expectedModCount;
+            if (tab != null &amp;&amp; tab.length &gt;= hi &amp;&amp;
+                (i = index) &gt;= 0 &amp;&amp; (i &lt; (index = hi) || current != null)) {
+                Node&lt;K,V&gt; p = current;
+                current = null;
+                do {
+                    if (p == null)
+                        p = tab[i++];
+                    else {
+                        action.accept(p.value);
+                        p = p.next;
+                    }
+                } while (p != null || i &lt; hi);
+                if (m.modCount != mc)
+                    throw new ConcurrentModificationException();
+            }
+        }
+
+        public boolean tryAdvance(Consumer&lt;? super V&gt; action) {
+            int hi;
+            if (action == null)
+                throw new NullPointerException();
+            Node&lt;K,V&gt;[] tab = map.table;
+            if (tab != null &amp;&amp; tab.length &gt;= (hi = getFence()) &amp;&amp; index &gt;= 0) {
+                while (current != null || index &lt; hi) {
+                    if (current == null)
+                        current = tab[index++];
+                    else {
+                        V v = current.value;
+                        current = current.next;
+                        action.accept(v);
+                        if (map.modCount != expectedModCount)
+                            throw new ConcurrentModificationException();
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public int characteristics() {
+            return (fence &lt; 0 || est == map.size ? Spliterator.SIZED : 0);
+        }
+    }
+
+// entry分割器
+static final class EntrySpliterator&lt;K,V&gt;
+        extends HashMapSpliterator&lt;K,V&gt;
+        implements Spliterator&lt;Map.Entry&lt;K,V&gt;&gt; {
+        EntrySpliterator(HashMap&lt;K,V&gt; m, int origin, int fence, int est,
+                         int expectedModCount) {
+            super(m, origin, fence, est, expectedModCount);
+        }
+
+        public EntrySpliterator&lt;K,V&gt; trySplit() {
+            int hi = getFence(), lo = index, mid = (lo + hi) &gt;&gt;&gt; 1;
+            return (lo &gt;= mid || current != null) ? null :
+                new EntrySpliterator&lt;&gt;(map, lo, index = mid, est &gt;&gt;&gt;= 1,
+                                          expectedModCount);
+        }
+
+        public void forEachRemaining(Consumer&lt;? super Map.Entry&lt;K,V&gt;&gt; action) {
+            int i, hi, mc;
+            if (action == null)
+                throw new NullPointerException();
+            HashMap&lt;K,V&gt; m = map;
+            Node&lt;K,V&gt;[] tab = m.table;
+            if ((hi = fence) &lt; 0) {
+                mc = expectedModCount = m.modCount;
+                hi = fence = (tab == null) ? 0 : tab.length;
+            }
+            else
+                mc = expectedModCount;
+            if (tab != null &amp;&amp; tab.length &gt;= hi &amp;&amp;
+                (i = index) &gt;= 0 &amp;&amp; (i &lt; (index = hi) || current != null)) {
+                Node&lt;K,V&gt; p = current;
+                current = null;
+                do {
+                    if (p == null)
+                        p = tab[i++];
+                    else {
+                        action.accept(p);
+                        p = p.next;
+                    }
+                } while (p != null || i &lt; hi);
+                if (m.modCount != mc)
+                    throw new ConcurrentModificationException();
+            }
+        }
+
+        public boolean tryAdvance(Consumer&lt;? super Map.Entry&lt;K,V&gt;&gt; action) {
+            int hi;
+            if (action == null)
+                throw new NullPointerException();
+            Node&lt;K,V&gt;[] tab = map.table;
+            if (tab != null &amp;&amp; tab.length &gt;= (hi = getFence()) &amp;&amp; index &gt;= 0) {
+                while (current != null || index &lt; hi) {
+                    if (current == null)
+                        current = tab[index++];
+                    else {
+                        Node&lt;K,V&gt; e = current;
+                        current = current.next;
+                        action.accept(e);
+                        if (map.modCount != expectedModCount)
+                            throw new ConcurrentModificationException();
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public int characteristics() {
+            return (fence &lt; 0 || est == map.size ? Spliterator.SIZED : 0) |
+                Spliterator.DISTINCT;
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="linkedhashmap-支持待分析">LinkedHashMap 支持(待分析)</h3>
+<pre><code class="language-java">// 创建一个常规（非树）节点
+Node&lt;K,V&gt; newNode(int hash, K key, V value, Node&lt;K,V&gt; next) {
+        return new Node&lt;&gt;(hash, key, value, next);
+    }
+
+// 用于从 TreeNodes 到普通节点的转换
+Node&lt;K,V&gt; replacementNode(Node&lt;K,V&gt; p, Node&lt;K,V&gt; next) {
+        return new Node&lt;&gt;(p.hash, p.key, p.value, next);
+    }
+
+// 创建树节点
+TreeNode&lt;K,V&gt; newTreeNode(int hash, K key, V value, Node&lt;K,V&gt; next) {
+        return new TreeNode&lt;&gt;(hash, key, value, next);
+    }
+
+// 对于树节点的替换
+TreeNode&lt;K,V&gt; replacementTreeNode(Node&lt;K,V&gt; p, Node&lt;K,V&gt; next) {
+        return new TreeNode&lt;&gt;(p.hash, p.key, p.value, next);
+    }
+
+// 重置为初始默认状态。 由 clone 和 readObject 调用。
+void reinitialize() {
+        table = null;
+        entrySet = null;
+        keySet = null;
+        values = null;
+        modCount = 0;
+        threshold = 0;
+        size = 0;
+    }
+
+// 回调以允许 LinkedHashMap 后操作
+void afterNodeAccess(Node&lt;K,V&gt; p) { }
+void afterNodeInsertion(boolean evict) { }
+void afterNodeRemoval(Node&lt;K,V&gt; p) { }
+
+// 仅从 writeObject 调用，以确保兼容排序。
+void internalWriteEntries(java.io.ObjectOutputStream s) throws IOException {
+        Node&lt;K,V&gt;[] tab;
+        if (size &gt; 0 &amp;&amp; (tab = table) != null) {
+            for (int i = 0; i &lt; tab.length; ++i) {
+                for (Node&lt;K,V&gt; e = tab[i]; e != null; e = e.next) {
+                    s.writeObject(e.key);
+                    s.writeObject(e.value);
+                }
+            }
+        }
+    }
+</code></pre>
+<hr>
+<h3 id="树节点操作拓展待分析">树节点操作（拓展）(待分析)</h3>
+<pre><code class="language-java">// 树箱的条目。 扩展 LinkedHashMap.Entry（进而扩展节点），因此可以用作常规节点或链接节点的扩展
+static final class TreeNode&lt;K,V&gt; extends LinkedHashMap.Entry&lt;K,V&gt; {
+    TreeNode&lt;K,V&gt; parent;  // 红黑树链接
+    TreeNode&lt;K,V&gt; left;
+    TreeNode&lt;K,V&gt; right;
+    TreeNode&lt;K,V&gt; prev;    // 删除后需要取消链接
+    boolean red;
+    // 构造函数
+    TreeNode(int hash, K key, V val, Node&lt;K,V&gt; next) {
+            super(hash, key, val, next);
+        }
+
+    // 取根节点
+    final TreeNode&lt;K,V&gt; root() {
+            for (TreeNode&lt;K,V&gt; r = this, p;;) {
+                if ((p = r.parent) == null)
+                    return r;
+                r = p;
+            }
+        }
+    
+    // 确保给定的根是树的第一个节点。
+    static &lt;K,V&gt; void moveRootToFront(Node&lt;K,V&gt;[] tab, TreeNode&lt;K,V&gt; root) {
+            int n;
+            if (root != null &amp;&amp; tab != null &amp;&amp; (n = tab.length) &gt; 0) {
+                // 取到节点的索引
+                int index = (n - 1) &amp; root.hash;
+                // 取根节点
+                TreeNode&lt;K,V&gt; first = (TreeNode&lt;K,V&gt;)tab[index];
+                // 如果头节点不等于根节点（刚插入新的节点）
+                if (root != first) {
+                    // 链接之前的头节点
+                    Node&lt;K,V&gt; rn;
+                    tab[index] = root;
+                    TreeNode&lt;K,V&gt; rp = root.prev;
+                    if ((rn = root.next) != null)
+                        ((TreeNode&lt;K,V&gt;)rn).prev = rp;
+                    if (rp != null)
+                        rp.next = rn;
+                    if (first != null)
+                        first.prev = root;
+                    root.next = first;
+                    root.prev = null;
+                }
+                assert checkInvariants(root);
+            }
+        }
+    
+    // 调用 find 根节点。
+    final TreeNode&lt;K,V&gt; getTreeNode(int h, Object k) {
+            return ((parent != null) ? root() : this).find(h, k, null);
+        }
+
+    
+    // 使用给定的散列和键查找从根 p 开始的节点。 kc 参数在第一次使用比较键时缓存可比较ClassFor(key)。
+    final TreeNode&lt;K,V&gt; find(int h, Object k, Class&lt;?&gt; kc) {
+            TreeNode&lt;K,V&gt; p = this;
+            do {
+                int ph, dir; K pk;
+                TreeNode&lt;K,V&gt; pl = p.left, pr = p.right, q;
+                if ((ph = p.hash) &gt; h)
+                    p = pl;
+                else if (ph &lt; h)
+                    p = pr;
+                else if ((pk = p.key) == k || (k != null &amp;&amp; k.equals(pk)))
+                    return p;
+                else if (pl == null)
+                    p = pr;
+                else if (pr == null)
+                    p = pl;
+                else if ((kc != null ||
+                          (kc = comparableClassFor(k)) != null) &amp;&amp;
+                         (dir = compareComparables(kc, k, pk)) != 0)
+                    p = (dir &lt; 0) ? pl : pr;
+                else if ((q = pr.find(h, k, kc)) != null)
+                    return q;
+                else
+                    p = pl;
+            } while (p != null);
+            return null;
+        }
+	
+    // 当 hashCode 相等且不可比较时，用于对插入进行排序的打破平局实用程序。 
+    // 我们不需要总顺序，只需要一致的插入规则来保持重新平衡之间的等效性。 超出必要的打破平局会稍微简化测试。
+    static int tieBreakOrder(Object a, Object b) {
+            int d;
+            if (a == null || b == null ||
+                (d = a.getClass().getName().
+                 compareTo(b.getClass().getName())) == 0)
+                d = (System.identityHashCode(a) &lt;= System.identityHashCode(b) ?
+                     -1 : 1);
+            return d;
+        }
+    
+    // 形成从此节点链接的节点的树。
+    final void treeify(Node&lt;K,V&gt;[] tab) {
+            TreeNode&lt;K,V&gt; root = null;
+            for (TreeNode&lt;K,V&gt; x = this, next; x != null; x = next) {
+                next = (TreeNode&lt;K,V&gt;)x.next;
+                x.left = x.right = null;
+                if (root == null) {
+                    x.parent = null;
+                    x.red = false;
+                    root = x;
+                }
+                else {
+                    K k = x.key;
+                    int h = x.hash;
+                    Class&lt;?&gt; kc = null;
+                    for (TreeNode&lt;K,V&gt; p = root;;) {
+                        int dir, ph;
+                        K pk = p.key;
+                        if ((ph = p.hash) &gt; h)
+                            dir = -1;
+                        else if (ph &lt; h)
+                            dir = 1;
+                        else if ((kc == null &amp;&amp;
+                                  (kc = comparableClassFor(k)) == null) ||
+                                 (dir = compareComparables(kc, k, pk)) == 0)
+                            dir = tieBreakOrder(k, pk);
+
+                        TreeNode&lt;K,V&gt; xp = p;
+                        if ((p = (dir &lt;= 0) ? p.left : p.right) == null) {
+                            x.parent = xp;
+                            if (dir &lt;= 0)
+                                xp.left = x;
+                            else
+                                xp.right = x;
+                            root = balanceInsertion(root, x);
+                            break;
+                        }
+                    }
+                }
+            }
+            moveRootToFront(tab, root);
+        }
+    
+    // 返回替换从该节点链接的非 TreeNode 的列表。
+    final Node&lt;K,V&gt; untreeify(HashMap&lt;K,V&gt; map) {
+            Node&lt;K,V&gt; hd = null, tl = null;
+            for (Node&lt;K,V&gt; q = this; q != null; q = q.next) {
+                Node&lt;K,V&gt; p = map.replacementNode(q, null);
+                if (tl == null)
+                    hd = p;
+                else
+                    tl.next = p;
+                tl = p;
+            }
+            return hd;
+        }
+    
+    // putVal 的树版本。
+    final TreeNode&lt;K,V&gt; putTreeVal(HashMap&lt;K,V&gt; map, Node&lt;K,V&gt;[] tab,
+                                       int h, K k, V v) {
+            Class&lt;?&gt; kc = null;
+            boolean searched = false;
+            TreeNode&lt;K,V&gt; root = (parent != null) ? root() : this;
+            for (TreeNode&lt;K,V&gt; p = root;;) {
+                int dir, ph; K pk;
+                if ((ph = p.hash) &gt; h)
+                    dir = -1;
+                else if (ph &lt; h)
+                    dir = 1;
+                else if ((pk = p.key) == k || (k != null &amp;&amp; k.equals(pk)))
+                    return p;
+                else if ((kc == null &amp;&amp;
+                          (kc = comparableClassFor(k)) == null) ||
+                         (dir = compareComparables(kc, k, pk)) == 0) {
+                    if (!searched) {
+                        TreeNode&lt;K,V&gt; q, ch;
+                        searched = true;
+                        if (((ch = p.left) != null &amp;&amp;
+                             (q = ch.find(h, k, kc)) != null) ||
+                            ((ch = p.right) != null &amp;&amp;
+                             (q = ch.find(h, k, kc)) != null))
+                            return q;
+                    }
+                    dir = tieBreakOrder(k, pk);
+                }
+
+                TreeNode&lt;K,V&gt; xp = p;
+                if ((p = (dir &lt;= 0) ? p.left : p.right) == null) {
+                    Node&lt;K,V&gt; xpn = xp.next;
+                    TreeNode&lt;K,V&gt; x = map.newTreeNode(h, k, v, xpn);
+                    if (dir &lt;= 0)
+                        xp.left = x;
+                    else
+                        xp.right = x;
+                    xp.next = x;
+                    x.parent = x.prev = xp;
+                    if (xpn != null)
+                        ((TreeNode&lt;K,V&gt;)xpn).prev = x;
+                    moveRootToFront(tab, balanceInsertion(root, x));
+                    return null;
+                }
+            }
+        }
+    
+    // 删除给定节点，该节点必须在此调用之前存在。 
+    // 这比典型的红黑删除代码更混乱，因为我们无法将内部节点的内容与叶后继交换，该后继由在遍历期间可独立访问的“下一个”指针固定。 
+    // 因此，我们交换树链接。 如果当前树的节点似乎太少，则将 bin 转换回普通 bin。 （测试会在 2 到 6 个节点之间触发，具体取决于树结构）。
+    final void removeTreeNode(HashMap&lt;K,V&gt; map, Node&lt;K,V&gt;[] tab,
+                                  boolean movable) {
+            int n;
+            if (tab == null || (n = tab.length) == 0)
+                return;
+            int index = (n - 1) &amp; hash;
+            TreeNode&lt;K,V&gt; first = (TreeNode&lt;K,V&gt;)tab[index], root = first, rl;
+            TreeNode&lt;K,V&gt; succ = (TreeNode&lt;K,V&gt;)next, pred = prev;
+            if (pred == null)
+                tab[index] = first = succ;
+            else
+                pred.next = succ;
+            if (succ != null)
+                succ.prev = pred;
+            if (first == null)
+                return;
+            if (root.parent != null)
+                root = root.root();
+            if (root == null
+                || (movable
+                    &amp;&amp; (root.right == null
+                        || (rl = root.left) == null
+                        || rl.left == null))) {
+                tab[index] = first.untreeify(map);  // too small
+                return;
+            }
+            TreeNode&lt;K,V&gt; p = this, pl = left, pr = right, replacement;
+            if (pl != null &amp;&amp; pr != null) {
+                TreeNode&lt;K,V&gt; s = pr, sl;
+                while ((sl = s.left) != null) // find successor
+                    s = sl;
+                boolean c = s.red; s.red = p.red; p.red = c; // swap colors
+                TreeNode&lt;K,V&gt; sr = s.right;
+                TreeNode&lt;K,V&gt; pp = p.parent;
+                if (s == pr) { // p was s's direct parent
+                    p.parent = s;
+                    s.right = p;
+                }
+                else {
+                    TreeNode&lt;K,V&gt; sp = s.parent;
+                    if ((p.parent = sp) != null) {
+                        if (s == sp.left)
+                            sp.left = p;
+                        else
+                            sp.right = p;
+                    }
+                    if ((s.right = pr) != null)
+                        pr.parent = s;
+                }
+                p.left = null;
+                if ((p.right = sr) != null)
+                    sr.parent = p;
+                if ((s.left = pl) != null)
+                    pl.parent = s;
+                if ((s.parent = pp) == null)
+                    root = s;
+                else if (p == pp.left)
+                    pp.left = s;
+                else
+                    pp.right = s;
+                if (sr != null)
+                    replacement = sr;
+                else
+                    replacement = p;
+            }
+            else if (pl != null)
+                replacement = pl;
+            else if (pr != null)
+                replacement = pr;
+            else
+                replacement = p;
+            if (replacement != p) {
+                TreeNode&lt;K,V&gt; pp = replacement.parent = p.parent;
+                if (pp == null)
+                    root = replacement;
+                else if (p == pp.left)
+                    pp.left = replacement;
+                else
+                    pp.right = replacement;
+                p.left = p.right = p.parent = null;
+            }
+
+            TreeNode&lt;K,V&gt; r = p.red ? root : balanceDeletion(root, replacement);
+
+            if (replacement == p) {  // detach
+                TreeNode&lt;K,V&gt; pp = p.parent;
+                p.parent = null;
+                if (pp != null) {
+                    if (p == pp.left)
+                        pp.left = null;
+                    else if (p == pp.right)
+                        pp.right = null;
+                }
+            }
+            if (movable)
+                moveRootToFront(tab, r);
+        }
+    
+    // 将树箱中的节点拆分为下树箱和上树箱，或者如果现在太小则取消树化。 仅从调整大小调用； 见上面关于分割位和索引的讨论。
+    // 参数：
+    //		map — map
+    //		tab – 记录仓头的表格
+    // 		index – 被拆分的表的索引
+    // 		bit – 要拆分的哈希位
+    final void split(HashMap&lt;K,V&gt; map, Node&lt;K,V&gt;[] tab, int index, int bit) {
+            TreeNode&lt;K,V&gt; b = this;
+            // Relink into lo and hi lists, preserving order
+            TreeNode&lt;K,V&gt; loHead = null, loTail = null;
+            TreeNode&lt;K,V&gt; hiHead = null, hiTail = null;
+            int lc = 0, hc = 0;
+            for (TreeNode&lt;K,V&gt; e = b, next; e != null; e = next) {
+                next = (TreeNode&lt;K,V&gt;)e.next;
+                e.next = null;
+                if ((e.hash &amp; bit) == 0) {
+                    if ((e.prev = loTail) == null)
+                        loHead = e;
+                    else
+                        loTail.next = e;
+                    loTail = e;
+                    ++lc;
+                }
+                else {
+                    if ((e.prev = hiTail) == null)
+                        hiHead = e;
+                    else
+                        hiTail.next = e;
+                    hiTail = e;
+                    ++hc;
+                }
+            }
+
+            if (loHead != null) {
+                if (lc &lt;= UNTREEIFY_THRESHOLD)
+                    tab[index] = loHead.untreeify(map);
+                else {
+                    tab[index] = loHead;
+                    if (hiHead != null) // (else is already treeified)
+                        loHead.treeify(tab);
+                }
+            }
+            if (hiHead != null) {
+                if (hc &lt;= UNTREEIFY_THRESHOLD)
+                    tab[index + bit] = hiHead.untreeify(map);
+                else {
+                    tab[index + bit] = hiHead;
+                    if (loHead != null)
+                        hiHead.treeify(tab);
+                }
+            }
+        }
+    
+}
+
+</code></pre>
+<hr>
+<h3 id="红黑树方法待分析">红黑树方法(待分析)</h3>
+<pre><code class="language-java">// 红黑树方法，全部改编自CLR
+static &lt;K,V&gt; TreeNode&lt;K,V&gt; rotateLeft(TreeNode&lt;K,V&gt; root,
+                                              TreeNode&lt;K,V&gt; p) {
+            TreeNode&lt;K,V&gt; r, pp, rl;
+            if (p != null &amp;&amp; (r = p.right) != null) {
+                if ((rl = p.right = r.left) != null)
+                    rl.parent = p;
+                if ((pp = r.parent = p.parent) == null)
+                    (root = r).red = false;
+                else if (pp.left == p)
+                    pp.left = r;
+                else
+                    pp.right = r;
+                r.left = p;
+                p.parent = r;
+            }
+            return root;
+        }
+
+static &lt;K,V&gt; TreeNode&lt;K,V&gt; rotateRight(TreeNode&lt;K,V&gt; root,
+                                               TreeNode&lt;K,V&gt; p) {
+            TreeNode&lt;K,V&gt; l, pp, lr;
+            if (p != null &amp;&amp; (l = p.left) != null) {
+                if ((lr = p.left = l.right) != null)
+                    lr.parent = p;
+                if ((pp = l.parent = p.parent) == null)
+                    (root = l).red = false;
+                else if (pp.right == p)
+                    pp.right = l;
+                else
+                    pp.left = l;
+                l.right = p;
+                p.parent = l;
+            }
+            return root;
+        }
+
+
+static &lt;K,V&gt; TreeNode&lt;K,V&gt; balanceInsertion(TreeNode&lt;K,V&gt; root,
+                                                    TreeNode&lt;K,V&gt; x) {
+            x.red = true;
+            for (TreeNode&lt;K,V&gt; xp, xpp, xppl, xppr;;) {
+                if ((xp = x.parent) == null) {
+                    x.red = false;
+                    return x;
+                }
+                else if (!xp.red || (xpp = xp.parent) == null)
+                    return root;
+                if (xp == (xppl = xpp.left)) {
+                    if ((xppr = xpp.right) != null &amp;&amp; xppr.red) {
+                        xppr.red = false;
+                        xp.red = false;
+                        xpp.red = true;
+                        x = xpp;
+                    }
+                    else {
+                        if (x == xp.right) {
+                            root = rotateLeft(root, x = xp);
+                            xpp = (xp = x.parent) == null ? null : xp.parent;
+                        }
+                        if (xp != null) {
+                            xp.red = false;
+                            if (xpp != null) {
+                                xpp.red = true;
+                                root = rotateRight(root, xpp);
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (xppl != null &amp;&amp; xppl.red) {
+                        xppl.red = false;
+                        xp.red = false;
+                        xpp.red = true;
+                        x = xpp;
+                    }
+                    else {
+                        if (x == xp.left) {
+                            root = rotateRight(root, x = xp);
+                            xpp = (xp = x.parent) == null ? null : xp.parent;
+                        }
+                        if (xp != null) {
+                            xp.red = false;
+                            if (xpp != null) {
+                                xpp.red = true;
+                                root = rotateLeft(root, xpp);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+static &lt;K,V&gt; TreeNode&lt;K,V&gt; balanceDeletion(TreeNode&lt;K,V&gt; root,
+                                                   TreeNode&lt;K,V&gt; x) {
+            for (TreeNode&lt;K,V&gt; xp, xpl, xpr;;) {
+                if (x == null || x == root)
+                    return root;
+                else if ((xp = x.parent) == null) {
+                    x.red = false;
+                    return x;
+                }
+                else if (x.red) {
+                    x.red = false;
+                    return root;
+                }
+                else if ((xpl = xp.left) == x) {
+                    if ((xpr = xp.right) != null &amp;&amp; xpr.red) {
+                        xpr.red = false;
+                        xp.red = true;
+                        root = rotateLeft(root, xp);
+                        xpr = (xp = x.parent) == null ? null : xp.right;
+                    }
+                    if (xpr == null)
+                        x = xp;
+                    else {
+                        TreeNode&lt;K,V&gt; sl = xpr.left, sr = xpr.right;
+                        if ((sr == null || !sr.red) &amp;&amp;
+                            (sl == null || !sl.red)) {
+                            xpr.red = true;
+                            x = xp;
+                        }
+                        else {
+                            if (sr == null || !sr.red) {
+                                if (sl != null)
+                                    sl.red = false;
+                                xpr.red = true;
+                                root = rotateRight(root, xpr);
+                                xpr = (xp = x.parent) == null ?
+                                    null : xp.right;
+                            }
+                            if (xpr != null) {
+                                xpr.red = (xp == null) ? false : xp.red;
+                                if ((sr = xpr.right) != null)
+                                    sr.red = false;
+                            }
+                            if (xp != null) {
+                                xp.red = false;
+                                root = rotateLeft(root, xp);
+                            }
+                            x = root;
+                        }
+                    }
+                }
+                else { // symmetric
+                    if (xpl != null &amp;&amp; xpl.red) {
+                        xpl.red = false;
+                        xp.red = true;
+                        root = rotateRight(root, xp);
+                        xpl = (xp = x.parent) == null ? null : xp.left;
+                    }
+                    if (xpl == null)
+                        x = xp;
+                    else {
+                        TreeNode&lt;K,V&gt; sl = xpl.left, sr = xpl.right;
+                        if ((sl == null || !sl.red) &amp;&amp;
+                            (sr == null || !sr.red)) {
+                            xpl.red = true;
+                            x = xp;
+                        }
+                        else {
+                            if (sl == null || !sl.red) {
+                                if (sr != null)
+                                    sr.red = false;
+                                xpl.red = true;
+                                root = rotateLeft(root, xpl);
+                                xpl = (xp = x.parent) == null ?
+                                    null : xp.left;
+                            }
+                            if (xpl != null) {
+                                xpl.red = (xp == null) ? false : xp.red;
+                                if ((sl = xpl.left) != null)
+                                    sl.red = false;
+                            }
+                            if (xp != null) {
+                                xp.red = false;
+                                root = rotateRight(root, xp);
+                            }
+                            x = root;
+                        }
+                    }
+                }
+            }
+        }
+
+// 递归不变检查
+static &lt;K,V&gt; boolean checkInvariants(TreeNode&lt;K,V&gt; t) {
+            TreeNode&lt;K,V&gt; tp = t.parent, tl = t.left, tr = t.right,
+                tb = t.prev, tn = (TreeNode&lt;K,V&gt;)t.next;
+            if (tb != null &amp;&amp; tb.next != t)
+                return false;
+            if (tn != null &amp;&amp; tn.prev != t)
+                return false;
+            if (tp != null &amp;&amp; t != tp.left &amp;&amp; t != tp.right)
+                return false;
+            if (tl != null &amp;&amp; (tl.parent != t || tl.hash &gt; t.hash))
+                return false;
+            if (tr != null &amp;&amp; (tr.parent != t || tr.hash &lt; t.hash))
+                return false;
+            if (t.red &amp;&amp; tl != null &amp;&amp; tl.red &amp;&amp; tr != null &amp;&amp; tr.red)
+                return false;
+            if (tl != null &amp;&amp; !checkInvariants(tl))
+                return false;
+            if (tr != null &amp;&amp; !checkInvariants(tr))
+                return false;
+            return true;
+        }
 </code></pre>
 
             </div>
