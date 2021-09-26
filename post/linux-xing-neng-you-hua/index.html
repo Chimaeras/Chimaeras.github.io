@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Linux性能优化 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1632663434087">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Day02：如何理解平均负载
+当系统变慢的时候，我们使用top或者uptime命令来查看系统负载情况。
+joker@ubuntu:~$ uptime
+05:20:34 up 3 min,  1 user,  load average: 2...." />
+    <meta name="keywords" content="" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1632663434087" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Linux性能优化</h2>
+            <div class="post-date">2021-09-26</div>
+            
+              <div class="feature-container" style="background-image: url('https://chimaeras.ltd/post-images/linux-xing-neng-you-hua.webp')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="day02如何理解平均负载">Day02：如何理解平均负载</h2>
+<p>当系统变慢的时候，我们使用top或者uptime命令来查看系统负载情况。</p>
+<pre><code class="language-shell">joker@ubuntu:~$ uptime
+05:20:34 up 3 min,  1 user,  load average: 2.35, 1.45, 0.64
+# 当前时间
+# 系统运行时间
+# 正在登陆用户数
+# 过去1min、5min、15min的平均负载（Load Average）
+</code></pre>
+<p><strong>平均负载</strong>：单位时间内，系统处于<strong>可运行状态</strong>和<strong>不可中断状态</strong>的平均进程数，也就是<strong>平均活跃进程数</strong></p>
+<p><strong>可运行状态</strong>的进程：指正在使用 CPU 或者正在等待 CPU 的进程，也就是我们常用 ps 命令看到的，处于 R 状态（Running 或 Runnable）的进程。</p>
+<p><strong>不可中断状态</strong>的进程：正处于内核态关键流程中的进程，并且这些流程是不可打断的，比 如最常见的是等待硬件设备的 I/O 响应，也就是我们在 ps 命令中看到的 D 状态 （Uninterruptible Sleep，也称为 Disk Sleep）的进程。</p>
+<h3 id="平均负载为多少的时候合理">平均负载为多少的时候合理</h3>
+<p>ans：平均负载最理想的情况是等于 CPU 个数</p>
+<p>我们可以通过top命令或者从文件 /proc/cpuinfo 中读取</p>
+<pre><code class="language-shell">joker@ubuntu:~$ grep 'model name' /proc/cpuinfo | wc 
+      2      18     108
+</code></pre>
+<ul>
+<li>如果 1 分钟、5 分钟、15 分钟的三个值基本相同，或者相差不大，那就说明系统负载很平 稳。</li>
+<li>但如果 1 分钟的值远小于 15 分钟的值，就说明系统最近 1 分钟的负载在减少，而过去 15 分钟内却有很大的负载。</li>
+<li>反过来，如果 1 分钟的值远大于 15 分钟的值，就说明最近 1 分钟的负载在增加，这种增加 有可能只是临时性的，也有可能还会持续增加下去，所以就需要持续观察。一旦 1 分钟的 平均负载接近（高于CPU数量的70%）或超过了 CPU 的个数，就意味着系统正在发生过载的问题，这时就得分析调 查是哪里导致的问题，并要想办法优化了。</li>
+</ul>
+<h3 id="平均负载案例分析">平均负载案例分析</h3>
+<ul>
+<li>
+<p>stress 是一个 Linux 系统压力测试工具，这里我们用作异常进程模拟平均负载升高的场景。</p>
+</li>
+<li>
+<p>sysstat 包含了常用的 Linux 性能工具，用来监控和分析系统的性能。我们的案例会用到 这个包的两个命令 mpstat 和 pidstat。</p>
+</li>
+<li>
+<p>mpstat 是一个常用的多核 CPU 性能分析工具，用来实时查看每个 CPU 的性能指标，以 及所有 CPU 的平均指标。</p>
+</li>
+<li>
+<p>pidstat 是一个常用的进程性能分析工具，用来实时查看进程的 CPU、内存、I/O 以及上下 文切换等性能指标。</p>
+</li>
+</ul>
+<h4 id="场景一cpu密集型进程">场景一：CPU密集型进程</h4>
+<p>1、们在第一个终端运行 stress 命令，模拟一个 CPU 使用率 100% 的场景：</p>
+<pre><code class="language-shell">stress --cpu 2 --timeout 600
+</code></pre>
+<p>2、在第二个终端运行 uptime 查看平均负载的变化情况：</p>
+<pre><code class="language-shell"># -d参数表示高亮显示变化的区域
+watch -d uptime
+--18:43:14 up 26 min,  1 user,  load average: 0.25, 0.79, 0.73
+</code></pre>
+<p>3、第三个终端运行 mpstat 查看 CPU 使用率的变化情况：</p>
+<pre><code class="language-shell"># ‑P ALL 表示监控所有 CPU，后面数字 5 表示间隔 5 秒后输出一组数据
+mpstat -P ALL 5
+
+18时39分24秒  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+18时39分29秒  all   99.80    0.00    0.20    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+18时39分29秒    0   99.80    0.00    0.20    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+18时39分29秒    1   99.80    0.00    0.20    0.00    0.00    0.00    0.00    0.00    0.00    0.00
+</code></pre>
+<p>4、使用pidstat来查询具体进程：</p>
+<pre><code class="language-shell"># 间隔 5 秒后输出一组数据
+pidstat -u5 1
+
+平均时间:   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+平均时间:     0       630    0.20    0.20    0.00    0.00    0.40     -  vmtoolsd
+平均时间:  1000      1571    0.60    0.40    0.00    0.20    1.00     -  gnome-shell
+平均时间:  1000      1739    0.20    0.00    0.00    0.00    0.20     -  vmtoolsd
+平均时间:  1000      2385    0.20    0.20    0.00    0.00    0.40     -  gnome-terminal-
+平均时间:     0     34515   99.00    0.20    0.00    0.80   99.20     -  stress
+平均时间:     0     34516   98.00    0.40    0.00    1.60   98.40     -  stress
+平均时间:     0     34606    0.00    0.20    0.00    0.00    0.20     -  pidstat
+</code></pre>
+<p>可以看到，是stress进程的CPU使用率为100%。</p>
+<h4 id="场景二io密集型进程">场景二：I/O密集型进程</h4>
+<p>1、利用stress模拟I/O压力，即不断执行sync</p>
+<pre><code class="language-shell">stress - i 1 --timeout 600
+</code></pre>
+<p>其余同上</p>
+<h4 id="场景三大量进程的场景">场景三：大量进程的场景</h4>
+<p>1、模拟八个进程一起运行</p>
+<pre><code class="language-shell">stress ‑ c 8 ‑‑timeout 600
+</code></pre>
+<p>其余同上</p>
+<h3 id="总结">总结</h3>
+<ul>
+<li>平均负载高有可能是 CPU 密集型进程导致的；</li>
+<li>平均负载高并不一定代表 CPU 使用率高，还有可能是 I/O 更繁忙了；</li>
+<li>当发现负载高的时候，你可以使用 mpstat、pidstat 等工具，辅助分析负载的来源。</li>
+</ul>
+<hr>
+<h2 id="day03经常说的-cpu-上下文切换是什么意思上">Day03：经常说的 CPU 上下文切换是什么意思？（上）</h2>
+<p>Linux 是一个多任务操作系统，它支持远大于 CPU 数量的任务同时运行。这是因为系统在很短的时间内，将 CPU 轮流分 配给它们，造成多任务同时运行的错觉。</p>
+<p>而在每个任务运行前，CPU 都需要知道任务从哪里加载、又从哪里开始运行，也就是说，需 要系统事先帮它设置好<strong>CPU 寄存器</strong>和<strong>程序计数器</strong>（Program Counter，PC）。</p>
+<ul>
+<li>CPU寄存器：是 CPU 内置的容量小、但速度极快的内存</li>
+<li>程序计数器：用来存储 CPU 正在执行的指令位置、或者即将执行的下一条指令位置。</li>
+</ul>
+<p>他们是 CPU 在运行任何任 务前，必须的依赖环境，因此也被叫做 <strong>CPU 上下文</strong>。</p>
+<p>而<strong>上下文切换</strong>就是先把前一个任务的 CPU 上下文（也就是 CPU 寄存器和程序计数器）保存起来，然后加载 新任务的上下文到这些寄存器和程序计数器，最后再跳转到程序计数器所指的新位置，运行新任务。</p>
+<h4 id="1进程上下文切换">1）进程上下文切换</h4>
+<p>Linux 按照特权等级，把进程的运行空间分为内核空间和用户空间。</p>
+<ul>
+<li>内核空间（Ring 0）：具有最高权限，可以直接访问所有资源；</li>
+<li>用户空间（Ring 3）：只能访问受限资源，不能直接访问内存等硬件设备，必须通过系统调用陷入到内核中，才能访问这些特权资源；</li>
+</ul>
+<p>当发生一次系统调用的时候，其实发生了两次CPU上下文切换【用户---（切换）---内核---（切换）---用户】，而<strong>系统调用过程通常称为特权模式切换，而不是上下文切换</strong></p>
+<p>当发生进程的上下文切换的时候，需要先把该进程的虚拟内存、栈保存下来；而加载了下一进程的内核态后，还需 要刷新进程的虚拟内存和用户栈。</p>
+<p>进程上下文切换场景：</p>
+<p>1、为了保证所有进程可以得到公平调度，CPU 时间被划分为一段段的时间片，这些时间 片再被轮流分配给各个进程。这样，当某个进程的时间片耗尽了，就会被系统挂起，切换到 其它正在等待 CPU 的进程运行。</p>
+<p>2、进程在系统资源不足（比如内存不足）时，要等到资源满足后才可以运行，这个时候进程也会被挂起，并由系统调度其他进程运行。</p>
+<p>3、当进程通过睡眠函数 sleep 这样的方法将自己主动挂起时，自然也会重新调度。</p>
+<p>4、当有优先级更高的进程运行时，为了保证高优先级进程的运行，当前进程会被挂起，由高优先级进程来运行。</p>
+<p>5、发生硬件中断时，CPU 上的进程会被中断挂起，转而执行内核中的中断服务程序。</p>
+<h4 id="2线程上下文切换">2）线程上下文切换</h4>
+<p>1、前后两个线程属于不同进程。此时，因为资源不共享，所以切换过程就跟进程上下 文切换是一样。</p>
+<p>2、前后两个线程属于同一个进程。此时，因为虚拟内存是共享的，所以在切换时，虚拟内存这些资源就保持不动，只需要切换线程的私有数据、寄存器等不共享的数据。</p>
+<h4 id="3中断上下文切换">3）中断上下文切换</h4>
+<p>对同一个 CPU 来说，中断处理比进程拥有更高的优先级，所以中断处理会打断进程的正常调度，同时大部分中断处理程序都短小精悍，以便尽可能快的执行结束。</p>
+<h4 id="总结-2">总结</h4>
+<ul>
+<li>CPU 上下文切换，是保证 Linux 系统正常工作的核心功能之一，一般情况下不需要我们特 别关注。</li>
+<li>但过多的上下文切换，会把 CPU 时间消耗在寄存器、内核栈以及虚拟内存等数据的保存和 恢复上，从而缩短进程真正运行的时间，导致系统的整体性能大幅下降。</li>
+</ul>
+<hr>
+<h2 id="day04经常说的-cpu-上下文切换是什么意思下">Day04：经常说的 CPU 上下文切换是什么意思？（下）</h2>
+<h3 id="如何查看系统上下文切换情况">如何查看系统上下文切换情况</h3>
+<p>vmstat 是一个常用的系统性能分析工具，主要用来分析系统的内存使用情况，也常用来分析 CPU 上下文切换和中断的次数。</p>
+<pre><code class="language-shell"># 每隔 5 秒输出 1 组数据
+vmstat 5
+
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   交换  空闲    缓冲   缓存      si   so    bi    bo   in   cs us sy id wa st
+ 1  0   1804 200980  86400 2726020    0    0   276   310  216  336 12 12 75  2  0
+ 0  0   1804 233732  86400 2723700    0    0     0     0  163  284  0  0 100  0  0
+
+</code></pre>
+<ul>
+<li>cs（context switch）是每秒上下文切换的次数。</li>
+<li>in（interrupt）则是每秒中断的次数。</li>
+<li>r（Running or Runnable）是就绪队列的长度，也就是正在运行和等待 CPU 的进程数。</li>
+<li>b（Blocked）则是处于不可中断睡眠状态的进程数。</li>
+</ul>
+<p>还可以使用pidstat命令查看每个进程上下文切换的情况</p>
+<pre><code class="language-shell"># 每隔5秒输出 1 组数据
+pidstat -w 5
+
+19时18分45秒   UID       PID   cswch/s nvcswch/s  Command
+19时18分50秒     0        13      5.59      0.00  rcu_sched
+19时18分50秒     0        14      0.20      0.00  migration/0
+19时18分50秒     0        19      0.20      0.00  migration/1
+19时18分50秒     0        20      0.20      0.00  ksoftirqd/1
+19时18分50秒     0        31      2.00      0.00  kcompactd0
+19时18分50秒     0       177      0.40      0.00  kworker/1:1H-kblockd
+19时18分50秒     0       413      2.00      0.00  irq/16-vmwgfx
+19时18分50秒     0       630     11.38      0.00  vmtoolsd
+19时18分50秒     0       649      0.20      0.00  acpid
+19时18分50秒     0       661      0.20      0.00  irqbalance
+19时18分50秒  1000      1571     27.35      5.99  gnome-shell
+19时18分50秒  1000      1739     10.18      0.00  vmtoolsd
+19时18分50秒  1000      1843      2.59      0.00  ibus-daemon
+19时18分50秒  1000      1903      0.20      0.00  ibus-engine-sim
+19时18分50秒  1000      2385     15.57      0.00  gnome-terminal-
+19时18分50秒     0     36465      3.19      0.00  kworker/u256:0-events_unbound
+19时18分50秒     0     36592      7.58      0.00  kworker/1:1-events_freezable
+19时18分50秒     0     36750      9.18      0.00  kworker/0:1-events
+19时18分50秒  1000     36804      0.20      0.00  gjs
+19时18分50秒     0     36838      0.20      0.00  pidstat
+</code></pre>
+<p>cswch：表示每秒自愿上下文切换 （voluntary context switches）的次数</p>
+<p>nvcswch：表示每秒非自愿上下文切 换（non voluntary context switches）的次数。</p>
+<p><strong>自愿上下文切换</strong>，是指进程无法获取所需资源，导致的上下文切换。比如说， I/O、内 存等系统资源不足时，就会发生自愿上下文切换。</p>
+<p><strong>非自愿上下文切换</strong>，则是指进程由于时间片已到等原因，被系统强制调度，进而发生的上下文切换。比如说，大量进程都在争抢 CPU 时，就容易发生非自愿上下文切换。</p>
+<h3 id="案例分析">案例分析</h3>
+<p>sysbench 是一个多线程的基准测试工具，一般用来评估不同系统参数下的数据库负载情况。 当然，在这次案例中，我们只把它当成一个异常进程来看，作用是模拟上下文切换过多的问题。</p>
+<p>使用sysbench模拟系统多线程调度的瓶颈：</p>
+<pre><code class="language-shell">sysbench --threads=10 --max-time=300 threads run
+</code></pre>
+<p>查看中断发生的类型：</p>
+<pre><code class="language-shell"># -d 参数表示高亮显示变化的区域
+watch ‑d cat /proc/interrupts
+</code></pre>
+<h3 id="总结-3">总结</h3>
+<p>结合前两节：</p>
+<ul>
+<li>首先通过uptime查看系统负载</li>
+<li>然后使用mpstat结合pidstat来初步判断到底是 cpu计算量大还是进程争抢过大或者是io过多</li>
+<li>接着使用vmstat分析切换次数，以及切换类型，来进一步判断到底是io过多导致问题还是进程争抢激烈导致问题。</li>
+</ul>
+<hr>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/hashmap-yuan-ma-jie-xi/">
+                  <h3 class="post-title">
+                    HashMap源码解析
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
