@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>有趣的数字 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1633508567850">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="题目描述
+有n个数，两两组成二元组，相差最小的有多少对？相差最大的有多少对？
+
+输入包含多组测试数据。
+对于每组测试数据：
+ 	N - 本组测试数据有n个数
+ 	a1,a2...an - 需要计算的数据
+保证:
+ 	1&lt;=N&lt;=..." />
+    <meta name="keywords" content="面试真题" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1633508567850" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">有趣的数字</h2>
+            <div class="post-date">2021-09-30</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="题目描述">题目描述</h3>
+<p>有n个数，两两组成二元组，相差最小的有多少对？相差最大的有多少对？</p>
+<!-- more -->
+<pre><code class="language-java">输入包含多组测试数据。
+对于每组测试数据：
+ 	N - 本组测试数据有n个数
+ 	a1,a2...an - 需要计算的数据
+保证:
+ 	1&lt;=N&lt;=100000,0&lt;=ai&lt;=INT_MAX. 
+对于每组数据，输出两个数，第一个数表示差最小的对数，第二个数表示差最大的对数。
+
+6
+45 12 45 32 5 6
+     
+1 2
+
+</code></pre>
+<hr>
+<h3 id="方法1">方法1：</h3>
+<p>首先基础判断可知复杂度为O(n^2)，可能会超时。所以先进行排序O（nlogn）。</p>
+<ul>
+<li>
+<p>排序</p>
+</li>
+<li>
+<p>如果所有数字相等，直接利用公式计算：</p>
+</li>
+</ul>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>C</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>=</mo><msub><mi>C</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub><mo>=</mo><mo>(</mo><mi>n</mi><mo>∗</mo><mo>(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>)</mo><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">C_{max}=C_{min}=(n*(n-1))/2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">a</span><span class="mord mathdefault mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">m</span><span class="mord mathdefault mtight">i</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mclose">)</span><span class="mord">/</span><span class="mord">2</span></span></span></span></span></p>
+<ul>
+<li>计算最小差数量：
+<ul>
+<li>如果有重复数字，最小差必定是0
+<ul>
+<li>在map中找到重复的数字出现的次数，利用公式计算</li>
+</ul>
+</li>
+<li>如果没有重复的数字
+<ul>
+<li>遍历查找最小差</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>计算最大差数量：
+<ul>
+<li>最大差的数量等于最大值的数量*最小值的数量。</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-java">package com.joker;
+
+import java.io.Serializable;
+import java.util.*;
+
+/**
+ * @author Joker
+ */
+public class Main {
+    public static void main ( String[] args ) {
+        Scanner input = new Scanner( System.in );
+        while ( input.hasNext() ) {
+            // 数组长度
+            int n = input.nextInt();
+            // 数据
+            int[] data = new int[n];
+            for ( int i = 0; i &lt; n; i++ ) {
+                data[i] = input.nextInt();
+            }
+            // 排序 否则（n^2）超时
+            Arrays.sort( data );
+            //如果数组中的值全相同，直接两两组合
+            if ( data[0] == data[n - 1] ) {
+                int tmp = ( n * ( n - 1 ) ) / 2;
+                System.out.println( tmp + &quot; &quot; + tmp );
+                continue;
+            }
+            // map存储数字出现的次数
+            // hashmap和treemap结果不一样，为啥？
+            Map&lt; Integer, Integer &gt; map = new TreeMap&lt; Integer, Integer &gt;();
+            for ( int d : data ) {
+                map.put( d, map.getOrDefault( d, 0 ) + 1 );
+            }
+            // 计算差最小的对数
+            int minCount = 0;
+            // 如果没有重复数字
+            if ( map.size() == n ) {
+                // 遍历计算差值
+                int min = Math.abs( data[1] - data[0] );
+                for ( int i = 2; i &lt; n; i++ ) {
+                    int temp = Math.abs( data[i] - data[i - 1] );
+                    // 如果存在相同差值，则对数增加
+                    if ( min == temp ) {
+                        minCount++;
+                    } else if ( temp &lt; min ) {
+                        // 出现更小的差，更新
+                        min = temp;
+                        minCount = 1;
+                    }
+                }
+            } else {
+                // 有重复数字，最小值一定是0，直接计算重复数字的个数
+                for ( Integer key : map.keySet() ) {
+                    int value = map.get( key );
+                    if ( value &gt; 1 ) {
+                        minCount += ( value * ( value - 1 ) ) / 2;
+                    }
+                }
+            }
+
+            // 计算最大差
+            int maxCount = 0;
+            // 用list存储数组的值（从大到小）
+            List&lt; Integer &gt; list = new ArrayList&lt; Integer &gt;( map.keySet() );
+            int val1 = map.get( list.get( 0 ) );
+            int val2 = map.get( list.get( list.size() - 1 ) );
+            // 最大差的对数就等于最大值的数量*最小值的数量
+            maxCount = val1 * val2;
+
+            System.out.println( minCount + &quot; &quot; + maxCount );
+        }
+
+    }
+}
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/IU6dZ4MGy/" class="tag">
+                    面试真题
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/linux-xing-neng-you-hua/">
+                  <h3 class="post-title">
+                    Linux性能优化
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>

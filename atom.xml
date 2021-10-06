@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chimaeras.ltd</id>
     <title>Joker&apos;s Blog</title>
-    <updated>2021-09-26T13:37:28.893Z</updated>
+    <updated>2021-10-06T08:23:15.276Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chimaeras.ltd"/>
     <link rel="self" href="https://chimaeras.ltd/atom.xml"/>
@@ -10,6 +10,19 @@
     <logo>https://chimaeras.ltd/images/avatar.png</logo>
     <icon>https://chimaeras.ltd/favicon.ico</icon>
     <rights>All rights reserved 2021, Joker&apos;s Blog</rights>
+    <entry>
+        <title type="html"><![CDATA[有趣的数字]]></title>
+        <id>https://chimaeras.ltd/post/you-qu-de-shu-zi/</id>
+        <link href="https://chimaeras.ltd/post/you-qu-de-shu-zi/">
+        </link>
+        <updated>2021-09-30T08:19:06.000Z</updated>
+        <summary type="html"><![CDATA[<h3 id="题目描述">题目描述</h3>
+<p>有n个数，两两组成二元组，相差最小的有多少对？相差最大的有多少对？</p>
+]]></summary>
+        <content type="html"><![CDATA[<h3 id="题目描述">题目描述</h3>
+<p>有n个数，两两组成二元组，相差最小的有多少对？相差最大的有多少对？</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Linux性能优化]]></title>
         <id>https://chimaeras.ltd/post/linux-xing-neng-you-hua/</id>
@@ -113,25 +126,6 @@
 ]]></summary>
         <content type="html"><![CDATA[<h4 id="把n个骰子扔在地上所有骰子朝上一面的点数之和为s-输入n打印出s的所有可能的值出现的概率">把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。</h4>
 <h4 id="你需要用一个浮点数数组返回答案其中第-i-个元素代表这-n-个骰子所能掷出的点数集合中第-i-小的那个的概率">你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。</h4>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[无重叠区间]]></title>
-        <id>https://chimaeras.ltd/post/wu-chong-die-qu-jian/</id>
-        <link href="https://chimaeras.ltd/post/wu-chong-die-qu-jian/">
-        </link>
-        <updated>2021-09-18T09:45:10.000Z</updated>
-        <summary type="html"><![CDATA[<h4 id="给定一个区间的集合找到需要移除区间的最小数量使剩余区间互不重叠">给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。</h4>
-<ul>
-<li>可以认为区间的终点总是大于它的起点。</li>
-<li>区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。</li>
-</ul>
-]]></summary>
-        <content type="html"><![CDATA[<h4 id="给定一个区间的集合找到需要移除区间的最小数量使剩余区间互不重叠">给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。</h4>
-<ul>
-<li>可以认为区间的终点总是大于它的起点。</li>
-<li>区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
