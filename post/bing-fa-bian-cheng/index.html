@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1633700876230">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1633763645519">
 <link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
 
 
@@ -18,14 +18,12 @@
 
 
 
-    <meta name="description" content="四星
-
-三星
+    <meta name="description" content="三星
 什么是进程？什么是线程？
 线程是处理器任务调度和执行的基本单位，进程是操作系统资源分配的基本单位。
 进程是程序的一次执行过程，是系统运行的基本单位。线程是一个比进程更小的执行单位，一个进程可以包含多个线程。
 
-线程死锁是如何产..." />
+线程死锁是如何产生的，如..." />
     <meta name="keywords" content="总结" />
   </head>
   <body>
@@ -35,7 +33,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://chimaeras.ltd">
-        <img src="https://chimaeras.ltd/images/avatar.png?v=1633700876230" class="site-logo">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1633763645519" class="site-logo">
         <h1 class="site-title">Joker&#39;s Blog</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -105,9 +103,7 @@
             <div class="post-date">2021-10-08</div>
             
             <div class="post-content" v-pre>
-              <h2 id="四星">四星</h2>
-<hr>
-<h2 id="三星">三星</h2>
+              <h2 id="三星">三星</h2>
 <h3 id="什么是进程什么是线程">什么是进程？什么是线程？</h3>
 <p>线程是处理器任务调度和执行的基本单位，进程是操作系统资源分配的基本单位。</p>
 <p>进程是程序的一次执行过程，是系统运行的基本单位。线程是一个比进程更小的执行单位，一个进程可以包含多个线程。</p>
@@ -229,6 +225,7 @@ class DeadLockDemo {
 </ul>
 <hr>
 <h3 id="线程的生命周期和状态">线程的生命周期和状态</h3>
+<figure data-type="image" tabindex="1"><img src="https://chimaeras.ltd/post-images/1633759214853.png" alt="" loading="lazy"></figure>
 <table>
 <thead>
 <tr>
@@ -501,23 +498,174 @@ class TestFixedThreadPool {
 <li>synchronized+wait/notify</li>
 </ul>
 <p>基本思路就是线程A、线程B、线程C三个线程同时启动，因为变量<code>num</code>的初始值为<code>0</code>，所以线程B或线程C拿到锁后，进入<code>while()</code>循环，然后执行<code>wait()</code>方法，线程线程阻塞，释放锁。只有线程A拿到锁后，不进入<code>while()</code>循环，执行<code>num++</code>，打印字符<code>A</code>，最后唤醒线程B和线程C。此时<code>num</code>值为<code>1</code>，只有线程B拿到锁后，不被阻塞，执行<code>num++</code>，打印字符<code>B</code>，最后唤醒线程A和线程C，后面以此类推。</p>
-<pre><code class="language-java">class Wait_Notify_ACB {        private int num;        private static final Object LOCK = new Object();        private void printABC(String name, int targetNum) {                    synchronized (LOCK) {                            while (num % 3 != targetNum) {                    //想想这里为什么不能用if代替while，想不起来可以看上一篇文章                                    try {                                            LOCK.wait();                                    } catch (InterruptedException e) {                                            e.printStackTrace();                                    }                            }                            num++;                            System.out.print(name);                            LOCK.notifyAll();                    }        }                public static void main(String[] args) {                Wait_Notify_ACB  wait_notify_acb = new Wait_Notify_ACB ();                new Thread(() -&gt; {                        wait_notify_acb.printABC(&quot;A&quot;, 0);                }, &quot;A&quot;).start();                new Thread(() -&gt; {                        wait_notify_acb.printABC(&quot;B&quot;, 1);                }, &quot;B&quot;).start();                new Thread(() -&gt; {                        wait_notify_acb.printABC(&quot;C&quot;, 2);                }, &quot;C&quot;).start();        }}
+<pre><code class="language-java">class Wait_Notify_ACB {    
+    private int num;    
+    private static final Object LOCK = new Object();    
+    private void printABC(String name, int targetNum) {            
+        synchronized (LOCK) {                
+            while (num % 3 != targetNum) {    
+                //想想这里为什么不能用if代替while，想不起来可以看上一篇文章                    
+                try {                        
+                    LOCK.wait();                    
+                } catch (InterruptedException e) {                        
+                    e.printStackTrace();                    
+                }                
+            }                
+            num++;                
+            System.out.print(name);                
+            LOCK.notifyAll();            
+        }    
+    }        
+    
+    public static void main(String[] args) {        
+        Wait_Notify_ACB  wait_notify_acb = new Wait_Notify_ACB ();        
+        new Thread(() -&gt; {            
+            wait_notify_acb.printABC(&quot;A&quot;, 0);        
+        }, &quot;A&quot;).start();        
+        new Thread(() -&gt; {            
+            wait_notify_acb.printABC(&quot;B&quot;, 1);        
+        }, &quot;B&quot;).start();        
+        new Thread(() -&gt; {            
+            wait_notify_acb.printABC(&quot;C&quot;, 2);        
+        }, &quot;C&quot;).start();    
+    }
+}
 </code></pre>
 <p>接下来看看第一个问题，三个线程T1、T2、T3轮流打印ABC，打印n次。其实只需要将上述代码加一个循环即可，这里假设n=10。</p>
-<pre><code class="language-java">class Wait_Notify_ACB {        private int num;        private static final Object LOCK = new Object();        private void printABC(String name, int targetNum) {                for (int i = 0; i &lt; 10; i++) {                        synchronized (LOCK) {                                while (num % 3 != targetNum) {                     //想想这里为什么不能用if代替，想不起来可以看上一篇文章                                        try {                                                LOCK.wait();                                        } catch (InterruptedException e) {                                                e.printStackTrace();                                        }                                }                                num++;                                System.out.print(name);                                LOCK.notifyAll();                        }                }        }                public static void main(String[] args) {                Wait_Notify_ACB  wait_notify_acb = new Wait_Notify_ACB ();                new Thread(() -&gt; {                        wait_notify_acb.printABC(&quot;A&quot;, 0);                }, &quot;A&quot;).start();                new Thread(() -&gt; {                        wait_notify_acb.printABC(&quot;B&quot;, 1);                }, &quot;B&quot;).start();                new Thread(() -&gt; {                        wait_notify_acb.printABC(&quot;C&quot;, 2);                }, &quot;C&quot;).start();        }}
+<pre><code class="language-java">class Wait_Notify_ACB {    
+    private int num;    
+    private static final Object LOCK = new Object();    
+    private void printABC(String name, int targetNum) {        
+        for (int i = 0; i &lt; 10; i++) {            
+            synchronized (LOCK) {                
+                while (num % 3 != targetNum) { 
+                    //想想这里为什么不能用if代替，想不起来可以看上一篇文章                    
+                    try {                        
+                        LOCK.wait();                    
+                    } catch (InterruptedException e) {                        
+                        e.printStackTrace();                    
+                    }                
+                }                
+                num++;                
+                System.out.print(name);                
+                LOCK.notifyAll();            
+            }        
+        }    
+    }        
+    
+    public static void main(String[] args) {        
+        Wait_Notify_ACB  wait_notify_acb = new Wait_Notify_ACB ();        
+        new Thread(() -&gt; {            
+            wait_notify_acb.printABC(&quot;A&quot;, 0);        
+        }, &quot;A&quot;).start();        
+        new Thread(() -&gt; {            
+            wait_notify_acb.printABC(&quot;B&quot;, 1);        
+        }, &quot;B&quot;).start();        
+        new Thread(() -&gt; {            
+            wait_notify_acb.printABC(&quot;C&quot;, 2);        
+        }, &quot;C&quot;).start();    
+    }
+}
 </code></pre>
 <p>下面看第二个问题，两个线程交替打印1-100的奇偶数，为了减少输入所占篇幅，这里将100 改成了10。基本思路上面类似，线程odd先拿到锁——打印数字——唤醒线程even——阻塞线程odd，以此循环。</p>
-<pre><code class="language-java">class  Wait_Notify_Odd_Even{        private Object monitor = new Object();        private volatile int count;        Wait_Notify_Odd_Even(int initCount) {                this.count = initCount;        }        private void printOddEven() {                synchronized (monitor) {                        while (count &lt; 10) {                                try {                                        System.out.print( Thread.currentThread().getName() + &quot;：&quot;);                                        System.out.println(++count);                                        monitor.notifyAll();                                        monitor.wait();                                } catch (InterruptedException e) {                                        e.printStackTrace();                                }                        }                        //防止count=10后，while()循环不再执行，有子线程被阻塞未被唤醒，导致主线程不能退出                        monitor.notifyAll();                }        }            public static void main(String[] args) throws InterruptedException {                Wait_Notify_Odd_Even waitNotifyOddEven = new Wait_Notify_Odd_Even(0);                new Thread(waitNotifyOddEven::printOddEven, &quot;odd&quot;).start();                Thread.sleep(10);                new Thread(waitNotifyOddEven::printOddEven, &quot;even&quot;).start();        }}
+<pre><code class="language-java">class  Wait_Notify_Odd_Even{    
+    private Object monitor = new Object();    
+    private volatile int count;    
+    Wait_Notify_Odd_Even(int initCount) {        
+        this.count = initCount;    
+    }    
+    private void printOddEven() {        
+        synchronized (monitor) {            
+            while (count &lt; 10) {                
+                try {                    
+                    System.out.print( Thread.currentThread().getName() + &quot;：&quot;);                    
+                    System.out.println(++count);                    
+                    monitor.notifyAll();                    
+                    monitor.wait();                
+                } catch (InterruptedException e) {                    
+                    e.printStackTrace();                
+                }            
+            }            
+            //防止count=10后，while()循环不再执行，有子线程被阻塞未被唤醒，导致主线程不能退出            
+            monitor.notifyAll();        
+        }    
+    }        
+    public static void main(String[] args) throws InterruptedException {        
+        Wait_Notify_Odd_Even waitNotifyOddEven = new Wait_Notify_Odd_Even(0);        
+        new Thread(waitNotifyOddEven::printOddEven, &quot;odd&quot;).start();        
+        Thread.sleep(10);        
+        new Thread(waitNotifyOddEven::printOddEven, &quot;even&quot;).start();    
+    }
+}
 </code></pre>
 <p>面试官：大家都是用的synchronized+wait/notify，你能不能换个方法解决该问题？</p>
 <p>我：好的，我还会用join方法</p>
 <p><code>join()</code>方法：在A线程中调用了B线程的join()方法时，表示只有当B线程执行完毕时，A线程才能继续执行。基于这个原理，我们使得三个线程按顺序执行，然后循环多次即可。无论线程1、线程2、线程3哪个先执行，最后执行的顺序都是线程1——&gt;线程2——&gt;线程3。代码如下：</p>
-<pre><code class="language-java">class Join_ABC {        public static void main(String[] args) throws InterruptedException {                for (int i = 0; i &lt; 10; i++) {                        Thread t1 = new Thread(new printABC(null),&quot;A&quot;);                        Thread t2 = new Thread(new printABC(t1),&quot;B&quot;);                        Thread t3 = new Thread(new printABC(t2),&quot;C&quot;);                        t0.start();                        t1.start();                        t2.start();                        Thread.sleep(10);             //这里是要保证只有t1、t2、t3为一组，进行执行才能保证t1-&gt;t2-&gt;t3的执行顺序。                }        }        static class printABC implements Runnable{                private Thread beforeThread;                public printABC(Thread beforeThread) {                        this.beforeThread = beforeThread;                }                @Override                public void run() {                        if(beforeThread!=null) {                                try {                                        beforeThread.join();                                        System.out.print(Thread.currentThread().getName());                                }catch(Exception e){                                        e.printStackTrace();                                }                        }else {                                System.out.print(Thread.currentThread().getName());                        }                }        }}
+<pre><code class="language-java">class Join_ABC {    
+    public static void main(String[] args) throws InterruptedException {        
+        for (int i = 0; i &lt; 10; i++) {            
+            Thread t1 = new Thread(new printABC(null),&quot;A&quot;);            
+            Thread t2 = new Thread(new printABC(t1),&quot;B&quot;);            
+            Thread t3 = new Thread(new printABC(t2),&quot;C&quot;);            
+            t0.start();            
+            t1.start();            
+            t2.start();            
+            Thread.sleep(10); 
+            //这里是要保证只有t1、t2、t3为一组，进行执行才能保证t1-&gt;t2-&gt;t3的执行顺序。        
+        }    
+    }    
+    static class printABC implements Runnable{        
+        private Thread beforeThread;        
+        public printABC(Thread beforeThread) {            
+            this.beforeThread = beforeThread;        
+        }        
+        @Override        
+        public void run() {            
+            if(beforeThread!=null) {                
+                try {                    
+                    beforeThread.join();                    
+                    System.out.print(Thread.currentThread().getName());                
+                }catch(Exception e){                    
+                    e.printStackTrace();                
+                }            
+            }else {                
+                System.out.print(Thread.currentThread().getName());            
+            }        
+        }    
+    }
+}
 </code></pre>
 <p>面试官：还会其他方法吗？</p>
 <p>我：还会Lock。</p>
 <p>该方法很容易理解，其实现代码和synchronized+wait/notify方法的很像。不管哪个线程拿到锁，只有符合条件的才能打印。代码如下：</p>
-<pre><code class="language-java"> class Lock_ABC {         private int num;        // 当前状态值：保证三个线程之间交替打印         private Lock lock = new ReentrantLock();         private void printABC(String name, int targetNum) {                 for (int i = 0; i &lt; 10; ) {                         lock.lock();                         if (num % 3 == targetNum) {                                 num++;                                 i++;                                 System.out.print(name);                         }                         lock.unlock();                 }         }         public static void main(String[] args) {                 Lock_ABC lockABC = new Lock_ABC();                 new Thread(() -&gt; {                         lockABC.printABC(&quot;A&quot;, 0);                 }, &quot;A&quot;).start();                 new Thread(() -&gt; {                         lockABC.printABC(&quot;B&quot;, 1);                 }, &quot;B&quot;).start();                 new Thread(() -&gt; {                         lockABC.printABC(&quot;C&quot;, 2);                 }, &quot;C&quot;).start();         } }
+<pre><code class="language-java"> class Lock_ABC {    
+     private int num;   
+     // 当前状态值：保证三个线程之间交替打印    
+     private Lock lock = new ReentrantLock();    
+     private void printABC(String name, int targetNum) {        
+         for (int i = 0; i &lt; 10; ) {            
+             lock.lock();            
+             if (num % 3 == targetNum) {                
+                 num++;                
+                 i++;                
+                 System.out.print(name);            
+             }            
+             lock.unlock();        
+         }    
+     }    
+     public static void main(String[] args) {        
+         Lock_ABC lockABC = new Lock_ABC();        
+         new Thread(() -&gt; {            
+             lockABC.printABC(&quot;A&quot;, 0);        
+         }, &quot;A&quot;).start();        
+         new Thread(() -&gt; {            
+             lockABC.printABC(&quot;B&quot;, 1);        
+         }, &quot;B&quot;).start();        
+         new Thread(() -&gt; {            
+             lockABC.printABC(&quot;C&quot;, 2);        
+         }, &quot;C&quot;).start();    
+     }
+ }
 </code></pre>
 <p>面试官：该方法存在什么问题，可以进一步优化吗</p>
 <p>我：可以使用Lock+Condition实现对线程的精准唤醒，减少对其他线程无意义地唤醒，浪费资源。</p>
@@ -525,7 +673,43 @@ class TestFixedThreadPool {
 <li>Lock+Condition</li>
 </ul>
 <p>该思路和synchronized+wait/notify方法的更像了，synchronized对应lock，await/signal方法对应wait/notify方法。下面的代码为了能精准地唤醒下一个线程，创建了多个Condition对象。</p>
-<pre><code class="language-java">class LockConditionABC {        private int num;        private static Lock lock = new ReentrantLock();        private static Condition c1 = lock.newCondition();        private static Condition c2 = lock.newCondition();        private static Condition c3 = lock.newCondition();        private void printABC(String name, int targetNum, Condition currentThread, Condition nextThread) {                for (int i = 0; i &lt; 10; ) {                        lock.lock();                        try {                                while (num % 3 != targetNum) {                                        currentThread.await();                                }                                num++;                                i++;                                System.out.print(name);                                nextThread.signal();                        } catch (Exception e) {                                e.printStackTrace();                        } finally {                                lock.unlock();                        }                }        }        public static void main(String[] args) {                LockConditionABC print = new LockConditionABC();                new Thread(() -&gt; {                        print.printABC(&quot;A&quot;, 0, c1, c2);                }, &quot;A&quot;).start();                new Thread(() -&gt; {                        print.printABC(&quot;B&quot;, 1, c2, c3);                }, &quot;B&quot;).start();                new Thread(() -&gt; {                        print.printABC(&quot;C&quot;, 2, c3, c1);                }, &quot;C&quot;).start();        }}
+<pre><code class="language-java">class LockConditionABC {    
+    private int num;    
+    private static Lock lock = new ReentrantLock();    
+    private static Condition c1 = lock.newCondition();    
+    private static Condition c2 = lock.newCondition();    
+    private static Condition c3 = lock.newCondition();    
+    private void printABC(String name, int targetNum, Condition currentThread, Condition nextThread) {        
+        for (int i = 0; i &lt; 10; ) {            
+            lock.lock();            
+            try {                
+                while (num % 3 != targetNum) {                    
+                    currentThread.await();                
+                }                
+                num++;                
+                i++;                
+                System.out.print(name);                
+                nextThread.signal();            
+            } catch (Exception e) {                
+                e.printStackTrace();            
+            } finally {                
+                lock.unlock();            
+            }        
+        }    
+    }    
+    public static void main(String[] args) {        
+        LockConditionABC print = new LockConditionABC();        
+        new Thread(() -&gt; {            
+            print.printABC(&quot;A&quot;, 0, c1, c2);        
+        }, &quot;A&quot;).start();        
+        new Thread(() -&gt; {            
+            print.printABC(&quot;B&quot;, 1, c2, c3);        
+        }, &quot;B&quot;).start();        
+        new Thread(() -&gt; {            
+            print.printABC(&quot;C&quot;, 2, c3, c1);        
+        }, &quot;C&quot;).start();    
+    }
+}
 </code></pre>
 <p>面试官：除了该方法，还有什么方法可以避免唤醒其他无意义的线程？</p>
 <p>我：可以通过使用信号量来实现。</p>
@@ -535,8 +719,704 @@ class TestFixedThreadPool {
 <p>Semaphore：用来控制同时访问某个特定资源的操作数量，或者同时执行某个制定操作的数量。Semaphore内部维护了一个计数器，其值为可以访问的共享资源的个数。</p>
 <p>一个线程要访问共享资源，先使用<code>acquire()</code>方法获得信号量，如果信号量的计数器值大于等于1，意味着有共享资源可以访问，则使其计数器值减去1，再访问共享资源。如果计数器值为0,线程进入休眠。</p>
 <p>当某个线程使用完共享资源后，使用<code>release()</code>释放信号量，并将信号量内部的计数器加1，之前进入休眠的线程将被唤醒并再次试图获得信号量。</p>
-<pre><code class="language-java">class SemaphoreABC {        private static Semaphore s1 = new Semaphore(1);      //先打印A，所以设s1中的计数器值为1        private static Semaphore s2 = new Semaphore(0);        private static Semaphore s3 = new Semaphore(0);            private void printABC(String name, Semaphore currentThread, Semaphore nextThread) {                for (int i = 0; i &lt; 10; i++) {                        try {                                currentThread.acquire();                   //阻塞当前线程，即调用当前线程acquire()，计数器减1为0                                System.out.print(name);                                nextThread.release();                    //唤醒下一个线程，即调用下一个线程线程release()，计数器加1                        } catch (InterruptedException e) {                                e.printStackTrace();                        }                }        }        public static void main(String[] args) throws InterruptedException {                SemaphoreABC printer = new SemaphoreABC();                new Thread(() -&gt; {                        printer.printABC(&quot;A&quot;, s1, s2);                }, &quot;A&quot;).start();                Thread.sleep(10);                new Thread(() -&gt; {                        printer.printABC(&quot;B&quot;, s2, s3);                }, &quot;B&quot;).start();                Thread.sleep(10);                new Thread(() -&gt; {                        printer.printABC(&quot;C&quot;, s3, s1);                }, &quot;C&quot;).start();        }}
+<pre><code class="language-java">class SemaphoreABC {    
+    private static Semaphore s1 = new Semaphore(1);  
+    //先打印A，所以设s1中的计数器值为1    
+    private static Semaphore s2 = new Semaphore(0);    
+    private static Semaphore s3 = new Semaphore(0);        
+    private void printABC(String name, Semaphore currentThread, Semaphore nextThread) {        
+        for (int i = 0; i &lt; 10; i++) {            
+            try {                
+                currentThread.acquire();   
+                //阻塞当前线程，即调用当前线程acquire()，计数器减1为0                
+                System.out.print(name);                
+                nextThread.release();    
+                //唤醒下一个线程，即调用下一个线程线程release()，计数器加1            
+            } catch (InterruptedException e) {                
+                e.printStackTrace();            
+            }        
+        }    
+    }    
+    public static void main(String[] args) throws InterruptedException {        
+        SemaphoreABC printer = new SemaphoreABC();        
+        new Thread(() -&gt; {            
+            printer.printABC(&quot;A&quot;, s1, s2);        
+        }, &quot;A&quot;).start();        
+        Thread.sleep(10);        
+        new Thread(() -&gt; {            
+            printer.printABC(&quot;B&quot;, s2, s3);        
+        }, &quot;B&quot;).start();        
+        Thread.sleep(10);        
+        new Thread(() -&gt; {            
+            printer.printABC(&quot;C&quot;, s3, s1);        
+        }, &quot;C&quot;).start();    
+    }
+}
 </code></pre>
+<hr>
+<h3 id="synchronized关键字">synchronized关键字</h3>
+<h4 id="什么是synchronized关键字">什么是synchronized关键字？</h4>
+<p>在多线程的环境下，多个线程同时访问共享资源会出现一些问题，而synchronized关键字则是用来保证线程同步的。</p>
+<h4 id="java内存的可见性问题">Java内存的可见性问题</h4>
+<p>java本地内存并不是真实存在的，只是Java内存模型的一个抽象概念，它包含了控制器、运算器、缓存等。同时Java内存模型规定，线程对共享变量的操作必须在自己的本地内存中进行，不能直接在主内存中操作共享变量。这种内存模型会出现什么问题呢？</p>
+<ul>
+<li>
+<p>线程A获取到共享变量X的值，此时本地内存A中没有X的值，所以加载主内存中的X值并缓存到本地内存A中，线程A修改X的值为1，并将X的值刷新到主内存中，这时主内存及本地内存中的X的值都为1。</p>
+</li>
+<li>
+<p>线程B需要获取共享变量X的值，此时本地内存B中没有X的值，加载主内存中的X值并缓存到本地内存B中，此时X的值为1。线程B修改X的值为2，并刷新到主内存中，此时主内存及本地内存B中的X值为2，本地内存A中的X值为1。</p>
+</li>
+<li>
+<p>线程A再次获取共享变量X的值，此时本地内存中存在X的值，所以直接从本地内存中A获取到了X为1的值，但此时主内存中X的值为2，到此出现了所谓内存不可见的问题。</p>
+</li>
+</ul>
+<p>该问题Java内存模型是通过synchronized关键字和volatile关键字就可以解决，那么synchronized关键字是如何解决的呢，其实进入synchronized块就是把在synchronized块内使用到的变量从线程的本地内存中擦除，这样在synchronized块中再次使用到该变量就不能从本地内存中获取了，需要从主内存中获取，解决了内存不可见问题。</p>
+<h4 id="synchronized关键字三大特性是什么">synchronized关键字三大特性是什么？</h4>
+<blockquote>
+<p>面试时经常拿synchronized关键字和volatile关键字的特性进行对比，synchronized关键字可以保证并发编程的三大特性：原子性、可见性、有序性，而volatile关键字只能保证可见性和有序性，不能保证原子性，也称为是轻量级的synchronized。</p>
+</blockquote>
+<ul>
+<li>原子性：一个或多个操作要么全部执行成功，要么全部执行失败。synchronized关键字可以保证只有一个线程拿到锁，访问共享资源。</li>
+<li>可见性：当一个线程对共享变量进行修改后，其他线程可以立刻看到。执行synchronized时，会对应执行 lock 、unlock原子操作，保证可见性。</li>
+<li>有序性：程序的执行顺序会按照代码的先后顺序执行。</li>
+</ul>
+<h4 id="synchronized关键字可以实现什么类型的锁">synchronized关键字可以实现什么类型的锁？</h4>
+<ul>
+<li>
+<p>悲观锁：synchronized关键字实现的是悲观锁，每次访问共享资源时都会上锁。</p>
+</li>
+<li>
+<p>非公平锁：synchronized关键字实现的是非公平锁，即线程获取锁的顺序并不一定是按照线程阻塞的顺序。</p>
+</li>
+<li>
+<p>可重入锁：synchronized关键字实现的是可重入锁，即已经获取锁的线程可以再次获取锁。</p>
+</li>
+<li>
+<p>独占锁或者排他锁：synchronized关键字实现的是独占锁，即该锁只能被一个线程所持有，其他线程均被阻塞。</p>
+</li>
+</ul>
+<h4 id="synchronized关键字的使用方式">synchronized关键字的使用方式</h4>
+<p>synchronized主要有三种使用方式：修饰普通同步方法、修饰静态同步方法、修饰同步方法块。</p>
+<ul>
+<li>修饰普通同步方法（实例方法）</li>
+</ul>
+<pre><code class="language-java">class syncTest implements Runnable {    
+    private static int i = 0;   
+    //共享资源    
+    private synchronized void add() {        
+        i++;    
+    }    
+    @Override    
+    public void run() {        
+        for (int j = 0; j &lt; 10000; j++) {            
+            add();        
+        }    
+    }    
+    public static void main(String[] args) throws Exception {        
+        syncTest syncTest = new syncTest();        
+        Thread t1 = new Thread(syncTest);        
+        Thread t2 = new Thread(syncTest);        
+        t1.start();        
+        t2.start();        
+        t1.join();        
+        t2.join();        
+        System.out.println(i);    
+    }
+}
+</code></pre>
+<p>这是一个非常经典的例子，多个线程操作<code>i++</code>会出现线程不安全问题，这段代码的结果很容易得到 20000</p>
+<p>大家可以再看看这段代码，猜一猜它的运行结果</p>
+<pre><code class="language-java">class syncTest implements Runnable {    
+    private static int i = 0;   
+    //共享资源    
+    private synchronized void add() {        
+        i++;    
+    }    
+    @Override    
+    public void run() {        
+        for (int j = 0; j &lt; 10000; j++) {            
+            add();        
+        }    
+    }    
+    public static void main(String[] args) throws Exception {
+        syncTest syncTest = new syncTest();        
+        Thread t1 = new Thread(new syncTest());        
+        Thread t2 = new Thread(new syncTest());        
+        t1.start();        
+        t2.start();        
+        t1.join();        
+        t2.join();        
+        System.out.println(i);    
+    }
+}
+
+// 18634
+</code></pre>
+<p>第二个示例中的<code>add()</code>方法虽然也使用synchronized关键字修饰了，但是因为两次<code>new syncTest()</code>操作建立的是两个不同的对象，也就是说存在两个不同的对象锁，线程t1和t2使用的是不同的对象锁，所以不能保证线程安全。那这种情况应该如何解决呢？因为每次创建的实例对象都是不同的，而类对象却只有一个，如果synchronized关键字作用于类对象，即用synchronized修饰静态方法，问题则迎刃而解。</p>
+<ul>
+<li>
+<p>修饰静态方法</p>
+<p>只需要在<code>add()</code>方法前用static修饰即可，即当synchronized作用于静态方法，锁就是当前的class对象。</p>
+<pre><code class="language-java">class syncTest implements Runnable {    
+    private static int i = 0;   
+    //共享资源    
+    private static synchronized void add() {        
+        i++;    
+    }    
+    @Override    
+    public void run() {        
+        for (int j = 0; j &lt; 10000; j++) {            
+            add();        
+        }    
+    }    
+    public static void main(String[] args) throws Exception {     
+        syncTest syncTest = new syncTest();        
+        Thread t1 = new Thread(new syncTest());        
+        Thread t2 = new Thread(new syncTest());        
+        t1.start();        
+        t2.start();        
+        t1.join();        
+        t2.join();        
+        System.out.println(i);    
+    }
+}
+</code></pre>
+</li>
+<li>
+<p>修饰同步代码代码块</p>
+<p>如果某些情况下，整个方法体比较大，需要同步的代码只是一小部分，如果直接对整个方法体进行同步，会使得代码性能变差，这时只需要对一小部分代码进行同步即可。代码如下：</p>
+<pre><code class="language-java">class syncTest implements Runnable {    
+    static int i = 0;   
+    //共享资源    
+    @Override    
+    public void run() {        
+        //其他操作.......        
+        synchronized (this){   
+            //this表示当前对象实例，这里还可以使用syncTest.class，表示class对象锁            
+            for (int j = 0; j &lt; 10000; j++) {                
+                i++;            
+            }        
+        }    
+    }    
+    public static void main(String[] args) throws Exception {        
+        syncTest syncTest = new syncTest();        
+        Thread t1 = new Thread(syncTest);        
+        Thread t2 = new Thread(syncTest);        
+        t1.start();        
+        t2.start();        
+        t1.join();        
+        t2.join();        
+        System.out.println(i);    
+    }
+}
+
+// 20000
+</code></pre>
+</li>
+</ul>
+<h4 id="synchronized关键字的底层原理">synchronized关键字的底层原理</h4>
+<p>在jdk1.6之前，synchronized被称为重量锁，在jdk1.6中，为了减少获得锁和释放锁带来的性能开销，引入了偏向锁和轻量级锁。下面先介绍jdk1.6之前的synchronized原理。</p>
+<ul>
+<li>对象头</li>
+</ul>
+<p>在HotSpot虚拟机中，Java对象在内存中的布局大致可以分为三部分：<strong>对象头</strong>、<strong>实例数据</strong>和<strong>填充对齐</strong>。因为synchronized用的锁是存在对象头里的，这里我们需要重点了解对象头。如果对象头是数组类型，则对象头由<strong>Mark Word</strong>、<strong>Class MetadataAddress</strong>和<strong>Array length</strong>组成，如果对象头非数组类型，对象头则由<strong>Mark Word</strong>和<strong>Class MetadataAddress</strong>组成。在32位虚拟机中，数组类型的Java对象头的组成如下表：</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>说明</th>
+<th>长度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mark Word</td>
+<td>存储对象的hashCode、分代年龄和锁标记位</td>
+<td>32bit</td>
+</tr>
+<tr>
+<td>Class MetadataAddress</td>
+<td>存储到对象类型数据的指针</td>
+<td>32bit</td>
+</tr>
+<tr>
+<td>Array length</td>
+<td>数组的长度</td>
+<td>32bit</td>
+</tr>
+</tbody>
+</table>
+<p>这里我们需要重点掌握的是<strong>Mark Word</strong>。</p>
+<ul>
+<li>Mark Word</li>
+</ul>
+<p>在运行期间，Mark Word中存储的数据会随着锁标志位的变化而变化，在32位虚拟机中，不同状态下的组成如下：</p>
+<table>
+<thead>
+<tr>
+<th>锁状态</th>
+<th>25bit</th>
+<th>4bit</th>
+<th>1bit是否持有偏向锁</th>
+<th>2bit标志位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无锁</td>
+<td>对象的hashcode</td>
+<td>对象分代年龄</td>
+<td>0</td>
+<td>01</td>
+</tr>
+<tr>
+<td>偏向锁</td>
+<td>线程ID、Epoch</td>
+<td>对象分代年龄</td>
+<td>1</td>
+<td>01</td>
+</tr>
+<tr>
+<td>轻量级锁</td>
+<td>指向栈中锁记录的指针</td>
+<td>同左</td>
+<td>同左</td>
+<td>00</td>
+</tr>
+<tr>
+<td>重量级锁</td>
+<td>指向监视器对象的指针</td>
+<td>同左</td>
+<td>同左</td>
+<td>10</td>
+</tr>
+<tr>
+<td>GC标记</td>
+<td>空</td>
+<td>空</td>
+<td>空</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p>其中线程ID表示持有偏向锁线程的ID，Epoch表示偏向锁的时间戳，偏向锁和轻量级锁是在jdk1.6中引入的。</p>
+<ul>
+<li>重量级锁的底部实现原理：Monitor</li>
+</ul>
+<p>在jdk1.6之前，synchronized只能实现重量级锁，Java虚拟机是基于Monitor对象来实现重量级锁的。</p>
+<ul>
+<li>
+<p>当多个线程同时访问同步代码块时，首先会进入到EntryList中，然后通过CAS的方式尝试将Monitor中的owner字段设置为当前线程，同时count加1，若发现之前的owner的值就是指向当前线程的，recursions也需要加1。如果CAS尝试获取锁失败，则进入到EntryList中。</p>
+</li>
+<li>
+<p>当获取锁的线程调用<code>wait()</code>方法，则会将owner设置为null，同时count减1，recursions减1，当前线程加入到WaitSet中，等待被唤醒。</p>
+</li>
+<li>
+<p>当前线程执行完同步代码块时，则会释放锁，count减1，recursions减1。当recursions的值为0时，说明线程已经释放了锁。</p>
+</li>
+</ul>
+<p>之前提到过一个常见面试题，为什么<code>wait()</code>、<code>notify()</code>等方法要在同步方法或同步代码块中来执行呢，这里就能找到原因，是因为<code>wait()</code>、<code>notify()</code>方法需要借助ObjectMonitor对象内部方法来完成。</p>
+<p>简答：</p>
+<p>​	Java虚拟机是通过进入和退出Monitor对象来实现代码块同步和方法同步的，代码块同步使用的是monitorenter 和 monitorexit 指令实现的，而方法同步是通过Access flags后面的标识来确定该方法是否为同步方法。</p>
+<h4 id="jdk16为什么要对synchronized进行优化">Jdk1.6为什么要对synchronized进行优化？</h4>
+<p>因为Java虚拟机是通过进入和退出Monitor对象来实现代码块同步和方法同步的，而Monitor是依靠底层操作系统的Mutex Lock来实现的，操作系统实现线程之间的切换需要从用户态转换到内核态，这个切换成本比较高，对性能影响较大。</p>
+<h4 id="jdk16对synchronized做了哪些优化">jDK1.6对synchronized做了哪些优化？</h4>
+<ul>
+<li>锁的升级</li>
+</ul>
+<p>在JDK1.6中，为了减少获得锁和释放锁带来的性能消耗，引入了偏向锁和轻量级锁，锁的状态变成了四种，无锁状态，偏向锁状态、轻量级锁状态和重量级锁状态。锁的状态会随着竞争激烈逐渐升级，但通常情况下，锁的状态只能升级不能降级</p>
+<hr>
+<h3 id="volatile关键字">volatile关键字</h3>
+<h4 id="volatile的作用是什么">volatile的作用是什么？</h4>
+<p><code>volatile</code>是一个轻量级的<code>synchronized</code>，一般作用与<strong>变量</strong>，在多处理器开发的过程中保证了内存的可见性。相比于<code>synchronized</code>关键字，<code>volatile</code>关键字的执行成本更低，效率更高。</p>
+<h4 id="volatile的特性有哪些">volatile的特性有哪些？</h4>
+<p>可见性：<code>volatile</code>可以保证不同线程对共享变量进行操作时的可见性。即当一个线程修改了共享变量时，另一个线程可以读取到共享变量被修改后的值。</p>
+<p>有序性：<code>volatile</code>会通过禁止指令重<a href="">排序</a>进而保证有序性。</p>
+<p>原子性：对于单个的<code>volatile</code>修饰的变量的读写是可以保证原子性的，但对于<code>i++</code>这种复合操作并不能保证原子性。这句话的意思基本上就是说<code>volatile</code>不具备原子性了。</p>
+<h4 id="为什么代码会重排序">为什么代码会重<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F">排序</a>？</h4>
+<p>计算机在执行程序的过程中，编译器和处理器通常会对指令进行重<a href="">排序</a>，这样做的目的是为了提高性能。具体可以看下面这个例子。</p>
+<pre><code class="language-java">int a = 1;
+int b = 2;
+int a1 = a;
+int b1 = b;
+int a2 = a + a;
+int b2 = b + b;
+......
+</code></pre>
+<p>像这段代码，不断地交替读取a和b，会导致寄存器频繁交替存储a和b，使得代码性能下降，可对其进入如下重<a href="">排序</a>。</p>
+<pre><code class="language-java">int a = 1;
+int b = 2;
+int a1 = a;
+int a2 = a + a;
+int b1 = b;
+int b2 = b + b;
+......
+</code></pre>
+<p>按照这样地顺序执行代码便可以避免交替读取a和b，这就是重<a href="">排序</a>地意义。</p>
+<p>指令重<a href="">排序</a>一般分为编译器优化重排、指令并行重拍和内存系统重排三种。</p>
+<ul>
+<li>编译器优化重排：编译器在不改变单线程程序语义的情况下，可以对语句的执行顺序进行重新<a href="">排序</a>。</li>
+<li>指令并行重排：现代处理器多采用指令级并行技术来将多条指令重叠执行。对于不存在<strong>数据依赖</strong>的程序，处理器可以对机器指令的执行顺序进行重新排列。</li>
+<li>内存系统重排：因为处理器使用缓存和读/写缓冲区，使得加载（load）和存储（store）看上去像是在乱序执行。</li>
+</ul>
+<p>注：简单解释下数据依赖性：如果两个操作访问了同一个变量，并且这两个操作有一个是写操作，这两个操作之间就会存在数据依赖性，例如：</p>
+<pre><code>a = 1;b = a;
+</code></pre>
+<p>如果对这两个操作的执行顺序进行重<a href="">排序</a>的话，那么结果就会出现问题。</p>
+<blockquote>
+<p>其实，这三种指令重排说明了一个问题，就是指令重排在单线程下可以提高代码的性能，但在多线程下可以会出现一些问题。</p>
+</blockquote>
+<h4 id="重排序会引发什么问题">重<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F">排序</a>会引发什么问题？</h4>
+<p>前面已经说过了，在单线程程序中，重<a href="">排序</a>并不会影响程序的运行结果，而在多线程场景下就不一定了。可以看下面这个经典的例子，该示例出自《Java并发编程的艺术》。</p>
+<p><a href="#">复制代码</a></p>
+<pre><code class="language-java">class ReorderExample{    
+    int a = 0;    
+    boolean flag = false;    
+    public void writer(){        
+        a = 1;              
+        // 操作1        
+        flag = true;        
+        // 操作2    
+    }    
+    public void reader(){        
+        if(flag){          
+            // 操作3            
+            int i = a + a; 
+            // 操作4        
+        }    
+    }
+}
+</code></pre>
+<p>假设线程1先执行<code>writer()</code>方法，随后线程2执行<code>reader()</code>方法，最后程序一定会得到正确的结果吗？</p>
+<p>答案是不一定的，如果代码按照下图的执行顺序执行代码则会出现问题。</p>
+<p>操作1和操作2进行了重<a href="">排序</a>，线程1先执行<code>flag=true</code>，然后线程2执行操作3和操作4，线程2执行操作4时不能正确读取到<code>a</code>的值，导致最终程序运行结果出问题。这也说明了在多线程代码中，重<a href="">排序</a>会破坏多线程程序的语义。</p>
+<h4 id="as-if-serial规则和happens-before规则的区别">as-if-serial规则和happens-before规则的区别？</h4>
+<p>区别：</p>
+<ul>
+<li>
+<p>as-if-serial定义：无论编译器和处理器如何进行重<a href="">排序</a>，单线程程序的执行结果不会改变。</p>
+</li>
+<li>
+<p>happens-before定义：一个操作happens-before另一个操作，表示第一个的操作结果对第二个操作可见，并且第一个操作的执行顺序也在第二个操作之前。但这并不意味着Java虚拟机必须按照这个顺序来执行程序。如果重<a href="">排序</a>的后的执行结果与按happens-before关系执行的结果一致，Java虚拟机也会允许重<a href="">排序</a>的发生。</p>
+</li>
+<li>
+<p>happens-before关系保证了同步的多线程程序的执行结果不被改变，as-if-serial保证了单线程内程序的执行结果不被改变。</p>
+</li>
+</ul>
+<p>相同点：happens-before和as-if-serial的作用都是在不改变程序执行结果的前提下，提高程序执行的并行度。</p>
+<h4 id="voliatile的实现原理内存可见性-有序性">voliatile的实现原理？(内存可见性、有序性)</h4>
+<blockquote>
+<p>导致内存不可见的主要原因就是Java内存模型中的本地内存和主内存之间的值不一致所导致，例如上面所说线程A访问自己本地内存A的X值时，但此时主内存的X值已经被线程B所修改，所以线程A所访问到的值是一个脏数据。那如何解决这种问题呢？</p>
+</blockquote>
+<p><code>volatile</code>可以保证内存可见性的关键是<code>volatile</code>的读/写实现了缓存一致性，缓存一致性的主要内容为：</p>
+<ul>
+<li>每个处理器会通过嗅探总线上的数据来查看自己的数据是否过期，一旦处理器发现自己缓存对应的内存地址被修改，就会将当前处理器的缓存设为无效状态。此时，如果处理器需要获取这个数据需重新从主内存将其读取到本地内存。</li>
+<li>当处理器写数据时，如果发现操作的是共享变量，会通知其他处理器将该变量的缓存设为无效状态。</li>
+</ul>
+<p>那缓存一致性是如何实现的呢？可以发现通过<code>volatile</code>修饰的变量，生成汇编指令时会比普通的变量多出一个<code>Lock</code>指令，这个<code>Lock</code>指令就是<code>volatile</code>关键字可以保证内存可见性的关键，它主要有两个作用：</p>
+<ul>
+<li>将当前处理器缓存的数据刷新到主内存。</li>
+<li>刷新到主内存时会使得其他处理器缓存的该内存地址的数据无效。</li>
+</ul>
+<blockquote>
+<p>前面提到重<a href="">排序</a>可以提高代码的执行效率，但在多线程程序中可以导致程序的运行结果不正确，那<code>volatile</code>是如何解决这一问题的呢？</p>
+</blockquote>
+<p>为了实现<code>volatile</code>的内存语义，编译器在生成字节码时会通过插入内存屏障来禁止指令重<a href="">排序</a>。</p>
+<p>内存屏障：内存屏障是一种CPU指令，它的作用是对该指令前和指令后的一些操作产生一定的约束，保证一些操作按顺序执行。</p>
+<h5 id="java虚拟机插入内存屏障的策略">Java虚拟机插入内存屏障的策略</h5>
+<table>
+<thead>
+<tr>
+<th>屏障类型</th>
+<th>指令示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LoadLoad Barriers</td>
+<td>Load1;LoadLoad;Load2</td>
+<td>保证Load1数据的读取先于Load2及后续所有读取指令的执行</td>
+</tr>
+<tr>
+<td>StoreStore Barriers</td>
+<td>Store1;StoreStore;Store2</td>
+<td>保证Store1数据刷新到主内存先于Store2及后续所有存储指令</td>
+</tr>
+<tr>
+<td>LoadStore Barriers</td>
+<td>Load1;LoadStore;Store2</td>
+<td>保证Load1数据的读取先于Store2及后续的所有存储指令刷新到主内存</td>
+</tr>
+<tr>
+<td>StoreLoad Barriers</td>
+<td>Store1;StoreLoad;Load2</td>
+<td>保证Store1数据刷新到主内存先于Load2及后续所有读取指令的执行</td>
+</tr>
+</tbody>
+</table>
+<p>注：StoreLoad Barriers同时具备其他三个屏障的作用，它会使得该屏障之前的所有内存访问指令完成之后，才会执行该屏障之后的内存访问命令。</p>
+<p>Java内存模型对编译器指定的<code>volatile</code>重<a href="">排序</a>规则为：</p>
+<ul>
+<li>当第一个操作是<code>volatile</code>读时，无论第二个操作是什么都不能进行重<a href="">排序</a>。</li>
+<li>当第二个操作是<code>volatile</code>写时，无论第一个操作是什么都不能进行重<a href="">排序</a>。</li>
+<li>当第一个操作是<code>volatile</code>写，第二个操作为<code>volatile</code>读时，不能进行重<a href="">排序</a>。</li>
+</ul>
+<p>根据<code>volatile</code>重<a href="">排序</a>规则，Java内存模型采取的是保守的屏障插入策略，<code>volatile</code>写是在前面和后面分别插入内存屏障，<code>volatile</code>读是在后面插入两个内存屏障，具体如下：</p>
+<p><code>volatile</code>读：在每个<code>volatile</code>读后面分别插入LoadLoad屏障及LoadStore屏障（根据<code>volatile</code>重<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F">排序</a>规则第一条）</p>
+<ul>
+<li>volatile读--&gt;LoadLoad屏障--&gt;LoadStore屏障--&gt;普通读--&gt;普通写</li>
+</ul>
+<p>LoadLoad屏障的作用：禁止上面的所有普通读操作和上面的<code>volatile</code>读操作进行重<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F">排序</a>。</p>
+<p>LoadStore屏障的作用：禁止下面的普通写和上面的<code>volatile</code>读进行重<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F">排序</a>。</p>
+<p><code>volatile</code>写：在每个<code>volatile</code>写前面插入一个StoreStore屏障（为满足<code>volatile</code>重<a href="">排序</a>规则第二条），在每个<code>volatile</code>写后面插入一个StoreLoad屏障（为满足<code>volatile</code>重<a href="">排序</a>规则第三条），如下图所示</p>
+<ul>
+<li>普通读--&gt;普通写--&gt;LoadLoad屏障--&gt;volatile写--&gt;LoadStore屏障</li>
+</ul>
+<p>StoreStore屏障的作用：禁止上面的普通写和下面的<code>volatile</code>写重<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F">排序</a></p>
+<p>StoreLoad屏障的作用：防止上面的<code>volatile</code>写与下面可能出现的<code>volatile</code>读/写重<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E6%8E%92%E5%BA%8F">排序</a>。</p>
+<h4 id="volatile能使一个非原子操作变成一个原子操作吗">volatile能使一个非原子操作变成一个原子操作吗？</h4>
+<p><code>volatile</code>只能保证可见性和有序性，但可以保证64位的<code>long</code>型和<code>double</code>型变量的原子性。</p>
+<p>对于32位的虚拟机来说，每次原子读写都是32位的，会将<code>long</code>和<code>double</code>型变量拆分成两个32位的操作来执行，这样<code>long</code>和<code>double</code>型变量的读写就不能保证原子性了，而通过<code>volatile</code>修饰的long和double型变量则可以保证其原子性。</p>
+<h4 id="volatile-synchronized的区别">volatile、synchronized的区别？</h4>
+<ul>
+<li>
+<p><code>volatile</code>主要是保证内存的可见性，即变量在寄存器中的内存是不确定的，需要从主存中读取。<code>synchronized</code>主要是解决多个线程访问资源的同步性。</p>
+</li>
+<li>
+<p><code>volatile</code>作用于变量，<code>synchronized</code>作用于代码块或者方法。</p>
+</li>
+<li>
+<p><code>volatile</code>仅可以保证数据的可见性，不能保证数据的原子性。<code>synchronized</code>可以保证数据的可见性和原子性。</p>
+</li>
+<li>
+<p><code>volatile</code>不会造成线程的阻塞，<code>synchronized</code>会造成线程的阻塞。</p>
+</li>
+</ul>
+<hr>
+<h3 id="concurrenthashmap">ConcurrentHashMap</h3>
+<h4 id="什么是concurrenthashmap相比于hashmap和hashtable有什么优势">什么是ConcurrentHashMap？相比于HashMap和HashTable有什么优势？</h4>
+<p><code>CocurrentHashMap</code>可以看作<strong>线程安全且高效</strong>的<code>HashMap</code>，相比于<code>HashMap</code>具有线程安全的优势，相比于<code>HashTable</code>具有效率高的优势。</p>
+<h4 id="java中concurrenthashmap是如何实现的">java中ConcurrentHashMap是如何实现的？</h4>
+<blockquote>
+<p>这里经常会将jdk1.7中的<code>ConcurrentHashMap</code>和jdk1.8中的<code>ConcurrentHashMap</code>的实现方式进行对比。</p>
+</blockquote>
+<ul>
+<li>JDK1.7</li>
+</ul>
+<p>在JDK1.7版本中，<code>ConcurrentHashMap</code>的数据结构是由一个<code>Segment</code>数组和多个<code>HashEntry</code>数组组成，<code>Segment</code>存储的是<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E9%93%BE%E8%A1%A8">链表</a>数组的形式，如图所示。</p>
+<figure data-type="image" tabindex="2"><img src="https://chimaeras.ltd/post-images/1633759095334.png" alt="" loading="lazy"></figure>
+<p>从上图可以看出，<code>ConcurrentHashMap</code>定位一个元素的过程需要两次Hash的过程，第一次Hash的目的是定位到Segment，第二次Hash的目的是定位到<a href="">链表</a>的头部。两次Hash所使用的时间比一次Hash的时间要长，但这样做可以在写操作时，只对元素所在的segment枷锁，不会影响到其他segment，这样可以大大提高并发能力。</p>
+<ul>
+<li>JDK1.8</li>
+</ul>
+<p>JDK1.8不在采用segment的结构，而是使用Node数组+<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E9%93%BE%E8%A1%A8">链表</a>/<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E7%BA%A2%E9%BB%91%E6%A0%91">红黑树</a>的数据结构来实现的（和<code>HashMap</code>一样，<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E9%93%BE%E8%A1%A8">链表</a>节点个数大于8，<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E9%93%BE%E8%A1%A8">链表</a>会转换为<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E7%BA%A2%E9%BB%91%E6%A0%91">红黑树</a>）</p>
+<figure data-type="image" tabindex="3"><img src="https://chimaeras.ltd/post-images/1633759143782.png" alt="" loading="lazy"></figure>
+<p>从上图可以看出，对于<code>ConcurrentHashMap</code>的实现，JDK1.8的实现方式可以降低锁的粒度，因为JDLK1.7所实现的<code>ConcurrentHashMap</code>的锁的粒度是基于Segment，而一个Segment包含多个HashEntry。</p>
+<h4 id="concurrenthashmap结构中变量使用volatile和final修饰有什么作用">ConcurrentHashMap结构中变量使用volatile和final修饰有什么作用？</h4>
+<p><code>final</code>修饰变量可以保证变量不需要同步就可以被访问和共享，<code>volatile</code>可以保证内存的可见性，配合CAS操作可以在不加锁的前提支持并发。</p>
+<h4 id="concurrenthashmap有什么缺点">ConcurrentHashMap有什么缺点？</h4>
+<p>因为<code>ConcurrentHashMap</code>在更新数据时只会锁住部分数据，并不会将整个表锁住，读取的时候也并不能保证读取到最近的更新，只能保证读取到已经顺利插入的数据。</p>
+<h4 id="concurrenthashmap默认初始容量是多少每次扩容为原来的几倍">ConcurrentHashMap默认初始容量是多少？每次扩容为原来的几倍？</h4>
+<p>默认的初始容量为16，每次扩容为之前的两倍。</p>
+<h4 id="concurrenthashmap-的keyvalue是否可以为null为什么hashmap中的key-value是否可以为null">ConCurrentHashMap 的key，value是否可以为null？为什么？HashMap中的key、value是否可以为null？</h4>
+<p><code>ConCurrentHashMap</code>中的<code>key</code>和<code>value</code>为<code>null</code>会出现空指针异常，而<code>HashMap</code>中的<code>key</code>和<code>value</code>值是可以为<code>null</code>的。</p>
+<p>原因如下：<code>ConCurrentHashMap</code>是在多线程场景下使用的，如果<code>ConcurrentHashMap.get(key)</code>的值为<code>null</code>，那么无法判断到底是<code>key</code>对应的<code>value</code>的值为<code>null</code>还是不存在对应的<code>key</code>值。而在单线程场景下的<code>HashMap</code>中，可以使用<code>containsKey(key)</code>来判断到底是不存在这个<code>key</code>还是<code>key</code>对应的<code>value</code>的值为<code>null</code>。在多线程的情况下使用<code>containsKey(key)</code>来做这个判断是存在问题的，因为在<code>containsKey(key)</code>和<code>ConcurrentHashMap.get(key)</code>两次调用的过程中，<code>key</code>的值已经发生了改变。</p>
+<h4 id="concurrenthashmap在jdk18中什么情况下链表会转化为红黑树">ConCurrentHashmap在JDK1.8中，什么情况下<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E9%93%BE%E8%A1%A8">链表</a>会转化为<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E7%BA%A2%E9%BB%91%E6%A0%91">红黑树</a>？</h4>
+<p>当<a href="https://www.nowcoder.com/jump/super-jump/word?word=%E9%93%BE%E8%A1%A8">链表</a>长度大于8，Node数组数大于64时。</p>
+<h4 id="concurrenthashmap在jdk17和jdk18版本中的区别">ConcurrentHashMap在JDK1.7和JDK1.8版本中的区别？</h4>
+<ul>
+<li>
+<p>实现结构上的不同，JDK1.7是基于Segment实现的，JDK1.8是基于Node数组+<a href="">链表</a>/<a href="">红黑树</a>实现的。</p>
+</li>
+<li>
+<p>保证线程安全方面：JDK1.7采用了分段锁的机制，当一个线程占用锁时，会锁住一个Segment对象，不会影响其他Segment对象。JDK1.8则是采用了CAS和<code>synchronize</code>的方式来保证线程安全。</p>
+</li>
+<li>
+<p>在存取数据方面：</p>
+<p><strong>JDK1.7中的<code>put()</code>方法：</strong></p>
+</li>
+</ul>
+<ol>
+<li>
+<p>先计算出<code>key</code>的<code>hash</code>值，利用<code>hash</code>值对segment数组取余找到对应的segment对象。</p>
+</li>
+<li>
+<p>尝试获取锁，失败则自旋直至成功，获取到锁，通过计算的<code>hash</code>值对hashentry数组进行取余，找到对应的entry对象。</p>
+</li>
+<li>
+<p>遍历<a href="">链表</a>，查找对应的<code>key</code>值，如果找到则将旧的value直接覆盖，如果没有找到，则添加到<a href="">链表</a>中。（JDK1.7是插入到<a href="">链表</a>头部，JDK1.8是插入到<a href="">链表</a>尾部，这里可以思考一下为什么这样）</p>
+<p><strong>JDK1.8中的<code>put()</code>方法:</strong></p>
+</li>
+<li>
+<p>计算<code>key</code>值的<code>hash</code>值，找到对应的<code>Node</code>，如果当前位置为空则可以直接写入数据。</p>
+</li>
+<li>
+<p>利用CAS尝试写入，如果失败则自旋直至成功，如果都不满足，则利用<code>synchronized</code>锁写入数据。</p>
+</li>
+</ol>
+<h4 id="concurrenthashmap迭代器是强一致性还是弱一致性">ConcurrentHashMap迭代器是强一致性还是弱一致性？</h4>
+<p>与HashMap不同的是，<code>ConcurrentHashMap</code>迭代器是弱一致性。</p>
+<p>这里解释一下弱一致性是什么意思，当<code>ConcurrentHashMap</code>的迭代器创建后，会遍历<a href="">哈希表</a>中的元素，在遍历的过程中，<a href="">哈希表</a>中的元素可能发生变化，如果这部分变化发生在已经遍历过的地方，迭代器则不会反映出来，如果这部分变化发生在未遍历过的地方，迭代器则会反映出来。换种说法就是<code>put()</code>方法将一个元素加入到底层数据结构后，<code>get()</code>可能在某段时间内还看不到这个元素。</p>
+<p>这样的设计主要是为<code>ConcurrenthashMap</code>的性能考虑，如果想做到强一致性，就要到处加锁，性能会下降很多。所以<code>ConcurrentHashMap</code>是支持在迭代过程中，向map中添加元素的，而<code>HashMap</code>这样操作则会抛出异常。</p>
+<hr>
+<h3 id="threadlocal">ThreadLocal</h3>
+<h4 id="什么是threadlocal有哪些应用场景">什么是ThreadLocal？有哪些应用场景？</h4>
+<p><code>ThreadLocal</code>是 JDK java.lang 包下的一个类，<code>ThreadLocal</code>为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量，并且不会和其他线程的局部变量冲突，实现了线程间的数据隔离。</p>
+<p><code>ThreadLocal</code>的应用场景主要有以下几个方面：</p>
+<ul>
+<li>保存线程上下文信息，在需要的地方可以获取</li>
+<li>线程间数据隔离</li>
+<li>数据库连接</li>
+</ul>
+<h4 id="threadlocal原理和内存泄露">ThreadLocal原理和内存泄露？</h4>
+<figure data-type="image" tabindex="4"><img src="https://chimaeras.ltd/post-images/1633759069034.png" alt="" loading="lazy"></figure>
+<p>从上图可以看出每个线程都有一个<code>ThreadLocalMap</code>，<code>ThreadLocalMap</code>中保存着所有的<code>ThreadLocal</code>，而<code>ThreadLocal</code>本身只是一个引用本身并不保存值，值都是保存在<code>ThreadLocalMap</code>中的，其中<code>ThreadLocal</code>为<code>ThreadLocalMap</code>中的<code>key</code>。其中图中的虚线表示弱引用。</p>
+<p>这里简单说下Java中的引用类型，Java的引用类型主要分为强引用、软引用、弱引用和虚引用。</p>
+<ul>
+<li>
+<p>强引用：发生 gc 的时候不会被回收。</p>
+</li>
+<li>
+<p>软引用：有用但不是必须的对象，在发生内存溢出之前会被回收。</p>
+</li>
+<li>
+<p>弱引用：有用但不是必须的对象，在下一次GC时会被回收。</p>
+</li>
+<li>
+<p>虚引用：无法通过虚引用获得对象，虚引用的用途是在 gc 时返回一个通知。</p>
+</li>
+</ul>
+<h4 id="为什么threadlocal会发生内存泄漏呢"><strong>为什么ThreadLocal会发生内存泄漏呢？</strong></h4>
+<p>因为<code>ThreadLocal</code>中的<code>key</code>是弱引用，而<code>value</code>是强引用。当<code>ThreadLocal</code>没有被强引用时，在进行垃圾回收时，<code>key</code>会被清理掉，而<code>value</code>不会被清理掉，这时如果不做任何处理，<code>value</code>将永远不会被回收，产生内存泄漏。</p>
+<h4 id="如何解决threadlocal的内存泄漏"><strong>如何解决ThreadLocal的内存泄漏？</strong></h4>
+<p>其实在<code>ThreadLocal</code>在设计的时候已经考虑到了这种情况，在调用<code>set()</code>、<code>get()</code>、<code>remove()</code>等方法时就会清理掉<code>key</code>为<code>null</code>的记录，所以在使用完<code>ThreadLocal</code>后最好手动调用<code>remove()</code>方法。</p>
+<h4 id="为什么要将key设计成threadlocal的弱引用"><strong>为什么要将key设计成ThreadLocal的弱引用？</strong></h4>
+<p>如果<code>ThreadLocal</code>的<code>key</code>是强引用，同样会发生内存泄漏的。如果<code>ThreadLocal</code>的<code>key</code>是强引用，引用的<code>ThreadLocal</code> 的对象被回收了，但是<code>ThreadLocalMap</code> 还持有<code>ThreadLocal</code>的强引用，如果没有手动删除，<code>ThreadLocal</code>不会被回收，发生内存泄漏。</p>
+<p>如果是弱引用的话，引用的<code>ThreadLocal</code>的对象被回收了，即使没有手动删除，<code>ThreadLocal</code>也会被回收。<code>value</code>也会在<code>ThreadLocalMap</code>调用 <code>set()</code>、<code>get()</code>、<code>remove()</code> 的时候会被清除。</p>
+<p>所以两种方案比较下来，还是<code>ThreadLoacl</code>的<code>key</code>为弱引用好一些。</p>
+<hr>
+<h3 id="线程池">线程池</h3>
+<h4 id="什么是线程池为什么使用线程池">什么是线程池？为什么使用线程池</h4>
+<p>线程池是一种多线程处理形式，处理过程中将任务提交到线程池，任务的执行交给线程池来管理。</p>
+<p><strong>为什么使用线程池？</strong></p>
+<ul>
+<li><strong>降低资源消耗</strong>，通过重复利用已创建的线程降低线程创建和销毁造成的消耗。</li>
+<li><strong>提高响应速度</strong>，当任务到达时，任务可以不需要等到线程创建就立即执行。</li>
+<li><strong>提高线程的可管理性</strong>，线程是稀缺资源，如果无限制地创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以统一分配。</li>
+</ul>
+<h4 id="创建线程池的几种方法">创建线程池的几种方法</h4>
+<p>线程池的常用创建方式主要有两种，通过<strong>Executors工厂方法创建</strong>和**通过new <code>ThreadPoolExecutor</code>**方法创建。</p>
+<ul>
+<li>
+<p>Executors工厂方法创建，在工具类 Executors 提供了一些静态的工厂方法</p>
+<ol>
+<li><code>newSingleThreadExecutor</code>：创建一个单线程的线程池。</li>
+<li><code>newFixedThreadPool</code>：创建固定大小的线程池。</li>
+<li><code>newCachedThreadPool</code>：创建一个可缓存的线程池。</li>
+<li><code>newScheduledThreadPool</code>：创建一个大小无限的线程池。</li>
+</ol>
+</li>
+<li>
+<p><code>new ThreadPoolExecutor</code> 方法创建：</p>
+<pre><code class="language-java">new ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue workQueue，ThreadFactory threadFactory,RejectedExecutionHandler handler)    
+</code></pre>
+</li>
+</ul>
+<h4 id="threadpoolexecutor构造函数的重要参数分析">ThreadPoolExecutor构造函数的重要参数分析</h4>
+<p>三个比较重要的参数：</p>
+<ul>
+<li><strong><code>corePoolSize</code></strong> ：核心线程数，定义了最小可以同时运行的线程数量。</li>
+<li><strong><code>maximumPoolSize</code></strong> ：线程中允许存在的最大工作线程数量</li>
+<li><strong><code>workQueue</code></strong>：存放任务的阻塞队列。新来的任务会先判断当前运行的线程数是否到达核心线程数，如果到达的话，任务就会先放到阻塞队列。</li>
+</ul>
+<p>其他参数：</p>
+<ul>
+<li><code>keepAliveTime</code>：当线程池中的数量大于核心线程数时，如果没有新的任务提交，核心线程外的线程不会立即销毁，而是会等到时间超过<code>keepAliveTime</code>时才会被销毁。</li>
+<li><strong><code>unit</code></strong> ：<code>keepAliveTime</code> 参数的时间单位。</li>
+<li><strong><code>threadFactory</code></strong>：为线程池提供创建新线程的线程工厂。</li>
+<li><strong><code>handler</code></strong> ：线程池任务队列超过<code>maxinumPoolSize</code> 之后的拒绝策略</li>
+</ul>
+<h4 id="threadpoolexecutor的饱和策略拒绝策略">ThreadPoolExecutor的饱和策略（拒绝策略）</h4>
+<p>当同时运行的线程数量达到最大线程数量并且阻塞队列也已经放满了任务时，<code>ThreadPoolExecutor</code>会指定一些饱和策略。主要有以下四种类型：</p>
+<ul>
+<li><code>AbortPolicy</code>策略：该策略会直接抛出异常拒绝新任务</li>
+<li><code>CallerRunsPolicy</code>策略：当线程池无法处理当前任务时，会将该任务交由提交任务的线程来执行。</li>
+<li><code>DiscardPolicy</code>策略：直接丢弃新任务。</li>
+<li><code>DiscardOleddestPolicy</code>策略：丢弃最早的未处理的任务请求。</li>
+</ul>
+<p>&lt;线程池执行流程&gt;</p>
+<h4 id="execute方法和submit方法的区别">execute()方法和submit()方法的区别</h4>
+<p><code>execute()</code>和<code>submit()</code>的区别主要有两点：</p>
+<ul>
+<li><code>execute()</code>方法只能执行<code>Runnable</code> 类型的任务。<code>submit()</code>方法可以执行<code>Runnable</code>和 <code>Callable</code>类型的任务。</li>
+<li><code>submit()</code>方法可以返回持有计算结果的<code>Future</code>对象，同时还可以抛出异常，而<code>execute()</code>方法不可以。</li>
+</ul>
+<p>换句话说就是，<code>execute()</code>方法用于提交不需要返回值的任务，<code>submit()</code>方法用于需要提交返回值的任务。</p>
+<hr>
+<h3 id="cas">CAS</h3>
+<h4 id="什么是cas">什么是CAS?</h4>
+<p>CAS即CompareAndSwap，翻译成中文即比较并替换。Java中可以通过CAS操作来保证原子性，原子性就是不可被中断的一些列操作或者一个操作，简单来说就是一系列操作，要么全部完成，要么失败，不能被中断。</p>
+<p>CAS主要包含三个参数（V，A，B）, <strong>V 表示要更新的变量（内存位置）、A 表示预期原值（旧值）、B表示新值</strong>。<a href="">算法</a>流程是首先比较A和B的值，如果相等，将B值赋值给V，如果不相等说明有其他线程对该变量做了更新。即：我认为位置 V 应该包含值 A；如果包含该值，则将 B 放到这个位置；否则，不要更改该位置，只告诉我这个位置现在的值即可</p>
+<p>当多个线程同时操作一个共享变量时，只有一个线程可以对变量进行成功更新，其他线程均会失败，但是失败并不会被挂起，进行再次尝试，也就是自旋。Java中的自旋锁就是利用CAS来实现的。</p>
+<h4 id="cas存在的问题">CAS存在的问题</h4>
+<ul>
+<li>ABA问题</li>
+</ul>
+<p>在CAS的<a href="">算法</a>流程中，首先要先比较V的值和A的值，如果相等则进行更新。ABA问题是指，A表示的这个旧值本来是a，然后变成了b，后来又变成了a，但这时有线程来更新，发现A表示的值是a，则直接进行更新了，这样肯定是不对的，但又该怎么解决呢？</p>
+<p>ABA的问题的解决方式：ABA的解决方法也很简单，就是利用<strong>版本号</strong>。给变量加上一个版本号，每次变量更新的时候就把版本号加1，这样即使E的值从A—&gt;B—&gt;A，版本号也发生了变化，这样就解决了CAS出现的ABA问题。基于CAS的乐观锁也是这个实现原理。</p>
+<ul>
+<li>循环时间过长导致开销太大</li>
+</ul>
+<p>CAS自旋时间过长会给CPU带来非常大的开销</p>
+<ul>
+<li>只能保证一个共享变量的原子操作</li>
+</ul>
+<p>在操作一个共享变量时，可以通过CAS的方式保证操作的原子性，但如果对多个共享变量进行操作时，CAS则无法保证操作的原子性，这时候就需要用锁了。在看《Java并发编程的艺术》时，里面提到了一个办法可以参考一下，就是将多个共享变量合并成一个共享变量来操作。比如，有两个共享变量<code>i=2,j=a</code>，合并成<code>ij=2a</code>，然后用CAS来操作<code>ij</code></p>
+<h4 id="cas的优点">CAS的优点</h4>
+<p>在并发量不是很大时提高效率。</p>
+<h4 id="atomic-原子类">Atomic 原子类</h4>
+<blockquote>
+<p>原子操作类是CAS在Java中的应用，从JDK1.5开始提供了<code>java.util.concurrent.atomic</code>包，这个包中的原子操作类提供了一种用法简单、性能高效、线程安全地更新一个变量的方式。Atomic包里的类基本都是使用<code>Unsafe</code>实现的包装类。</p>
+</blockquote>
+<p>JUC包中的4种原子类</p>
+<ul>
+<li>
+<p>基本类型</p>
+<p>：使用原子的方式更新基本类型</p>
+<ul>
+<li><code>AtomicInteger</code>：整形原子类</li>
+<li><code>AtomicLong</code>：长整型原子类</li>
+<li><code>AtomicBoolean</code>：布尔型原子类</li>
+</ul>
+</li>
+<li>
+<p>数组类型</p>
+<p>：使用原子的方式更新数组里的某个元素</p>
+<ul>
+<li><code>AtomicIntegerArray</code>：整形数组原子类</li>
+<li><code>AtomicLongArray</code>：长整形数组原子类</li>
+<li><code>AtomicReferenceArray</code>：引用类型数组原子类</li>
+</ul>
+</li>
+<li>
+<p>引用类型</p>
+<p>：</p>
+<ul>
+<li><code>AtomicReference</code>：引用类型原子类，存在ABA问题</li>
+<li>AtomicStampedReference：原子更新带有版本号的引用类型。该类将整数值与引用关联起来，可用于原子的更新数据和数据的版本号，可以解决使用CAS进行原子更新时可能出现的ABA问题。</li>
+<li>AtomicMarkableReference：原子更新带有标记位的引用类型</li>
+</ul>
+</li>
+<li>
+<p>原子更新字段类</p>
+<ul>
+<li>AtomicIntegerFieldUpdater：原子更新整型的字段的更新器。</li>
+<li>AtomicLongFieldUpdater：原子更新长整型字段的更新器。</li>
+<li>AtomicReferenceFieldUpdater：引用类型更新器原子类</li>
+</ul>
+</li>
+</ul>
 <hr>
 <h2 id="两星">两星</h2>
 <h3 id="多线程的优缺点为什么使用多线程-多线程会引发什么问题">多线程的优缺点（为什么使用多线程、多线程会引发什么问题）</h3>
@@ -578,6 +1458,31 @@ ReentrantLock<code>类加锁的线程的</code>Condition<code>类的</code>await
 <hr>
 <h3 id="同步方法和同步方法块哪个效果更好">同步方法和同步方法块哪个效果更好？</h3>
 <p>同步块更好些，因为它锁定的范围更灵活些，只在需要锁住的代码块锁住相应的对象，而同步方法会锁住整个对象。</p>
+<hr>
+<h3 id="aqs">AQS</h3>
+<h4 id="什么是aqs">什么是AQS？</h4>
+<p>AQS的全称是<code>AbstractQueuedSynchronizer</code>，是一个用来构建锁和同步器的框架，像ReentrantLock，Semaphore，FutureTask都是基于AQS实现的。</p>
+<h4 id="aqs的原理">AQS的原理</h4>
+<p>简单来说，AQS就是维护了一个共享资源，然后使用队列来保证线程排队获取资源的一个过程。</p>
+<p>AQS的工作流程：当被请求的共享资源空闲，则将请求资源的线程设为有效的工作线程，同时锁定共享资源。如果被请求的资源已经被占用了，AQS就用过队列实现了一套线程阻塞等待以及唤醒时锁分配的机制。</p>
+<p>这个队列是通过CLH队列实现的，从上图可以看出，该队列是一个双向队列，有Node结点组成，每个Node结点维护一个prev引用和next引用，这两个引用分别指向自己结点的前驱结点和后继结点，同时AQS还维护两个指针Head和Tail，分别指向队列的头部和尾部。</p>
+<h4 id="aqs的资源共享方式有哪些">AQS的资源共享方式有哪些？</h4>
+<ul>
+<li>Exclusive：独占，只有一个线程可以执行，例如ReentrantLock</li>
+<li>Share：共享，多个现场可以同时执行，如Semaphore、CountDownLatch</li>
+</ul>
+<h3 id="如何使用aqs定义同步器">如何使用AQS定义同步器</h3>
+<p>AQS的底层使用了模板方法模式，自定义同步器只需要两步：第一，继承<code>AbstractQueuedSynchronizer</code>，第二，重写以下几种方法：</p>
+<ul>
+<li>isHeldExclusively()：该线程是否正在独占资源。只有用到condition才需要去实现它。</li>
+<li>tryAcquire(int)：独占方式，尝试获取资源。</li>
+<li>tryRelease(int)：独占方式，尝试释放资源。</li>
+<li>tryAcquireShared(int)：共享方式，尝试获取资源。负数表示失败，0表示成功，但无剩余可用资源，正数表示成功并且有剩余资源</li>
+<li>tryReleaseShared(int)：共享方式，尝试释放资源</li>
+</ul>
+<p>下面举例说明，以独占式的<code>ReentrantLock</code>为例，<code>state</code>初始状态为0，表示未锁定状态。A线程进行<code>lock()</code>时，会调用<code>tryAcquire()</code>独占该锁并将<code>state+1</code>。此后，其他线程再调用<code>tryAcquire()</code>时就会失败，直到A线程<code>unlock()</code>到state=0（即释放锁）为止，其它线程才有机会获取该锁。当然，释放锁之前，A线程自己是可以重复获取此锁的（state会累加），这就是可重入的概念。但要注意，获取多少次就要释放多么次，这样才能保证state是能回到零态的。</p>
+<p>再以共享使得<code>CountDownLatch</code>以例，任务分为N个子线程去执行，state也初始化为N（注意N要与线程个数一致）。这N个子线程是并行执行的，每个子线程执行完后<code>countDown()</code>一次，state会CAS减1。等到所有子线程都执行完后(即state=0)，会<code>unpark()</code>主调用线程，然后主调用线程就会从<code>await()</code>函数返回，继续后余动作。</p>
+<p>一般来说，自定义同步器要么是独占方法，要么是共享方式，他们也只需实现<code>tryAcquire-tryRelease</code>、<code>tryAcquireShared-tryReleaseShared</code>中的一种即可。但AQS也支持自定义同步器同时实现独占和共享两种方式，如<code>ReentrantReadWriteLock</code>。</p>
 <hr>
 <h2 id="一星">一星</h2>
 <h3 id="并行和并发的区别">并行和并发的区别？</h3>
