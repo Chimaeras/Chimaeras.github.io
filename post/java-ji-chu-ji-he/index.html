@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>Java基础集合 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1633838281012">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="常用的集合类有哪些？　＊＊＊
+Map接口和Collection接口是所有集合框架的父接口。下图中的实线和虚线看着有些乱，其中接口与接口之间如果有联系为继承关系，类与类之间如果有联系为继承关系，类与接口之间则是类实现接口。重点掌握的抽象类有H..." />
+    <meta name="keywords" content="总结" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1633838281012" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">Java基础集合</h2>
+            <div class="post-date">2021-10-09</div>
+            
+            <div class="post-content" v-pre>
+              <h3 id="常用的集合类有哪些">常用的集合类有哪些？　＊＊＊</h3>
+<p>Map接口和Collection接口是所有集合框架的父接口。下图中的实线和虚线看着有些乱，其中接口与接口之间如果有联系为继承关系，类与类之间如果有联系为继承关系，类与接口之间则是类实现接口。<strong>重点掌握的抽象类有<code>HashMap</code>，<code>LinkedList</code>，<code>HashTable</code>，<code>ArrayList</code>，<code>HashSet</code>，<code>Stack</code>，<code>TreeSet</code>，<code>TreeMap</code>。注意：<code>Collection</code>接口不是<code>Map</code>的父接口。</strong></p>
+<figure data-type="image" tabindex="1"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237507775/2FEEC0C84794742A6C4BE56036D67EEC" alt="图片说明" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237528069/16A36946196DEBF844CE419A4984C76D" alt="图片说明" loading="lazy"></figure>
+<h3 id="listsetmap三者的区别">List，Set，Map三者的区别？ ＊＊＊</h3>
+<ul>
+<li><code>List</code>：<strong>有序集合</strong>（有序指存入的顺序和取出的顺序相同，不是按照元素的某些特性<a href="">排序</a>），<strong>可存储重复元素，可存储多个<code>null</code></strong>。</li>
+<li><code>Set</code>：<strong>无序集合</strong>（元素存入和取出顺序不一定相同），<strong>不可存储重复元素，只能存储一个<code>null</code>。</strong></li>
+<li><code>Map</code>：使用键值对的方式对元素进行存储，<code>key</code>是无序的，且是唯一的。<code>value</code>值不唯一。不同的<code>key</code>值可以对应相同的<code>value</code>值。</li>
+</ul>
+<h3 id="常用集合框架底层数据结构"><strong>常用集合框架底层数据结构</strong>　＊＊＊</h3>
+<ul>
+<li><code>List</code>：
+<ol>
+<li><code>ArrayList</code>：数组</li>
+<li><code>LinkedList</code>：双线<a href="">链表</a></li>
+</ol>
+</li>
+<li><code>Set</code>：
+<ol>
+<li><code>HashSet</code>：底层基于<code>HashMap</code>实现，<code>HashSet</code>存入读取元素的方式和<code>HashMap</code>中的<code>Key</code>是一致的。</li>
+<li><code>TreeSet</code>：<a href="">红黑树</a></li>
+</ol>
+</li>
+<li><code>Map</code>：
+<ol>
+<li><code>HashMap</code>： JDK1.8之前<code>HashMap</code>由数组+<a href="">链表</a>组成的， JDK1.8之后有数组+<a href="">链表</a>/<a href="">红黑树</a>组成，当<a href="">链表</a>长度大于8时，<a href="">链表</a>转化为<a href="">红黑树</a>，当长度小于6时，从<a href="">红黑树</a>转化为<a href="">链表</a>。这样做的目的是能提高<code>HashMap</code>的性能，因为<a href="">红黑树</a>的查找元素的时间复杂度远小于<a href="">链表</a>。</li>
+<li><code>HashTable</code>：数组+<a href="">链表</a></li>
+<li><code>TreeMap</code>：<a href="">红黑树</a></li>
+</ol>
+</li>
+</ul>
+<h3 id="哪些集合类是线程安全的">哪些集合类是线程安全的？　＊＊＊</h3>
+<ul>
+<li><code>Vector</code>：相当于有同步机制的<code>ArrayList</code></li>
+<li><code>Stack</code>：栈</li>
+<li><code>HashTable</code></li>
+<li><code>enumeration</code>：枚举</li>
+</ul>
+<h3 id="迭代器-iterator-是什么">迭代器 Iterator 是什么　＊</h3>
+<p><code>Iterator</code> 是 Java 迭代器最简单的实现，它不是一个集合，它是一种用于访问集合的方法，<code>Iterator</code>接口提供遍历任何<code>Collection</code>的接口。</p>
+<h3 id="java集合的快速失败机制-fail-fast和安全失败机制fail-safe是什么">Java集合的快速失败机制 “fail-fast”和安全失败机制“fail-safe”是什么？　＊＊＊</h3>
+<ul>
+<li>
+<p>快速失败</p>
+<p>Java的快速失败机制是Java集合框架中的一种错误检测机制，当多个线程同时对集合中的内容进行修改时可能就会抛出<code>ConcurrentModificationException</code>异常。其实不仅仅是在多线程状态下，在单线程中用增强<code>for</code>循环中一边遍历集合一边修改集合的元素也会抛出<code>ConcurrentModificationException</code>异常。看下面代码</p>
+<pre><code class="language-java">public class Main{
+    public static void main(String[] args) {
+    List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+        for(Integer i : list){
+            list.remove(i);  //运行时抛出ConcurrentModificationException异常
+        }
+    }
+}
+</code></pre>
+<p>正确的做法是用迭代器的<code>remove()</code>方法，便可正常运行。</p>
+<pre><code class="language-java">public class Main{
+    public static void main(String[] args) {
+    List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+    Iterator&lt;Integer&gt; it = list.iterator();
+        while(it.hasNext()){
+            it.remove();
+        }
+    }
+}
+</code></pre>
+<p>造成这种情况的原因是什么？细心的同学可能已经发现两次调用的<code>remove()</code>方法不同，一个带参数据，一个不带参数，这个后面再说，经过查看<code>ArrayList</code><a href="">源码</a>，找到了抛出异常的代码</p>
+<pre><code class="language-java">final void checkForComodification() {
+      if (modCount != expectedModCount)
+              throw new ConcurrentModificationException();
+}
+</code></pre>
+<p>从上面代码中可以看到如果<code>modCount</code>和<code>expectedModCount</code>这两个变量不相等就会抛出<code>ConcurrentModificationException</code>异常。那这两个变量又是什么呢？继续看<a href="">源码</a></p>
+<pre><code class="language-java">protected transient int modCount = 0; //在AbstractList中定义的变量
+
+int expectedModCount = modCount;//在ArrayList中的内部类Itr中定义的变量
+</code></pre>
+<p>从上面代码可以看到，<code>modCount</code>初始值为0，而<code>expectedModCount</code>初始值等于<code>modCount</code>。也就是说在遍历的时候直接调用集合的<code>remove()</code>方法会导致<code>modCount</code>不等于<code>expectedModCount</code>进而抛出<code>ConcurrentModificationException</code>异常，而使用迭代器的<code>remove()</code>方法则不会出现这种问题。那么只能在看看<code>remove()</code>方法的<a href="">源码</a>找找原因了</p>
+<pre><code class="language-java">    public E remove(int index) {
+        rangeCheck(index);
+
+        modCount++;
+        E oldValue = elementData(index);
+
+        int numMoved = size - index - 1;
+        if (numMoved &gt; 0)
+            System.arraycopy(elementData, index+1, elementData, index,
+                             numMoved);
+        elementData[--size] = null; // clear to let GC do its work
+
+        return oldValue;
+    }
+</code></pre>
+<p>从上面代码中可以看到只有<code>modCount++</code>了，而<code>expectedModCount</code>没有操作，当每一次迭代时，迭代器会比较<code>expectedModCount</code>和<code>modCount</code>的值是否相等，所以在调用<code>remove()</code>方法后，<code>modCount</code>不等于<code>expectedModCount</code>了，这时就了报<code>ConcurrentModificationException</code>异常。但用迭代器中<code>remove()</code>的方法为什么不抛异常呢？原来**迭代器调用的<code>remove()</code>方法和上面的<code>remove()</code>方法不是同一个！**迭代器调用的<code>remove()</code>方法长这样：</p>
+<pre><code class="language-java">        public void remove() {
+            if (lastRet &lt; 0)
+                throw new IllegalStateException();
+            checkForComodification();
+
+            try {
+                ArrayList.this.remove(lastRet);
+                cursor = lastRet;
+                lastRet = -1;
+                expectedModCount = modCount;    //这行代码保证了expectedModCount和modCount是相等的
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+</code></pre>
+<p>从上面代码可以看到<code>expectedModCount = modCount</code>，所以迭代器的<code>remove()</code>方法保证了<code>expectedModCount</code>和<code>modCount</code>是相等的，进而保证了在增强<code>for</code>循环中修改集合内容不会报<code>ConcurrentModificationException</code>异常。</p>
+<p>上面介绍的只是单线程的情况，用迭代器调用<code>remove()</code>方法即可正常运行，但如果是多线程会怎么样呢？</p>
+<p>答案是在多线程的情况下即使用了迭代器调用<code>remove()</code>方法，还是会报<code>ConcurrentModificationException</code>异常。这又是为什么呢？还是要从<code>expectedModCount</code>和<code>modCount</code>这两个变量入手分析，刚刚说了<code>modCount</code>在<code>AbstractList</code>类中定义，而<code>expectedModCount</code>在<code>ArrayList</code>内部类中定义，所以<code>modCount</code>是个共享变量而<code>expectedModCount</code>是属于线程各自的。简单说，线程1更新了<code>modCount</code>和属于自己的<code>expectedModCount</code>，而在线程2看来只有<code>modCount</code>更新了，<code>expectedModCount</code>并未更新，所以会抛出<code>ConcurrentModificationException</code>异常。</p>
+</li>
+<li>
+<p>安全失败</p>
+<p>采用安全失败机制的集合容器，在遍历时不是直接在集合内容上访问的，而是先复制原有集合内容，在拷贝的集合上进行遍历。所以在遍历过程中对原集合所作的修改并不能被迭代器检测到，所以不会抛出<code>ConcurrentModificationException</code>异常。缺点是迭代器遍历的是开始遍历那一刻拿到的集合拷贝，在遍历期间原集合发生了修改，迭代器是无法访问到修改后的内容。<code>java.util.concurrent</code>包下的容器都是安全失败，可以在多线程下并发使用。</p>
+</li>
+</ul>
+<h3 id="如何边遍历边移除-collection-中的元素">如何边遍历边移除 Collection 中的元素？　＊＊＊</h3>
+<p>从上文**“快速失败机制”**可知在遍历集合时如果直接调用<code>remove()</code>方法会抛出<code>ConcurrentModificationException</code>异常，所以使用迭代器中调用<code>remove()</code>方法。</p>
+<h3 id="array-和-arraylist-有何区别">Array 和 ArrayList 有何区别？　＊＊＊</h3>
+<ul>
+<li><code>Array</code>可以包含基本类型和对象类型，<code>ArrayList</code>只能包含对象类型。</li>
+<li><code>Array</code>大小是固定的，<code>ArrayList</code>的大小是动态变化的。(<code>ArrayList</code>的扩容是个常见面试题)</li>
+<li>相比于<code>Array</code>，<code>ArrayList</code>有着更多的内置方法，如<code>addAll()</code>，<code>removeAll()</code>。</li>
+<li>对于基本类型数据，<code>ArrayList</code> 使用自动装箱来减少编码工作量；而当处理固定大小的基本数据类型的时候，这种方式相对比较慢，这时候应该使用<code>Array</code>。</li>
+</ul>
+<h3 id="comparable-和-comparator的区别">comparable 和 comparator的区别？　＊＊</h3>
+<ul>
+<li>
+<p>comparable 接口出自 java.lang包，可以理解为一个内比较器，因为实现了 Comparable 接口的类可以和自己比较，要和其他实现了 Comparable 接口类比较，可以使用 compareTo(Object obj) 方法。 compareTo 方法的返回值是 int ，有三种情况：</p>
+<ol>
+<li>返回正整数（比较者大于被比较者）</li>
+<li>返回0（比较者等于被比较者）</li>
+<li>返回负整数（比较者小于被比较者）</li>
+</ol>
+</li>
+<li>
+<p><code>comparator</code>接口出自<code>java.util</code> 包，它有一个<code>compare(Object obj1, Object obj2)</code>方法用来<a href="">排序</a>，返回值同样是<code>int</code>，有三种情况，和<code>compareTo</code>类似。</p>
+</li>
+</ul>
+<p>它们之间的区别：很多包装类都实现了<code>comparable</code>接口，像<code>Integer</code>、<code>String</code>等，所以直接调用<code>Collections.sort()</code>直接可以使用。如果对类里面自带的自然<a href="">排序</a>不满意，而又不能修改其源代码的情况下，使用<code>Comparator</code>就比较合适。此外使用<code>Comparator</code>可以避免添加额外的代码与我们的目标类耦合，同时可以定义多种<a href="">排序</a>规则，这一点是<code>Comparable</code>接口没法做到的，从灵活性和扩展性讲Comparator更优，故在面对自定义<a href="">排序</a>的需求时，可以优先考虑使用<code>Comparator</code>接口。</p>
+<h3 id="collection-和-collections-有什么区别">Collection 和 Collections 有什么区别？　＊＊</h3>
+<ul>
+<li><code>Collection</code> 是一个<strong>集合接口</strong>。它提供了对集合对象进行基本操作的通用接口方法。</li>
+<li><code>Collections</code> 是一个包装类。它包含有各种有关集合操作的<strong>静态多态方法</strong>，例如常用的<code>sort()</code>方法。此类<strong>不能实例化</strong>，就像一<strong>个工具类</strong>，服务于Java的<code>Collection</code>框架。</li>
+</ul>
+<h3 id="list集合">List集合</h3>
+<h4 id="遍历一个-list-有哪些不同的方式">遍历一个 List 有哪些不同的方式？　＊＊</h4>
+<p>先说一下常见的元素在内存中的存储方式，主要有两种：</p>
+<ol>
+<li>顺序存储（Random Access）：相邻的数据元素在内存中的位置也是相邻的，可以根据元素的位置（如<code>ArrayList</code>中的下表）读取元素。</li>
+<li>链式存储（Sequential Access）：每个数据元素包含它下一个元素的内存地址，在内存中不要求相邻。例如<code>LinkedList</code>。</li>
+</ol>
+<p>主要的遍历方式主要有三种：</p>
+<ol>
+<li><code>for</code>循环遍历：遍历者自己在集合外部维护一个计数器，依次读取每一个位置的元素。</li>
+<li><code>Iterator</code>遍历：基于顺序存储集合的<code>Iterator</code>可以直接按位置访问数据。基于链式存储集合的<code>Iterator</code>，需要保存当前遍历的位置，然后根据当前位置来向前或者向后移动指针。</li>
+<li><code>foreach</code>遍历：<code>foreach</code> 内部也是采用了<code>Iterator</code>的方式实现，但使用时不需要显示地声明<code>Iterator</code>。</li>
+</ol>
+<p>那么对于以上三种遍历方式应该如何选取呢？</p>
+<p>在Java集合框架中，提供了一个<code>RandomAccess</code>接口，该接口没有方法，只是一个标记。通常用来标记<code>List</code>的实现是否支持<code>RandomAccess</code>。所以在遍历时，可以先判断是否支持<code>RandomAccess</code>（<code>list instanceof RandomAccess</code>），如果支持可用 <code>for</code>循环遍历，否则建议用<code>Iterator</code>或 <code>foreach</code>遍历。</p>
+<h4 id="arraylist的扩容机制">ArrayList的扩容机制　＊＊＊</h4>
+<blockquote>
+<p>先说下结论，一般面试时需要记住，<code>ArrayList</code>的初始容量为10，<strong>扩容时对是旧的容量值加上旧的容量数值进行右移一位（位运算，相当于除以2，位运算的效率更高）</strong>，所以每次扩容都是旧的容量的1.5倍。</p>
+</blockquote>
+<p>具体的实现大家可查看下<code>ArrayList</code>的<a href="">源码</a>。</p>
+<h4 id="arraylist-和-linkedlist-的区别是什么">ArrayList 和 LinkedList 的区别是什么？　＊＊＊</h4>
+<ul>
+<li>是否线程安全：<code>ArrayList</code>和<code>LinkedList</code>都是不保证线程安全的</li>
+<li>底层实现：<code>ArrayList</code>的底层实现是数组，<code>LinkedList</code>的底层是双向<a href="">链表</a>。</li>
+<li>内存占用：<code>ArrayList</code>会存在一定的空间浪费，因为每次扩容都是之前的1.5倍，而<code>LinkedList</code>中的每个元素要存放直接后继和直接前驱以及数据，所以对于每个元素的存储都要比<code>ArrayList</code>花费更多的空间。</li>
+<li>应用场景：<code>ArrayList</code>的底层数据结构是数组，所以在插入和删除元素时的时间复杂度都会收到位置的影响，平均时间复杂度为o(n)，在读取元素的时候可以根据下标直接查找到元素，不受位置的影响，平均时间复杂度为o(1)，<strong>所以<code>ArrayList</code>更加适用于多读，少增删的场景</strong>。<code>LinkedList</code>的底层数据结构是双向<a href="">链表</a>，所以插入和删除元素不受位置的影响，平均时间复杂度为o(1)，如果是在指定位置插入则是o(n)，因为在插入之前需要先找到该位置，读取元素的平均时间复杂度为o(n)。<strong>所以<code>LinkedList</code>更加适用于多增删，少读写的场景</strong>。</li>
+</ul>
+<h4 id="arraylist-和-vector-的区别是什么">ArrayList 和 Vector 的区别是什么？　＊＊＊</h4>
+<ul>
+<li>相同点
+<ol>
+<li>都实现了<code>List</code>接口</li>
+<li>底层数据结构都是数组</li>
+</ol>
+</li>
+<li>不同点
+<ol>
+<li>线程安全：<code>Vector</code>使用了<code>Synchronized</code>来实现线程同步，所以是线程安全的，而<code>ArrayList</code>是线程不安全的。</li>
+<li>性能：由于<code>Vector</code>使用了<code>Synchronized</code>进行加锁，所以性能不如<code>ArrayList</code>。</li>
+<li>扩容：<code>ArrayList</code>和<code>Vector</code>都会根据需要动态的调整容量，但是<code>ArrayList</code>每次扩容为旧容量的1.5倍，而<code>Vector</code>每次扩容为旧容量的2倍。</li>
+</ol>
+</li>
+</ul>
+<h4 id="简述-arraylist-vector-linkedlist-的存储性能和特性">简述 ArrayList、Vector、LinkedList 的存储性能和特性？　＊＊＊</h4>
+<ul>
+<li><code>ArrayList</code>底层数据结构为数组，对元素的读取速度快，而增删数据慢，线程不安全。</li>
+<li><code>LinkedList</code>底层为双向<a href="">链表</a>，对元素的增删速度快，读取慢，线程不安全。</li>
+<li><code>Vector</code>的底层数据结构为数组，用<code>Synchronized</code>来保证线程安全，性能较差，但线程安全。</li>
+</ul>
+<h3 id="set集合">Set集合</h3>
+<h4 id="说一下-hashset-的实现原理">说一下 HashSet 的实现原理　＊＊＊</h4>
+<p><code>HashSet</code>的底层是<code>HashMap</code>，默认构造函数是构建一个初始容量为16，负载因子为0.75 的<code>HashMap</code>。<code>HashSet</code>的值存放于<code>HashMap</code>的<code>key</code>上，<code>HashMap</code>的<code>value</code>统一为<code>PRESENT</code>。</p>
+<h4 id="hashset如何检查重复hashset是如何保证数据不可重复的">HashSet如何检查重复？（HashSet是如何保证数据不可重复的？）　＊＊＊</h4>
+<p>这里面涉及到了<code>HasCode()</code>和<code>equals()</code>两个方法。</p>
+<ul>
+<li>
+<p>equals()</p>
+<p>先看下<code>String</code>类中重写的<code>equals</code>方法。</p>
+<pre><code class="language-java">    public boolean equals(Object anObject) {
+        if (this == anObject) {
+            return true;
+        }
+        if (anObject instanceof String) {
+            String anotherString = (String)anObject;
+            int n = value.length;
+            if (n == anotherString.value.length) {
+                char v1[] = value;
+                char v2[] = anotherString.value;
+                int i = 0;
+                while (n-- != 0) {
+                    if (v1[i] != v2[i])
+                        return false;
+                    i++;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+</code></pre>
+<p>从<a href="">源码</a>中可以看到：</p>
+<ol>
+<li><code>equals</code>方法首先比较的是内存地址，如果内存地址相同，直接返回<code>true</code>；如果内存地址不同，再比较对象的类型，类型不同直接返回<code>false</code>；类型相同，再比较值是否相同；值相同返回<code>true</code>，值不同返回<code>false</code>。总结一下，<code>equals</code>会比较<strong>内存地址、对象类型、以及值</strong>，内存地址相同，<code>equals</code>一定返回<code>true</code>；对象类型和值相同，<code>equals</code>方法一定返回<code>true</code>。</li>
+<li>如果没有重写<code>equals</code>方法，那么<code>equals</code>和<code>==</code>的作用相同，比较的是对象的地址值。</li>
+</ol>
+</li>
+<li>
+<p>hashCode</p>
+<p><code>hashCode</code>方法返回对象的散列码，返回值是<code>int</code>类型的散列码。散列码的作用是确定该对象在<a href="">哈希表</a>中的索引位置。</p>
+<p>关于<code>hashCode</code>有一些约定：</p>
+<ol>
+<li>两个对象相等，则<code>hashCode</code>一定相同。</li>
+<li>两个对象有相同的<code>hashCode</code>值，它们不一定相等。</li>
+<li><code>hashCode()</code>方法默认是对堆上的对象产生独特值，如果没有重写<code>hashCode()</code>方法，则该类的两个对象的<code>hashCode</code>值肯定不同</li>
+</ol>
+</li>
+</ul>
+<p>介绍完equals()方法和hashCode()方法，继续说下HashSet是如何检查重复的。</p>
+<p><code>HashSet</code>的特点是存储元素时无序且唯一，在向<code>HashSet</code>中添加对象时，首相会计算对象的<code>HashCode</code>值来确定对象的存储位置，如果该位置没有其他对象，直接将该对象添加到该位置；如果该存储位置有存储其他对象（新添加的对象和该存储位置的对象的<code>HashCode</code>值相同），调用<code>equals</code>方法判断两个对象是否相同，如果相同，则添加对象失败，如果不相同，则会将该对象重新散列到其他位置。</p>
+<h4 id="hashset与hashmap的区别">HashSet与HashMap的区别　＊＊＊</h4>
+<table>
+<thead>
+<tr>
+<th>HashMap</th>
+<th>HashSet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>实现了<code>Map</code>接口</td>
+<td>实现了<code>Set</code>接口</td>
+</tr>
+<tr>
+<td>存储键值对</td>
+<td>存储对象</td>
+</tr>
+<tr>
+<td><code>key</code>唯一，<code>value</code>不唯一</td>
+<td>存储对象唯一</td>
+</tr>
+<tr>
+<td><code>HashMap</code>使用键（<code>Key</code>）计算<code>Hashcode</code></td>
+<td><code>HashSet</code>使用成员对象来计算<code>hashcode</code>值</td>
+</tr>
+<tr>
+<td>速度相对较快</td>
+<td>速度相对较慢</td>
+</tr>
+</tbody>
+</table>
+<h3 id="map集合">Map集合</h3>
+<h4 id="hashmap在jdk17和jdk18中有哪些不同hashmap的底层实现">HashMap在JDK1.7和JDK1.8中有哪些不同？HashMap的底层实现　＊＊＊</h4>
+<ul>
+<li>JDK1.7的底层数据结构(数组+<a href="">链表</a>)</li>
+</ul>
+<figure data-type="image" tabindex="3"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237747644/C8097C1DDD247732BFACCB113CE39180" alt="图片说明" loading="lazy"></figure>
+<ul>
+<li>
+<p>JDK1.8的底层数据结构(数组+<a href="">链表</a>)</p>
+<figure data-type="image" tabindex="4"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237760923/17364DE1F2B29495DDBDB367613A9397" alt="图片说明" loading="lazy"></figure>
+</li>
+<li>
+<p>JDK1.7的Hash函数</p>
+<pre><code class="language-java">static final int hash(int h){    
+    h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt;12);    
+    return h^(h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);
+}
+</code></pre>
+</li>
+<li>
+<p>JDK1.8的Hash函数</p>
+<pre><code class="language-java">static final int hash(Onject key){        
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode())^(h &gt;&gt;&gt; 16);
+}
+</code></pre>
+<p>JDK1.8的函数经过了一次异或一次位运算一共两次扰动，而JDK1.7经过了四次位运算五次异或一共九次扰动。这里简单解释下JDK1.8的hash函数，面试经常问这个，两次扰动分别是<code>key.hashCode()</code>与<code>key.hashCode()</code>右移16位进行异或。这样做的目的是，高16位不变，低16位与高16位进行异或操作，进而减少碰撞的发生，高低Bit都参与到Hash的计算。如何不进行扰动处理，因为hash值有32位，直接对数组的长度求余，起作用只是hash值的几个低位。</p>
+</li>
+</ul>
+<p>HashMap在JDK1.7和JDK1.8中有哪些不同点：</p>
+<table>
+<thead>
+<tr>
+<th>JDK1.7</th>
+<th>JDK1.8</th>
+<th>JDK1.8的优势</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>底层结构</td>
+<td>数组+<a href="">链表</a></td>
+<td>数组+<a href="">链表</a>/<a href="">红黑树</a>(<a href="">链表</a>大于8)</td>
+<td>避免单条<a href="">链表</a>过长而影响查询效率，提高查询效率</td>
+</tr>
+<tr>
+<td>hash值计算方式</td>
+<td>9次扰动 = 4次位运算 + 5次异或运算</td>
+<td>2次扰动 = 1次位运算 + 1次异或运算</td>
+<td>可以均匀地把之前的冲突的节点分散到新的桶（具体细节见下面扩容部分）</td>
+</tr>
+<tr>
+<td>插入数据方式</td>
+<td>头插法（先讲原位置的数据移到后1位，再插入数据到该位置）</td>
+<td>尾插法（直接插入到<a href="">链表</a>尾部/<a href="">红黑树</a>）</td>
+<td>解决多线程造成死循环地问题</td>
+</tr>
+<tr>
+<td>扩容后存储位置的计算方式</td>
+<td>重新进行hash计算</td>
+<td>原位置或原位置+旧容量</td>
+<td>省去了重新计算hash值的时间</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hashmap-的长度为什么是2的幂次方">HashMap 的长度为什么是2的幂次方　＊＊＊</h4>
+<p>因为<code>HashMap</code>是通过<code>key</code>的hash值来确定存储的位置，但Hash值的范围是-2147483648到2147483647，不可能建立一个这么大的数组来覆盖所有hash值。所以在计算完hash值后会对数组的长度进行取余操作，如果数组的长度是2的幂次方，<code>(length - 1)&amp;hash</code>等同于<code>hash%length</code>，可以用<code>(length - 1)&amp;hash</code>这种位运算来代替%取余的操作进而提高性能。</p>
+<h4 id="hashmap的put方法的具体流程">HashMap的put方法的具体流程？　＊＊</h4>
+<p>HashMap的主要流程可以看下面这个流程图，逻辑非常清晰。</p>
+<figure data-type="image" tabindex="5"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237789962/8AADBE80EAA4A6B19397E2989CB1C277" alt="图片说明" loading="lazy"></figure>
+<h4 id="hashmap的扩容操作是怎么实现的">HashMap的扩容操作是怎么实现的？　＊＊＊</h4>
+<ul>
+<li>
+<p>初始值为16，负载因子为0.75，阈值为负载因子*容量</p>
+</li>
+<li>
+<p><code>resize()</code>方法是在<code>hashmap</code>中的键值对大于阀值时或者初始化时，就调用<code>resize()</code>方法进行扩容。</p>
+</li>
+<li>
+<p>每次扩容，容量都是之前的两倍</p>
+</li>
+<li>
+<p>扩容时有个判断<code>e.hash &amp; oldCap</code>是否为零，也就是相当于hash值对数组长度的取余操作，若等于0，则位置不变，若等于1，位置变为原位置加旧容量。</p>
+<p><a href="">源码</a>如下：</p>
+<pre><code class="language-java">// 初始化或加倍表大小。 
+// 如果为空，则根据字段阈值中持有的初始容量目标进行分配。 
+// 否则，因为我们使用的是 2 的幂扩展，所以每个 bin 中的元素必须保持相同的索引，或者在新表中以 2 的幂的偏移量移动。
+
+final Node&lt;K,V&gt;[] resize() {
+    	// 旧表
+        Node&lt;K,V&gt;[] oldTab = table;
+    	// 旧表长度
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+    	// 旧表下一个拓展长度
+        int oldThr = threshold;
+    	// 新表长度、新表下一个拓展长度
+        int newCap, newThr = 0;
+    	// 长度大于0
+        if (oldCap &gt; 0) {
+            // 超过最大长度
+            if (oldCap &gt;= MAXIMUM_CAPACITY) {
+            	//如果旧容量已经超过最大值，阈值为整数最大值            
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            }
+            // 新长度(旧长度的二倍)小于最大值 and 旧长度大于 默认长度
+            else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                     oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+                // //没有超过最大值就变为原来的2倍   
+                newThr = oldThr &lt;&lt; 1; // double threshold
+        }
+        else if (oldThr &gt; 0) // initial capacity was placed in threshold
+            // 初始容量置为阈值
+            newCap = oldThr;
+        else {               // zero initial threshold signifies using defaults
+            // 默认容量
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            // 下一个调整的大小 = 默认容量 * 负载因子
+            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+        }
+        if (newThr == 0) {
+            float ft = (float)newCap * loadFactor;
+            newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?
+                      (int)ft : Integer.MAX_VALUE);
+        }
+        threshold = newThr;
+        @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+        Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];
+        table = newTab;
+        if (oldTab != null) {
+            // 遍历将旧map中的值复制进去
+            for (int j = 0; j &lt; oldCap; ++j) {
+                Node&lt;K,V&gt; e;
+                if ((e = oldTab[j]) != null) {
+                    // 将旧map赋值给e，然后释放旧map
+                    oldTab[j] = null;
+                    // 下一个节点为空
+                    if (e.next == null)
+                        newTab[e.hash &amp; (newCap - 1)] = e;
+                    // 树节点
+                    else if (e instanceof TreeNode)
+                        ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);
+                    else { // preserve order
+                        Node&lt;K,V&gt; loHead = null, loTail = null;
+                        //loHead,loTail 代表扩容后在原位置     
+                        Node&lt;K,V&gt; hiHead = null, hiTail = null;
+                        //hiHead,hiTail 代表扩容后在原位置+旧容量  
+                        Node&lt;K,V&gt; next;
+                        do {
+                            next = e.next;
+                            // 判断e的hash是否为0，即判断是否位于散列表头部
+                            if ((e.hash &amp; oldCap) == 0) {
+                                // 判断是否为零，为零赋值到loHead，不为零赋值到hiHead                 
+                                if (loTail == null)
+                                    loHead = e;
+                                // 旧尾巴的next为e
+                                else
+                                    loTail.next = e;
+                                // 旧尾巴往后移
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+                        } while ((e = next) != null);
+                        //loHead放在原位置       
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        //hiHead放在原位置+旧容量   
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                   }
+                }
+            }
+        }
+        return newTab;
+    }
+
+</code></pre>
+</li>
+</ul>
+<h4 id="hashmap默认加载因子为什么选择075">HashMap默认加载因子为什么选择0.75？</h4>
+<p>这个主要是考虑空间利用率和查询成本的一个折中。如果加载因子过高，空间利用率提高，但是会使得哈希冲突的概率增加；如果加载因子过低，会频繁扩容，哈希冲突概率降低，但是会使得空间利用率变低。具体为什么是0.75，不是0.74或0.76，这是一个基于数学分析（泊松分布）和行业规定一起得到的一个结论。</p>
+<h4 id="为什么要将链表中转红黑树的阈值设为8为什么不一开始直接使用红黑树">为什么要将<a href="">链表</a>中转<a href="">红黑树</a>的阈值设为8？为什么不一开始直接使用<a href="">红黑树</a>？</h4>
+<p>可能有很多人会问，既然<a href="">红黑树</a>性能这么好，为什么不一开始直接使用<a href="">红黑树</a>，而是先用<a href="">链表</a>，<a href="">链表</a>长度大于8时，才转换为<a href="">红黑树</a>。</p>
+<ul>
+<li>因为<a href="">红黑树</a>的节点所占的空间是普通<a href="">链表</a>节点的两倍，但查找的时间复杂度低，所以只有当节点特别多时，<a href="">红黑树</a>的优点才能体现出来。至于为什么是8，是通过<a href="">数据分析</a>统计出来的一个结果，<a href="">链表</a>长度到达8的概率是很低的，综合<a href="">链表</a>和<a href="">红黑树</a>的性能优缺点考虑将大于8的<a href="">链表</a>转化为<a href="">红黑树</a>。</li>
+<li><a href="">链表</a>转化为<a href="">红黑树</a>除了**<a href="">链表</a>长度大于8，还要<code>HashMap</code>中的数组长度大于64**。也就是如果<code>HashMap</code>长度小于64，<a href="">链表</a>长度大于8是不会转化为<a href="">红黑树</a>的，而是直接扩容。</li>
+</ul>
+<h4 id="hashmap是怎么解决哈希冲突的">HashMap是怎么解决哈希冲突的？　＊＊＊</h4>
+<p>哈希冲突：<code>hashMap</code>在存储元素时会先计算<code>key</code>的hash值来确定存储位置，因为<code>key</code>的hash值计算最后有个对数组长度取余的操作，所以即使不同的<code>key</code>也可能计算出相同的hash值，这样就引起了hash冲突。<code>hashMap</code>的底层结构中的<a href="">链表</a>/<a href="">红黑树</a>就是用来解决这个问题的。</p>
+<p><code>HashMap</code>中的哈希冲突解决方式可以主要从三方面考虑（以JDK1.8为背景）</p>
+<ul>
+<li>
+<p>拉链法</p>
+<p><code>HasMap</code>中的数据结构为数组+<a href="">链表</a>/<a href="">红黑树</a>，当不同的<code>key</code>计算出的hash值相同时，就用<a href="">链表</a>的形式将Node结点（冲突的<code>key</code>及<code>key</code>对应的<code>value</code>）挂在数组后面。</p>
+</li>
+<li>
+<p>hash函数</p>
+<p><code>key</code>的hash值经过两次扰动，<code>key</code>的<code>hashCode</code>值与<code>key</code>的<code>hashCode</code>值的右移16位进行异或，然后对数组的长度取余（实际为了提高性能用的是位运算，但目的和取余一样），这样做可以让<code>hashCode</code>取值出的高位也参与运算，进一步降低hash冲突的概率，使得数据分布更平均。</p>
+</li>
+<li>
+<p><a href="">红黑树</a></p>
+<p>在拉链法中，如果hash冲突特别严重，则会导致数组上挂的<a href="">链表</a>长度过长，性能变差，因此在<a href="">链表</a>长度大于8时，将<a href="">链表</a>转化为<a href="">红黑树</a>，可以提高遍历<a href="">链表</a>的速度。</p>
+</li>
+</ul>
+<h4 id="hashmap为什么不直接使用hashcode处理后的哈希值直接作为table的下标">HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？　＊＊＊</h4>
+<p><code>hashCode()</code>处理后的哈希值范围太大，不可能在内存建立这么大的数组。</p>
+<h4 id="能否使用任何类作为-map-的-key">能否使用任何类作为 Map 的 key？　＊＊＊</h4>
+<p>可以，但要注意以下两点：</p>
+<ul>
+<li>如果类重写了 <code>equals()</code>方法，也应该重写<code>hashCode()</code>方法。</li>
+<li>最好定义<code>key</code>类是不可变的，这样<code>key</code>对应的<code>hashCode()</code>值可以被缓存起来，性能更好，这也是为什么<code>String</code>特别适合作为<code>HashMap</code>的<code>key</code>。</li>
+</ul>
+<h4 id="为什么hashmap中string-integer这样的包装类适合作为key">为什么HashMap中String、Integer这样的包装类适合作为Key？　＊＊＊</h4>
+<ul>
+<li>这些包装类都是<code>final</code>修饰，是不可变性的， 保证了<code>key</code>的不可更改性，不会出现放入和获取时哈希值不同的情况。</li>
+<li>它们内部已经重写过<code>hashcode()</code>,<code>equal()</code>等方法。</li>
+</ul>
+<h4 id="如果使用object作为hashmap的key应该怎么办呢">如果使用Object作为HashMap的Key，应该怎么办呢？　＊＊</h4>
+<ul>
+<li>重写<code>hashCode()</code>方法，因为需要计算hash值确定存储位置</li>
+<li>重写<code>equals()</code>方法，因为需要保证<code>key</code>的唯一性。</li>
+</ul>
+<h4 id="hashmap-多线程导致死循环问题">HashMap 多线程导致死循环问题　＊＊＊</h4>
+<blockquote>
+<p>由于JDK1.7的<code>hashMap</code>遇到hash冲突采用的是头插法，在多线程情况下会存在死循环问题，但JDK1.8已经改成了尾插法，不存在这个问题了。但需要注意的是JDK1.8中的<code>HashMap</code>仍然是不安全的，在多线程情况下使用仍然会出现线程安全问题。基本上面试时说到这里既可以了，具体流程用口述是很难说清的，感兴趣的可以看这篇文章。<a href="https://coolshell.cn/articles/9606.html">HASHMAP的死循环</a></p>
+</blockquote>
+<h4 id="concurrenthashmap-底层具体实现知道吗">ConcurrentHashMap 底层具体实现知道吗？　＊＊</h4>
+<ul>
+<li>
+<p>JDK1.7</p>
+<p>在JDK1.7中，<code>ConcurrentHashMap</code>采用<code>Segment</code>数组 + <code>HashEntry</code>数组的方式进行实现。<code>Segment</code>实现了<code>ReentrantLock</code>，所以<code>Segment</code>有锁的性质，<code>HashEntry</code>用于存储键值对。一个<code>ConcurrentHashMap</code>包含着一个<code>Segment</code>数组，一个<code>Segment</code>包含着一个<code>HashEntry</code>数组，<code>HashEntry</code>是一个<a href="">链表</a>结构，如果要获取<code>HashEntry</code>中的元素，要先获得<code>Segment</code>的锁。</p>
+<figure data-type="image" tabindex="6"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237815812/2ADAB3D5E9A463D05E35BA5CEFDFDA1F" alt="图片说明" loading="lazy"></figure>
+</li>
+<li>
+<p>JDK1.8</p>
+<p>在JDK1.8中，不在是<code>Segment</code>+<code>HashEntry</code>的结构了，而是和<code>HashMap</code>类似的结构，Node数组+<a href="">链表</a>/<a href="">红黑树</a>，采用<code>CAS</code>+<code>synchronized</code>来保证线程安全。当<a href="">链表</a>长度大于8，<a href="">链表</a>转化为<a href="">红黑树</a>。在JDK1.8中<code>synchronized</code>只锁<a href="">链表</a>或<a href="">红黑树</a>的头节点，是一种相比于<code>segment</code>更为细粒度的锁，锁的竞争变小，所以效率更高。</p>
+<figure data-type="image" tabindex="7"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237823981/F2E694A50B50A5B0256CFCD2515836CC" alt="图片说明" loading="lazy"></figure>
+</li>
+</ul>
+<p>总结一下：</p>
+<ul>
+<li>JDK1.7底层是<code>ReentrantLock</code>+<code>Segment</code>+<code>HashEntry</code>，JDK1.8底层是<code>synchronized</code>+<code>CAS</code>+<a href="">链表</a>/<a href="">红黑树</a></li>
+<li>JDK1.7采用的是分段锁，同时锁住几个<code>HashEntry</code>，JDK1.8锁的是Node节点，只要没有发生哈希冲突，就不会产生锁的竞争。所以JDK1.8相比于JDK1.7提供了一种粒度更小的锁，减少了锁的竞争，提高了<code>ConcurrentHashMap</code>的并发能力。</li>
+</ul>
+<h4 id="hashtable的底层实现知道吗">HashTable的底层实现知道吗？　＊＊</h4>
+<p><code>HashTable</code>的底层数据结构是数组+<a href="">链表</a>，<a href="">链表</a>主要是为了解决哈希冲突，并且整个数组都是<code>synchronized</code>修饰的，所以<code>HashTable</code>是线程安全的，但锁的粒度太大，锁的竞争非常激烈，效率很低。</p>
+<figure data-type="image" tabindex="8"><img src="https://uploadfiles.nowcoder.com/images/20210921/975641190_1632237843756/4DD64283E9996281C55B4391C06CDD80" alt="图片说明" loading="lazy"></figure>
+<h4 id="hashmap-concurrenthashmap及hashtable-的区别">HashMap、ConcurrentHashMap及Hashtable 的区别　＊＊＊</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HashMap(JDK1.8)</th>
+<th>ConcurrentHashMap(JDK1.8)</th>
+<th>Hashtable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>底层实现</td>
+<td>数组+<a href="">链表</a>/<a href="">红黑树</a></td>
+<td>数组+<a href="">链表</a>/<a href="">红黑树</a></td>
+<td>数组+<a href="">链表</a></td>
+</tr>
+<tr>
+<td>线程安全</td>
+<td>不安全</td>
+<td>安全(<code>Synchronized</code>修饰Node节点)</td>
+<td>安全(<code>Synchronized</code>修饰整个表)</td>
+</tr>
+<tr>
+<td>效率</td>
+<td>高</td>
+<td>较高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>扩容</td>
+<td>初始16，每次扩容成2n</td>
+<td>初始16，每次扩容成2n</td>
+<td>初始11，每次扩容成2n+1</td>
+</tr>
+<tr>
+<td>是否支持Null key和Null Value</td>
+<td>可以有一个Null key，Null Value多个</td>
+<td>不支持</td>
+<td>不支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="java集合的常用方法">Java集合的常用方法　＊＊</h3>
+<blockquote>
+<p>这些常用方法是需要背下来的，虽然面试用不上，但是笔试或者面试写<a href="">算法题</a>时会经常用到。</p>
+</blockquote>
+<h4 id="collection常用方法">Collection常用方法</h4>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>booean add(E e)</code></td>
+<td>在集合末尾添加元素</td>
+</tr>
+<tr>
+<td><code>boolean remove(Object o)</code></td>
+<td>若本类集中有值与o的值相等的元素，移除该元素并返回true</td>
+</tr>
+<tr>
+<td><code>void clear()</code></td>
+<td>清除本类中所有元素</td>
+</tr>
+<tr>
+<td><code>boolean contains(Object o)</code></td>
+<td>判断集合中是否包含该元素</td>
+</tr>
+<tr>
+<td><code>boolean isEmpty()</code></td>
+<td>判断集合是否为空</td>
+</tr>
+<tr>
+<td><code>int size()</code></td>
+<td>返回集合中元素的个数</td>
+</tr>
+<tr>
+<td><code>boolean addAll(Collection c)</code></td>
+<td>将一个集合中c中的所有元素添加到另一个集合中</td>
+</tr>
+<tr>
+<td><code>Object[] toArray()</code></td>
+<td>返回一个包含本集所有元素的数组，数组类型为Object[]</td>
+</tr>
+<tr>
+<td>`boolean equals(Object c)``</td>
+<td>判断元素是否相等</td>
+</tr>
+<tr>
+<td><code>int hashCode()</code></td>
+<td>返回元素的hash值</td>
+</tr>
+</tbody>
+</table>
+<h4 id="list特有方法">List特有方法</h4>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>void add(int index,Object obj)</code></td>
+<td>在指定位置添加元素</td>
+</tr>
+<tr>
+<td><code>Object remove(int index)</code></td>
+<td>删除指定元素并返回</td>
+</tr>
+<tr>
+<td><code>Object set(int index,Object obj)</code></td>
+<td>把指定索引位置的元素更改为指定值并返回修改前的值</td>
+</tr>
+<tr>
+<td><code>int indexOf(Object o)</code></td>
+<td>返回指定元素在集合中第一次出现的索引</td>
+</tr>
+<tr>
+<td><code>Object get(int index)</code></td>
+<td>返回指定位置的元素</td>
+</tr>
+<tr>
+<td><code>List subList(int fromIndex,int toIndex)</code></td>
+<td>截取集合(左闭右开)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="linkedlist特有方法">LinkedList特有方法</h4>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>addFirst()</code></td>
+<td>在头部添加元素</td>
+</tr>
+<tr>
+<td><code>addLast()</code></td>
+<td>在尾部添加元素</td>
+</tr>
+<tr>
+<td><code>removeFirst()</code></td>
+<td>在头部删除元素</td>
+</tr>
+<tr>
+<td><code>removeLat()</code></td>
+<td>在尾部删除元素</td>
+</tr>
+<tr>
+<td><code>getFirst()</code></td>
+<td>获取头部元素</td>
+</tr>
+<tr>
+<td><code>getLast()</code></td>
+<td>获取尾部元素</td>
+</tr>
+</tbody>
+</table>
+<h4 id="map">Map</h4>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>void clear()</code></td>
+<td>清除集合内的元素</td>
+</tr>
+<tr>
+<td><code>boolean containsKey(Object key)</code></td>
+<td>查询Map中是否包含指定key,如果包含则返回true</td>
+</tr>
+<tr>
+<td><code>Set entrySet()</code></td>
+<td>返回Map中所包含的键值对所组成的Set集合，每个集合元素都是Map.Entry的对象</td>
+</tr>
+<tr>
+<td><code>Object get(Object key)</code></td>
+<td>返回key指定的value,若Map中不包含key返回null</td>
+</tr>
+<tr>
+<td><code>boolean isEmpty()</code></td>
+<td>查询Map是否为空，若为空返回true</td>
+</tr>
+<tr>
+<td><code>Set keySet()</code></td>
+<td>返回Map中所有key所组成的集合</td>
+</tr>
+<tr>
+<td><code>Object put(Object key,Object value)</code></td>
+<td>添加一个键值对，如果已有一个相同的key,则新的键值对会覆盖旧的键值对,返回值为覆盖前的value值，否则为null</td>
+</tr>
+<tr>
+<td><code>void putAll(Map m)</code></td>
+<td>将制定Map中的键值对复制到Map中</td>
+</tr>
+<tr>
+<td><code>Object remove(Object key)</code></td>
+<td>删除指定key所对应的键值对，返回所关联的value,如果key不存在返回null</td>
+</tr>
+<tr>
+<td><code>int size()</code></td>
+<td>返回Map里面的键值对的个数</td>
+</tr>
+<tr>
+<td><code>Collection values()</code></td>
+<td>返回Map里所有values所组成的Collection</td>
+</tr>
+<tr>
+<td><code>boolean containsValue ( Object value)</code></td>
+<td>判断映像中是否存在值 value</td>
+</tr>
+</tbody>
+</table>
+<h4 id="stack">Stack</h4>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean empty()</code></td>
+<td>测试堆栈是否为空。</td>
+</tr>
+<tr>
+<td><code>E peek()</code></td>
+<td>查看堆栈顶部的对象，但不从堆栈中移除它。</td>
+</tr>
+<tr>
+<td><code>E pop()</code></td>
+<td>移除堆栈顶部的对象，并作为此函数的值返回该对象。</td>
+</tr>
+<tr>
+<td><code>E push(E item)</code></td>
+<td>把项压入堆栈顶部。</td>
+</tr>
+<tr>
+<td><code>int search(Object o)</code></td>
+<td>返回对象在堆栈中的位置，以 1 为基数。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="queue">Queue</h4>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean add(E e)</code></td>
+<td>将指定元素插入到队列的尾部（队列满了话，会抛出异常）</td>
+</tr>
+<tr>
+<td><code>boolean offer(E e)</code></td>
+<td>将指定元素插入此队列的尾部(队列满了话，会返回false)</td>
+</tr>
+<tr>
+<td><code>E remove()</code></td>
+<td>返回取队列头部的元素，并删除该元素(如果队列为空，则抛出异常)</td>
+</tr>
+<tr>
+<td><code>E poll()</code></td>
+<td>返回队列头部的元素，并删除该元素(如果队列为空，则返回null)</td>
+</tr>
+<tr>
+<td><code>E element()</code></td>
+<td>返回队列头部的元素,不删除该元素(如果队列为空，则抛出异常)</td>
+</tr>
+<tr>
+<td><code>E peek()</code></td>
+<td>返回队列头部的元素，不删除该元素(如果队列为空，则返回null)</td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/3slSISDl_/" class="tag">
+                    总结
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/bing-fa-bian-cheng/">
+                  <h3 class="post-title">
+                    并发编程
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
