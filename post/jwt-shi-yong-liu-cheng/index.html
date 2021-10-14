@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>JWT使用流程 | Joker&#39;s Blog</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chimaeras.ltd/favicon.ico?v=1634199146932">
+<link rel="stylesheet" href="https://chimaeras.ltd/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="Token
+简介
+Token 是一个临时、唯一、保证不重复的令牌，例如智能门锁，它可以生成一个临时密码，具有一定时间内的有效期。
+实现思路
+UUID具有上述的特性，所以我们可以使用UUID作为token，生产UUID后放入Redis，设置R..." />
+    <meta name="keywords" content="总结" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://chimaeras.ltd">
+        <img src="https://chimaeras.ltd/images/avatar.png?v=1634199146932" class="site-logo">
+        <h1 class="site-title">Joker&#39;s Blog</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+          <a class="social-link" href="https://github.com/Chimaeras" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://chimaeras.ltd/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">JWT使用流程</h2>
+            <div class="post-date">2021-10-11</div>
+            
+            <div class="post-content" v-pre>
+              <h2 id="token">Token</h2>
+<h3 id="简介">简介</h3>
+<p>Token 是一个临时、唯一、保证不重复的令牌，例如智能门锁，它可以生成一个临时密码，具有一定时间内的有效期。</p>
+<h3 id="实现思路">实现思路</h3>
+<p>UUID具有上述的特性，所以我们可以使用UUID作为token，生产UUID后放入Redis，设置Redis的过期时间。</p>
+<h3 id="token的sessionid">Token的SessionID</h3>
+<p>token和SESSIONID非常的相似，但是SESSIONID在分布式项目中不能共享，虽然SESSION可以通过Redis等技术实现共享，但是使用这类技术会降低项目的性能和可用性。所以现在普通使用Token代替Session使用。</p>
+<h3 id="简单的token实现思路">简单的Token实现思路</h3>
+<h4 id="实现思路-2">实现思路：</h4>
+<ol>
+<li>验证用户的账号密码</li>
+<li>如果正确，生成UUID作为Key</li>
+<li>将此Key作为Key，将用户信息作为Value，存入Redis</li>
+<li>最后返回Token给客户端，客户端将Cookie保存到Cookie中</li>
+</ol>
+<p>用户在每次请求时，都会携带此Token，后端在拦截器中校验Token是否存在，如果存在找到对应的用户信息，判断其有哪些权限。</p>
+<h4 id="token优点">Token优点：</h4>
+<ol>
+<li>可以通过Header、Body提交，实现跨域操作</li>
+<li>可以隐藏参数的真实性，实现参数的脱敏</li>
+<li>临时、唯一</li>
+</ol>
+<h4 id="存在问题">存在问题：</h4>
+<ol>
+<li>使用Token，必须依赖Redis和Cookie</li>
+<li>需要频繁操作Redis</li>
+</ol>
+<h2 id="基于token的认证">基于token的认证</h2>
+<p>基于token的认证机制将认证信息返回给客户端并存储。下次访问其他页面，需要从客户端传递认证信息回服务端。简单的流程如下：</p>
+<ul>
+<li>客户端使用用户名跟密码请求登录；</li>
+<li>服务端收到请求，去验证用户名与密码；</li>
+<li>验证成功后，服务端会签发一个 Token，再把这个 Token 发送给客户端；</li>
+<li>客户端收到 Token 以后可以把它存储起来，比如放在 Cookie 里或者 Local Storage 里；</li>
+<li>客户端每次向服务端请求资源的时候需要带着服务端签发的 Token；</li>
+<li>服务端收到请求，然后去验证客户端请求里面带着的 Token，如果验证成功，就向客户端返回请求的数据；</li>
+</ul>
+<p>基于token的验证机制，有以下的优点：</p>
+<ul>
+<li>支持跨域访问，将token置于请求头中，而cookie是不支持跨域访问的；</li>
+<li>无状态化，服务端无需存储token，只需要验证token信息是否正确即可，而session需要在服务端存储，一般是通过cookie中的sessionID在服务端查找对应的session；</li>
+<li>无需绑定到一个特殊的身份验证方案（传统的用户名密码登陆），只需要生成的token是符合我们预期设定的即可；</li>
+<li>更适用于移动端（Android，iOS，小程序等等），像这种原生平台不支持cookie，比如说微信小程序，每一次请求都是一次会话，当然我们可以每次去手动为他添加cookie，详情请查看博主另一篇博客；</li>
+<li>避免CSRF跨站伪造攻击，还是因为不依赖cookie；</li>
+</ul>
+<p>缺点的话一个就是相比较于传统的session登陆机制实现起来略微复杂一点，另外一个比较大的缺点是由于服务器不保存 token，因此无法在使用过程中废止某个 token，或者更改 token 的权限。也就是说，一旦 token 签发了，在到期之前就会始终有效，除非服务器部署额外的逻辑。</p>
+<p>退出登陆的话，只要前端清除token信息即可。</p>
+<hr>
+<h2 id="session简介">session简介</h2>
+<p>做过Web开发的程序员应该对Session都比较熟悉，Session是一块保存在服务器端的内存空间，一般用于保存用户的会话信息。</p>
+<figure data-type="image" tabindex="1"><a href="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=260083543,4284155072&amp;fm=26&amp;gp=0.jpg"><img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=260083543,4284155072&amp;fm=26&amp;gp=0.jpg" alt="img" loading="lazy"></a></figure>
+<p>用户通过用户名和密码登陆成功之后，服务器端程序会在服务器端开辟一块Session内存空间并将用户的信息存入这块空间，同时服务器会<br>
+在cookie中写入一个Session_id的值，这个值用于标识这个内存空间。</p>
+<p>下次用户再来访问的话会带着这个cookie中的session_id，服务器拿着这个id去寻找对应的session，如果session中已经有了这个用户的<br>
+登陆信息，则说明用户已经登陆过了。</p>
+<p>使用Session保持会话信息<strong>使用起来非常简单，技术也非常成熟</strong>。但是也存在下面的几个问题：</p>
+<ul>
+<li>服务器压力大：通常Session是存储在内存中的，每个用户通过认证之后都会将session数据保存在服务器的内存中，而当用户量增大时，服务器的压力增大。</li>
+<li>Session共享：现在很多应用都是分布式集群，需要我们做额外的操作进行Session共享；</li>
+<li>CSRF跨站伪造请求攻击：Session机制是基于浏览器端的cookie的，cookie如果被截获，用户就会很容易受到跨站请求伪造的攻击。</li>
+</ul>
+<hr>
+<h2 id="jwt">JWT</h2>
+<h3 id="简介-2">简介</h3>
+<p>JWT，全称Json Web Token，是目前最流行的跨域认证解决方案。它的实现思想和上面的token是基本一致的，是一种更加成熟和完善的解决方案。</p>
+<h3 id="原理">原理</h3>
+<p>JWT的原理就是，当服务器认证账号密码通过后，生成一个JSON对象，返回给用户，保存在Cookie中。当用户下一次访问的时候自动携带这个JSON对象，服务器可以根据这个对象判断用户的身份。为了防止用户篡改数据信息，服务器生成这个JSON的时候，会进行一些加密操作。此时服务器中就不需要保存session数据。</p>
+<h3 id="jwt的数据结构">JWT的数据结构</h3>
+<p>JWT中的数据分为三部分，每部分都是一串很长的字符串，中间用<code>.</code>间隔</p>
+<ul>
+<li>header： 头部，标记加密算法</li>
+<li>Payload： 负载，存放具体数据</li>
+<li>Signature：签名，Payload采用MD5加密后的签名值</li>
+</ul>
+<p>完整的格式为：header.Payload.Signature</p>
+<h3 id="header">Header</h3>
+<p>Header部分是由一个JSON对象组成，它描述JWT的元数据，通常是下面的样子：</p>
+<pre><code class="language-json">{
+	'alg' : &quot;HS256&quot;,
+	&quot;typ&quot; : &quot;JWT&quot;
+}
+</code></pre>
+<p>alg表示签名的算法，默认为HMAC SHA256（可以写成 HS256）</p>
+<p>typ属性表示令牌的类型，JWT令牌统一写为JWT</p>
+<p>生成JWT后，此部分会进行BASE64编码，最终被解析为：</p>
+<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+</code></pre>
+<p>jwt中的Header部分的内容默认是没有加密的，只是进行了Base64处理。可以直接使用Base64反加密获取原文。</p>
+<h3 id="payload">Payload</h3>
+<p>Payload部分也是一个JSON对象，用来存放实际需要传递的数据。JWT规定了7个官方字段（建议但不强制使用）：</p>
+<ul>
+<li>iss (issuer)：签发人</li>
+<li>exp (expiration time)：过期时间</li>
+<li>sub (subject)：主题</li>
+<li>aud (audience)：受众</li>
+<li>nbf (Not Before)：生效时间</li>
+<li>iat (Issued At)：签发时间</li>
+<li>jti (JWT ID)：编号</li>
+</ul>
+<p>除了官方字段，还可以支持自定义字段，下面就是一个例子：</p>
+<pre><code>{
+  &quot;name&quot;: &quot;rayfoo&quot;,
+  &quot;phone&quot;: 18338862369
+}
+</code></pre>
+<p>生产JWT后的：</p>
+<pre><code>eyJuYW1lIjoicmF5Zm9vIiwicGhvbmUiOjE4MzM4ODYyMzY5fQ
+</code></pre>
+<p>注意，这部分的内容默认也是没有加密的，只是进行了Base64编码。可以直接使用Base64反加密获取原文。但是我们可以对其进行一些混淆（替换、移位）操作。</p>
+<h3 id="signature">Signature</h3>
+<p>Signature 部分是对前两部分的签名，防止数据篡改。</p>
+<p>首先，需要指定一个密钥（secret）。这个密钥只有服务器才知道，不能泄露给用户。然后，使用 Header 里面指定的签名算法（默认是 HMAC SHA256），按照下面的公式产生签名。</p>
+<p>这一段并不是使用base64加密，而是使用header中提供的加密方式进行的加密.</p>
+<p>可以浅显的理解为将Payload中的数据按照header，payload+密钥（secret）作为一个整体进行MD5（也可能是任意类型的）加密。在下面这段代码中，密钥就是：rayfoo。</p>
+<pre><code>HMACSHA256(
+  base64UrlEncode(header) + &quot;.&quot; +
+  base64UrlEncode(payload),
+  rayfoo
+)
+</code></pre>
+<p>jwt生成的signature</p>
+<pre><code>AIwKf4x_nYr1N_cmw_VQ5t_nuaX5b-gTN8RgHtkTO4w
+</code></pre>
+<h3 id="base64url编码">Base64URL编码</h3>
+<p>前面提到，Header 和 Payload 串型化的算法是 Base64URL。这个算法跟 Base64 算法基本类似，但有一些小的不同。</p>
+<p>JWT 作为一个令牌（token），有些场合可能会放到 URL（比如 api.example.com/?token=xxx）。Base64 有三个字符<code>+</code>、<code>/</code>和<code>=</code>，在 URL 里面有特殊含义，所以要被替换掉：<code>=</code>被省略、<code>+</code>替换成<code>-</code>，<code>/</code>替换成<code>_</code> 。这就是 Base64URL 算法。</p>
+<h3 id="jwt的使用方式">JWT的使用方式</h3>
+<p>客户端收到服务器返回的 JWT，可以储存在 Cookie 里面，也可以储存在 localStorage。</p>
+<p>此后，客户端每次与服务器通信，都要带上这个 JWT。你可以把它放在 Cookie 里面自动发送，但是这样不能跨域，所以更好的做法是放在 HTTP 请求的头信息<code>Authorization</code>字段里面。</p>
+<pre><code>Authorization: Bearer &lt;token&gt;
+</code></pre>
+<p>另一种做法是，跨域的时候，JWT 就放在 POST 请求的数据体里面。</p>
+<h3 id="jwt-的几个特点">JWT 的几个特点</h3>
+<h4 id="优点">优点:</h4>
+<p>（1）JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次，不容易被客户端修改。</p>
+<p>（2）JWT 不加密的情况下，不能将秘密数据写入 JWT。</p>
+<p>（3）JWT 不仅可以用于认证，也可以用于交换信息。有效使用 JWT，可以降低服务器查询数据库的次数。效率也比token高。</p>
+<h4 id="缺点">缺点：</h4>
+<p>（1）JWT 的最大缺点是，由于服务器不保存 session 状态，因此无法在使用过程中废止某个 token，或者更改 token 的权限。也就是说，一旦 JWT 签发了，在到期之前就会始终有效，除非服务器部署额外的逻辑。</p>
+<p>（2）JWT 本身包含了认证信息，一旦泄露，任何人都可以获得该令牌的所有权限。为了减少盗用，JWT 的有效期应该设置得比较短。对于一些比较重要的权限，使用时应该再次对用户进行认证。</p>
+<p>（3）为了减少盗用，JWT 不应该使用 HTTP 协议明码传输，要使用 HTTPS 协议传输。</p>
+<p>（4）如果jwt中payload的数据过多，会占用服务器的带宽资源。</p>
+<hr>
+<h3 id="实例">实例</h3>
+<p>我们定义一个生成token的jwt工具类</p>
+<pre><code class="language-java">public class JwtUtil {
+    /**
+     * 签名 此签名为 xxxxx 的16位 大写 MD5
+     * 如：你的密钥为 abcd， 可以将abcd进行md5（16）转换，作为服务端密钥，即下面这串
+     */
+    private static final String SIGN_KEY = &quot;0a854ebdc8d0508d&quot;;
+
+    /**
+     * 默认的过期时间，30分钟
+     */
+    private static final Integer DEFAULT_EXPIRES = 1000 * 60 * 30;
+
+    
+    public static String getToken ( Map&lt; String, String &gt; map, Integer expires ) throws Exception {
+
+        //创建日历
+        Calendar instance = Calendar.getInstance();
+        //设置过期时间(s)
+        instance.add( Calendar.SECOND, expires );
+
+        //创建jwt builder对象
+        JWTCreator.Builder builder = JWT.create();
+
+        //payload
+        // 将map中的不同健值对添加到builder中
+        map.forEach( ( k, v ) -&gt; {
+            builder.withClaim( k, v );
+        } );
+
+        String token = builder
+            //指定过期时间
+            .withExpiresAt( instance.getTime() )
+            //设置加密方式
+            .sign( Algorithm.HMAC256( SIGN_KEY ) );
+
+        //返回token
+        // 这里是直接返回token，也可以再对token进行一次加密之后在返回 ，只需要另外编写加密函数和解密函数即可。
+        return  token ;
+    }
+    
+    public static DecodedJWT verify ( String token ) throws Exception {
+
+        //如果token无效
+        if ( token == null || &quot;&quot;.equals( token ) ) {
+            throw new JWTDecodeException( &quot;无效的token！&quot; );
+        }
+        //解析token
+        //创建返回结果
+        return JWT.require( Algorithm.HMAC256( SIGN_KEY ) ).build().verify( token );
+    }
+
+}
+</code></pre>
+<p>在登陆时，将关键信息存储进去</p>
+<pre><code class="language-java">    @ApiOperation ( &quot;用户登陆&quot; )    @RequestMapping ( value = &quot;/login&quot;, method = RequestMethod.POST )    public Map&lt; String, Object &gt; login ( @RequestBody User user ) {        Map&lt; String, Object &gt; map = new HashMap&lt;&gt;( 3 );        try {            // 登录校验            userService.login( user );            // 没有抛出异常表示认证成功            map.put( &quot;code&quot;, 200 );            map.put( &quot;msg&quot;, &quot;登录成功&quot; );            //声明payload            Map&lt; String, String &gt; payload = new HashMap&lt;&gt;( 2 );            //初始化payload            payload.put( &quot;id&quot;, Integer.toString( user.getId() ) );            payload.put( &quot;name&quot;, user.getName() );            //获取令牌            String token = JwtUtil.getToken( payload );            //在响应结果中添加token            map.put( &quot;token&quot;, token );        } catch ( Exception e ) {            map.put( &quot;code&quot;, 500 );            map.put( &quot;msg&quot;, e.getMessage() );        }        return map;    }
+</code></pre>
+<p>在需要验证的时候，对之前放进去的关键信息进行查询</p>
+<pre><code class="language-java">@ApiOperation ( &quot;修改密码&quot; )@RequestMapping ( value = &quot;/changePassword&quot;, method = RequestMethod.POST )public Map&lt; String, Object &gt; update ( @RequestBody Map&lt; String, Object &gt; map ) {    String name = map.get( &quot;name&quot; ).toString();    String oldPassword = map.get( &quot;oldPassword&quot; ).toString();    String newPassword = map.get( &quot;newPassword&quot; ).toString();    String token = map.get( &quot;token&quot; ).toString();    // 定义返回的结果集    Map&lt; String, Object &gt; res = new HashMap&lt;&gt;( 2 );    try {        // 验证token        if ( JwtUtil.verify( token ).getClaim( &quot;name&quot; ).asString().equals( name ) ) {            // 获取执行修改的信息            String msg = userService.updatePassword( name, oldPassword, newPassword );            res.put( &quot;code&quot;, 200 );            res.put( &quot;msg&quot;, msg );        } else {            res.put( &quot;code&quot;, 400 );        }    } catch ( Exception e ) {        System.out.println( e.getMessage() );        res.put( &quot;code&quot;, 500 );        res.put( &quot;msg&quot;, &quot;验证token错误&quot; );    }    return res;}
+</code></pre>
+<p>还可以编写拦截器，在需要进行拦截的接口自动进行校验token。</p>
+<p>（待补充）</p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://chimaeras.ltd/tag/3slSISDl_/" class="tag">
+                    总结
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://chimaeras.ltd/post/mysql-01/">
+                  <h3 class="post-title">
+                    Mysql-01
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+
+
+  </body>
+</html>
